@@ -1,5 +1,3 @@
-import { DatabaseService, DatabaseUser } from '@/lib/database';
-
 export interface AuthUser {
   id: string;
   email: string;
@@ -8,35 +6,30 @@ export interface AuthUser {
 
 export class AuthService {
   private static readonly SESSION_KEY = 'talentscript_user';
-
-  // Simple password hashing (in production, use bcrypt or similar)
-  private static async hashPassword(password: string): Promise<string> {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password + 'talentscript_salt');
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  }
+  private static readonly API_BASE = '/.netlify/functions';
 
   static async register(name: string, email: string, password: string): Promise<AuthUser> {
     try {
-      // Check if user already exists
-      const existingUser = await DatabaseService.getUserByEmail(email);
-      if (existingUser) {
-        throw new Error('User already exists with this email');
+      const response = await fetch(`${this.API_BASE}/auth`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'register',
+          name,
+          email,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed');
       }
 
-      // Hash password and create user
-      const passwordHash = await this.hashPassword(password);
-      const user = await DatabaseService.createUser(email, name, passwordHash);
-      
-      // Store in session
-      const authUser: AuthUser = {
-        id: user.id,
-        email: user.email,
-        name: user.name
-      };
-      
+      const authUser = data.user;
       this.setCurrentUser(authUser);
       return authUser;
     } catch (error) {
@@ -47,25 +40,25 @@ export class AuthService {
 
   static async login(email: string, password: string): Promise<AuthUser> {
     try {
-      // For demo purposes, we'll use a simple authentication
-      // In production, you'd verify the password hash
-      const passwordHash = await this.hashPassword(password);
-      
-      // Get user from database
-      const user = await DatabaseService.getUserByEmail(email);
-      if (!user) {
-        throw new Error('Invalid email or password');
+      const response = await fetch(`${this.API_BASE}/auth`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'login',
+          email,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed');
       }
 
-      // In a real app, you'd verify the password hash here
-      // For now, we'll just proceed with the login
-      
-      const authUser: AuthUser = {
-        id: user.id,
-        email: user.email,
-        name: user.name
-      };
-      
+      const authUser = data.user;
       this.setCurrentUser(authUser);
       return authUser;
     } catch (error) {

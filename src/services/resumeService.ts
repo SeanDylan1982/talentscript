@@ -1,22 +1,44 @@
-import { DatabaseService, DatabaseResume } from '@/lib/database';
 import { ResumeData } from '@/types/resume';
 
+interface DatabaseResume {
+  id: string;
+  user_id: string;
+  title: string;
+  data: any;
+  template: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export class ResumeService {
+  private static readonly API_BASE = '/.netlify/functions';
+
   static async saveResume(userId: string, resumeData: ResumeData, title?: string): Promise<DatabaseResume> {
     try {
       const resumeTitle = title || `${resumeData.personalInfo.fullName || 'Untitled'} Resume`;
       
-      if (resumeData.id) {
-        // Update existing resume
-        const updated = await DatabaseService.updateResume(resumeData.id, userId, resumeData);
-        if (!updated) {
-          throw new Error('Failed to update resume');
-        }
-        return updated;
-      } else {
-        // Create new resume
-        return await DatabaseService.createResume(userId, resumeTitle, resumeData, resumeData.template);
+      const response = await fetch(`${this.API_BASE}/resumes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'save',
+          userId,
+          resumeId: resumeData.id,
+          title: resumeTitle,
+          data: resumeData,
+          template: resumeData.template
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to save resume');
       }
+
+      return data.resume;
     } catch (error) {
       console.error('Error saving resume:', error);
       throw new Error('Failed to save resume');
@@ -25,22 +47,28 @@ export class ResumeService {
 
   static async loadResume(resumeId: string, userId: string): Promise<ResumeData | null> {
     try {
-      const resume = await DatabaseService.getResumeById(resumeId, userId);
-      if (!resume) {
-        return null;
+      const response = await fetch(`${this.API_BASE}/resumes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'load',
+          userId,
+          resumeId
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          return null;
+        }
+        throw new Error(data.error || 'Failed to load resume');
       }
 
-      // Parse the JSON data and add the database ID
-      const resumeData = typeof resume.data === 'string' 
-        ? JSON.parse(resume.data) 
-        : resume.data;
-      
-      return {
-        ...resumeData,
-        id: resume.id,
-        createdAt: resume.created_at,
-        updatedAt: resume.updated_at
-      } as ResumeData;
+      return data.resume as ResumeData;
     } catch (error) {
       console.error('Error loading resume:', error);
       throw new Error('Failed to load resume');
@@ -49,7 +77,24 @@ export class ResumeService {
 
   static async getUserResumes(userId: string): Promise<DatabaseResume[]> {
     try {
-      return await DatabaseService.getResumesByUserId(userId);
+      const response = await fetch(`${this.API_BASE}/resumes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'list',
+          userId
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch resumes');
+      }
+
+      return data.resumes;
     } catch (error) {
       console.error('Error fetching user resumes:', error);
       throw new Error('Failed to fetch resumes');
@@ -58,7 +103,25 @@ export class ResumeService {
 
   static async deleteResume(resumeId: string, userId: string): Promise<boolean> {
     try {
-      return await DatabaseService.deleteResume(resumeId, userId);
+      const response = await fetch(`${this.API_BASE}/resumes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          userId,
+          resumeId
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to delete resume');
+      }
+
+      return data.success;
     } catch (error) {
       console.error('Error deleting resume:', error);
       throw new Error('Failed to delete resume');
@@ -67,19 +130,25 @@ export class ResumeService {
 
   static async duplicateResume(resumeId: string, userId: string): Promise<DatabaseResume> {
     try {
-      const originalResume = await DatabaseService.getResumeById(resumeId, userId);
-      if (!originalResume) {
-        throw new Error('Resume not found');
+      const response = await fetch(`${this.API_BASE}/resumes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'duplicate',
+          userId,
+          resumeId
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to duplicate resume');
       }
 
-      const resumeData = typeof originalResume.data === 'string' 
-        ? JSON.parse(originalResume.data) 
-        : originalResume.data;
-
-      // Create a copy with a new title
-      const newTitle = `${originalResume.title} (Copy)`;
-      
-      return await DatabaseService.createResume(userId, newTitle, resumeData, originalResume.template);
+      return data.resume;
     } catch (error) {
       console.error('Error duplicating resume:', error);
       throw new Error('Failed to duplicate resume');
