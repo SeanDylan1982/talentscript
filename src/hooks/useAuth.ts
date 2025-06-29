@@ -1,49 +1,51 @@
-import { useState, useEffect } from 'react';
-import { AuthService, AuthUser } from '@/services/authService';
+import { useUser } from '@stackframe/react';
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+}
 
 export function useAuth() {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, signIn, signUp, signOut } = useUser();
 
-  useEffect(() => {
-    // Check for existing session on mount
-    const currentUser = AuthService.getCurrentUser();
-    setUser(currentUser);
-    setIsLoading(false);
-  }, []);
+  const authUser: AuthUser | null = user ? {
+    id: user.id,
+    email: user.primaryEmail || '',
+    name: user.displayName || user.primaryEmail || 'User'
+  } : null;
 
   const login = async (email: string, password: string): Promise<void> => {
-    setIsLoading(true);
     try {
-      const authUser = await AuthService.login(email, password);
-      setUser(authUser);
+      await signIn.emailPassword({ email, password });
     } catch (error) {
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const register = async (name: string, email: string, password: string): Promise<void> => {
-    setIsLoading(true);
     try {
-      const authUser = await AuthService.register(name, email, password);
-      setUser(authUser);
+      await signUp.emailPassword({ 
+        email, 
+        password,
+        displayName: name
+      });
     } catch (error) {
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const logout = (): void => {
-    AuthService.logout();
-    setUser(null);
+  const logout = async (): Promise<void> => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return {
-    user,
-    isLoading,
+    user: authUser,
+    isLoading: false, // Stack Auth handles loading states internally
     isAuthenticated: !!user,
     login,
     register,

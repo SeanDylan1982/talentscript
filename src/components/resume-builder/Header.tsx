@@ -78,6 +78,7 @@ export function Header() {
     try {
       await login(email, password);
       showToast('Logged in successfully!');
+      setIsAuthModalOpen(false);
     } catch (error) {
       throw error;
     }
@@ -87,14 +88,19 @@ export function Header() {
     try {
       await register(name, email, password);
       showToast('Account created successfully!');
+      setIsAuthModalOpen(false);
     } catch (error) {
       throw error;
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    showToast('Logged out successfully!', 'info');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      showToast('Logged out successfully!', 'info');
+    } catch (error) {
+      showToast('Error logging out', 'error');
+    }
   };
 
   const openAuthModal = (tab: 'login' | 'signup') => {

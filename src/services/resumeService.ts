@@ -32,12 +32,12 @@ export class ResumeService {
         })
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to save resume');
+        const errorText = await response.text();
+        throw new Error(`Failed to save resume: ${response.status} ${errorText}`);
       }
 
+      const data = await response.json();
       return data.resume;
     } catch (error) {
       console.error('Error saving resume:', error);
@@ -59,15 +59,15 @@ export class ResumeService {
         })
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
         if (response.status === 404) {
           return null;
         }
-        throw new Error(data.error || 'Failed to load resume');
+        const errorText = await response.text();
+        throw new Error(`Failed to load resume: ${response.status} ${errorText}`);
       }
 
+      const data = await response.json();
       return data.resume as ResumeData;
     } catch (error) {
       console.error('Error loading resume:', error);
@@ -88,12 +88,12 @@ export class ResumeService {
         })
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to fetch resumes');
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch resumes: ${response.status} ${errorText}`);
       }
 
+      const data = await response.json();
       return data.resumes;
     } catch (error) {
       console.error('Error fetching user resumes:', error);
@@ -115,12 +115,12 @@ export class ResumeService {
         })
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to delete resume');
+        const errorText = await response.text();
+        throw new Error(`Failed to delete resume: ${response.status} ${errorText}`);
       }
 
+      const data = await response.json();
       return data.success;
     } catch (error) {
       console.error('Error deleting resume:', error);
@@ -142,12 +142,12 @@ export class ResumeService {
         })
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to duplicate resume');
+        const errorText = await response.text();
+        throw new Error(`Failed to duplicate resume: ${response.status} ${errorText}`);
       }
 
+      const data = await response.json();
       return data.resume;
     } catch (error) {
       console.error('Error duplicating resume:', error);
