@@ -1,6 +1,6 @@
 # TalentScript - Professional Resume Builder
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-blue)](https://eclectic-panda-72e6c9.netlify.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-blue)](https://talentscript.netlify.app)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue.svg)](https://www.typescriptlang.org/)
@@ -40,7 +40,9 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 
 ## 🚀 Live Demo
 
-**[Try TalentScript Now →](https://eclectic-panda-72e6c9.netlify.app)**
+**[Try TalentScript Now →](https://talentscript.netlify.app)**
+
+> **Note**: This project has been moved from `https://eclectic-panda-72e6c9.netlify.app/` to the new custom domain `https://talentscript.netlify.app/` for a more professional and memorable URL.
 
 ## 📸 Screenshots
 
@@ -287,12 +289,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Mobile app
 
 ### Version History
+- **v1.2.0** - Interactive tutorial, drag-and-drop reordering, enhanced privacy controls
+- **v1.1.0** - Multiple templates, font customization, color themes
 - **v1.0.0** - Initial release with core functionality
-- **v1.1.0** - Added tutorial and drag-and-drop reordering
-- **v1.2.0** - Enhanced PDF generation and privacy controls
 
 ---
 
 **Built with ❤️ by the TalentScript Team**
 
-[Live Demo](https://eclectic-panda-72e6c9.netlify.app) | [Report Bug](https://github.com/yourusername/talentscript/issues) | [Request Feature](https://github.com/yourusername/talentscript/issues)
+[Live Demo](https://talentscript.netlify.app) | [Report Bug](https://github.com/yourusername/talentscript/issues) | [Request Feature](https://github.com/yourusername/talentscript/issues)
