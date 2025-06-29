@@ -61,6 +61,7 @@ interface TutorialModalProps {
 export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [highlightedElement, setHighlightedElement] = useState<HTMLElement | null>(null);
+  const [overlayElement, setOverlayElement] = useState<HTMLElement | null>(null);
 
   const currentTutorialStep = tutorialSteps[currentStep];
 
@@ -92,9 +93,45 @@ export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalPro
     const element = document.querySelector(selector) as HTMLElement;
     if (element) {
       setHighlightedElement(element);
+      
+      // Create overlay that covers everything except the highlighted element
+      const overlay = document.createElement('div');
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      overlay.style.zIndex = '999';
+      overlay.style.pointerEvents = 'none';
+      
+      // Get element position and dimensions
+      const rect = element.getBoundingClientRect();
+      const padding = 8; // Extra padding around the element
+      
+      // Create a cutout for the highlighted element using clip-path
+      const clipPath = `polygon(
+        0% 0%, 
+        0% 100%, 
+        ${rect.left - padding}px 100%, 
+        ${rect.left - padding}px ${rect.top - padding}px, 
+        ${rect.right + padding}px ${rect.top - padding}px, 
+        ${rect.right + padding}px ${rect.bottom + padding}px, 
+        ${rect.left - padding}px ${rect.bottom + padding}px, 
+        ${rect.left - padding}px 100%, 
+        100% 100%, 
+        100% 0%
+      )`;
+      
+      overlay.style.clipPath = clipPath;
+      
+      document.body.appendChild(overlay);
+      setOverlayElement(overlay);
+      
+      // Add glow effect to the element
       element.style.position = 'relative';
       element.style.zIndex = '1000';
-      element.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3)';
+      element.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.2)';
       element.style.borderRadius = '8px';
       element.style.transition = 'all 0.3s ease';
       
@@ -114,6 +151,11 @@ export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalPro
       highlightedElement.style.position = '';
       highlightedElement.style.borderRadius = '';
       setHighlightedElement(null);
+    }
+    
+    if (overlayElement) {
+      document.body.removeChild(overlayElement);
+      setOverlayElement(null);
     }
   };
 
@@ -154,9 +196,6 @@ export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalPro
 
   return (
     <>
-      {/* Overlay */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-[999]" />
-      
       {/* Tutorial Modal */}
       <div className={`${getModalPosition()} z-[1001]`}>
         <div className="bg-white rounded-lg shadow-xl border border-gray-200">
