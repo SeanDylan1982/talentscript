@@ -17,6 +17,12 @@ export function MinimalTemplate({ data }: TemplateProps) {
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
   };
 
+  const formatUrl = (url: string) => {
+    if (!url) return '';
+    // Remove protocol and www for cleaner display
+    return url.replace(/^https?:\/\/(www\.)?/, '');
+  };
+
   const renderSection = (section: typeof sections[0]) => {
     switch (section.type) {
       case 'personalInfo':
@@ -60,19 +66,19 @@ export function MinimalTemplate({ data }: TemplateProps) {
                   {personalInfo.website && (
                     <div className="flex items-center">
                       <Globe className="w-3 h-3 mr-1" />
-                      {personalInfo.website}
+                      {formatUrl(personalInfo.website)}
                     </div>
                   )}
                   {personalInfo.linkedin && (
                     <div className="flex items-center">
                       <Linkedin className="w-3 h-3 mr-1" />
-                      LinkedIn
+                      {formatUrl(personalInfo.linkedin)}
                     </div>
                   )}
                   {personalInfo.github && (
                     <div className="flex items-center">
                       <Github className="w-3 h-3 mr-1" />
-                      GitHub
+                      {formatUrl(personalInfo.github)}
                     </div>
                   )}
                 </div>
@@ -257,7 +263,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
                   )}
                   {project.url && (
                     <p className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
-                      {project.url}
+                      {formatUrl(project.url)}
                     </p>
                   )}
                 </div>

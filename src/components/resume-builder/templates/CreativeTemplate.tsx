@@ -17,6 +17,12 @@ export function CreativeTemplate({ data }: TemplateProps) {
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
   };
 
+  const formatUrl = (url: string) => {
+    if (!url) return '';
+    // Remove protocol and www for cleaner display
+    return url.replace(/^https?:\/\/(www\.)?/, '');
+  };
+
   const leftSections = visibleSections.filter(section => 
     ['personalInfo', 'skills', 'certifications', 'references'].includes(section.type)
   );
@@ -63,19 +69,19 @@ export function CreativeTemplate({ data }: TemplateProps) {
               {personalInfo.website && (
                 <div className="flex items-center text-white">
                   <Globe className="w-3 h-3 mr-2" />
-                  <span style={{ fontFamily: customization.fontFamily }}>Website</span>
+                  <span style={{ fontFamily: customization.fontFamily }}>{formatUrl(personalInfo.website)}</span>
                 </div>
               )}
               {personalInfo.linkedin && (
                 <div className="flex items-center text-white">
                   <Linkedin className="w-3 h-3 mr-2" />
-                  <span style={{ fontFamily: customization.fontFamily }}>LinkedIn</span>
+                  <span style={{ fontFamily: customization.fontFamily }}>{formatUrl(personalInfo.linkedin)}</span>
                 </div>
               )}
               {personalInfo.github && (
                 <div className="flex items-center text-white">
                   <Github className="w-3 h-3 mr-2" />
-                  <span style={{ fontFamily: customization.fontFamily }}>GitHub</span>
+                  <span style={{ fontFamily: customization.fontFamily }}>{formatUrl(personalInfo.github)}</span>
                 </div>
               )}
             </div>
@@ -325,7 +331,7 @@ export function CreativeTemplate({ data }: TemplateProps) {
                   )}
                   {project.url && (
                     <p className="text-xs" style={{ color: customization.accentColor, fontFamily: customization.fontFamily }}>
-                      {project.url}
+                      {formatUrl(project.url)}
                     </p>
                   )}
                 </div>
