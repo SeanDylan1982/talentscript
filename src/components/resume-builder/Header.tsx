@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Save, User, LogIn } from 'lucide-react';
 import { useResume } from '@/contexts/ResumeContext';
+import { useAuth } from '@/hooks/useAuth';
 import { generatePDF, generateResumeFilename } from '@/utils/pdfGenerator';
 import { AuthModal } from '@/components/auth/AuthModal';
+import { ResumeService } from '@/services/resumeService';
 
 export function Header() {
-  const { state } = useResume();
+  const { state, dispatch } = useResume();
+  const { user, login, register, logout } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authDefaultTab, setAuthDefaultTab] = useState<'login' | 'signup'>('login');
   const [isDownloading, setIsDownloading] = useState(false);
-
-  // Mock user state - replace with actual auth later
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     const colors = {
@@ -33,16 +34,24 @@ export function Header() {
     }, 3000);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!user) {
       setAuthDefaultTab('login');
       setIsAuthModalOpen(true);
       return;
     }
     
-    // TODO: Implement save functionality with backend
-    console.log('Saving resume...');
-    showToast('Resume saved successfully!');
+    setIsSaving(true);
+    try {
+      await ResumeService.saveResume(user.id, state.resumeData);
+      dispatch({ type: 'MARK_SAVED' });
+      showToast('Resume saved successfully!');
+    } catch (error) {
+      console.error('Save failed:', error);
+      showToast('Failed to save resume. Please try again.', 'error');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleDownloadPDF = async () => {
@@ -66,32 +75,25 @@ export function Header() {
   };
 
   const handleLogin = async (email: string, password: string) => {
-    // Mock login - replace with actual auth
-    if (email && password) {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setUser({ 
-        name: email.split('@')[0].replace(/[^a-zA-Z]/g, '').replace(/^\w/, c => c.toUpperCase()), 
-        email 
-      });
+    try {
+      await login(email, password);
       showToast('Logged in successfully!');
+    } catch (error) {
+      throw error;
     }
   };
 
   const handleSignup = async (name: string, email: string, password: string) => {
-    // Mock signup - replace with actual auth
-    if (name && email && password) {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setUser({ name, email });
+    try {
+      await register(name, email, password);
       showToast('Account created successfully!');
+    } catch (error) {
+      throw error;
     }
   };
 
   const handleLogout = () => {
-    setUser(null);
+    logout();
     showToast('Logged out successfully!', 'info');
   };
 
@@ -116,9 +118,14 @@ export function Header() {
             
             <div className="flex items-center space-x-3">
               {user && (
-                <Button variant="outline" size="sm" onClick={handleSave}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleSave}
+                  disabled={isSaving}
+                >
                   <Save className="w-4 h-4 mr-2" />
-                  Save
+                  {isSaving ? 'Saving...' : 'Save'}
                 </Button>
               )}
               
