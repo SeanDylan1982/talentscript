@@ -15,16 +15,13 @@ export function ResumeBuilder() {
     preloadAllFonts().catch(console.warn);
   }, []);
 
-  // Check if tutorial should be shown
+  // Force show tutorial for testing
   useEffect(() => {
-    const tutorialCompleted = localStorage.getItem('talentscript_tutorial_completed');
-    if (!tutorialCompleted) {
-      // Small delay to ensure the app is fully loaded
-      const timer = setTimeout(() => {
-        setShowTutorial(true);
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
+    // Always show tutorial for testing
+    const timer = setTimeout(() => {
+      setShowTutorial(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleCloseTutorial = () => {
