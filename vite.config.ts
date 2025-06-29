@@ -9,10 +9,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  define: {
-    global: 'globalThis',
-    'process.env': {}
-  },
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
