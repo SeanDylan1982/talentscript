@@ -112,6 +112,7 @@ export function Header() {
                 onClick={handleSaveClick}
                 disabled={isSaving}
                 className="h-6 px-2 text-xs"
+                data-tutorial="save-button"
               >
                 <Save className="w-3 h-3 mr-1" />
                 {isSaving ? 'Saving...' : 'Save'}
@@ -123,6 +124,7 @@ export function Header() {
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
                 className="h-6 px-2 text-xs"
+                data-tutorial="download-button"
               >
                 <Download className="w-3 h-3 mr-1" />
                 {isDownloading ? 'Generating...' : 'PDF'}

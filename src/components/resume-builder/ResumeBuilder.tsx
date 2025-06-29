@@ -1,15 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ResumeProvider } from '@/contexts/ResumeContext';
 import { ResumeForm } from './ResumeForm';
 import { ResumePreview } from './ResumePreview';
 import { Header } from './Header';
+import { TutorialModal } from '../tutorial/TutorialModal';
 import { preloadAllFonts } from '@/utils/fontLoader';
 
 export function ResumeBuilder() {
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [activeTab, setActiveTab] = useState('personal');
+
   // Preload fonts when the app starts
   useEffect(() => {
     preloadAllFonts().catch(console.warn);
   }, []);
+
+  // Check if tutorial should be shown
+  useEffect(() => {
+    const tutorialCompleted = localStorage.getItem('talentscript_tutorial_completed');
+    if (!tutorialCompleted) {
+      // Small delay to ensure the app is fully loaded
+      const timer = setTimeout(() => {
+        setShowTutorial(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleCloseTutorial = () => {
+    setShowTutorial(false);
+  };
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
 
   return (
     <ResumeProvider>
@@ -19,7 +43,7 @@ export function ResumeBuilder() {
           {/* Left Side - Form Section */}
           <div className="w-1/2 bg-white border-r border-gray-200 flex flex-col min-h-0">
             <div className="flex-1 overflow-y-auto">
-              <ResumeForm />
+              <ResumeForm activeTab={activeTab} onTabChange={handleTabChange} />
             </div>
           </div>
           
@@ -31,6 +55,13 @@ export function ResumeBuilder() {
           </div>
         </div>
       </div>
+
+      {/* Tutorial Modal */}
+      <TutorialModal 
+        isOpen={showTutorial}
+        onClose={handleCloseTutorial}
+        onTabChange={handleTabChange}
+      />
     </ResumeProvider>
   );
 }

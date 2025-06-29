@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PersonalInfoForm } from './form-sections/PersonalInfoForm';
 import { SummaryForm } from './form-sections/SummaryForm';
@@ -11,12 +11,24 @@ import { ReferencesForm } from './form-sections/ReferencesForm';
 import { CustomizationForm } from './form-sections/CustomizationForm';
 import { User, FileText, Briefcase, Palette } from 'lucide-react';
 
-export function ResumeForm() {
+interface ResumeFormProps {
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
+}
+
+export function ResumeForm({ activeTab = 'personal', onTabChange }: ResumeFormProps) {
+  const [currentTab, setCurrentTab] = useState(activeTab);
+
+  const handleTabChange = (tab: string) => {
+    setCurrentTab(tab);
+    onTabChange?.(tab);
+  };
+
   return (
     <div className="p-6">
       <h2 className="text-lg font-semibold text-gray-900 mb-6">Resume Information</h2>
       
-      <Tabs defaultValue="personal" className="w-full">
+      <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-6">
           <TabsTrigger value="personal" className="text-xs">
             <User className="w-4 h-4 mr-1" />
@@ -37,24 +49,32 @@ export function ResumeForm() {
         </TabsList>
         
         <TabsContent value="personal" className="space-y-6">
-          <PersonalInfoForm />
+          <div data-tutorial="personal-form">
+            <PersonalInfoForm />
+          </div>
         </TabsContent>
         
         <TabsContent value="content" className="space-y-6">
-          <SummaryForm />
-          <EducationForm />
-          <SkillsForm />
-          <CertificationsForm />
-          <ProjectsForm />
-          <ReferencesForm />
+          <div data-tutorial="content-form">
+            <SummaryForm />
+            <EducationForm />
+            <SkillsForm />
+            <CertificationsForm />
+            <ProjectsForm />
+            <ReferencesForm />
+          </div>
         </TabsContent>
         
         <TabsContent value="experience" className="space-y-6">
-          <ExperienceForm />
+          <div data-tutorial="experience-form">
+            <ExperienceForm />
+          </div>
         </TabsContent>
         
         <TabsContent value="customize" className="space-y-6">
-          <CustomizationForm />
+          <div data-tutorial="style-form">
+            <CustomizationForm />
+          </div>
         </TabsContent>
       </Tabs>
     </div>
