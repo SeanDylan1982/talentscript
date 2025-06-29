@@ -23,10 +23,19 @@ export class AuthService {
         })
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        // Handle cases where response is not valid JSON or is empty
+        if (!response.ok) {
+          throw new Error(`Registration failed with status ${response.status}: ${response.statusText}`);
+        }
+        throw new Error('Registration failed: Invalid server response');
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
+        throw new Error(data.error || `Registration failed with status ${response.status}`);
       }
 
       const authUser = data.user;
@@ -52,10 +61,19 @@ export class AuthService {
         })
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        // Handle cases where response is not valid JSON or is empty
+        if (!response.ok) {
+          throw new Error(`Login failed with status ${response.status}: ${response.statusText}`);
+        }
+        throw new Error('Login failed: Invalid server response');
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+        throw new Error(data.error || `Login failed with status ${response.status}`);
       }
 
       const authUser = data.user;
