@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +10,8 @@ import { Education } from '@/types/resume';
 export function EducationForm() {
   const { state, dispatch } = useResume();
   const { education } = state.resumeData;
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  const [dragOverItem, setDragOverItem] = useState<string | null>(null);
 
   const addEducation = () => {
     const newEducation: Education = {
@@ -30,6 +32,54 @@ export function EducationForm() {
 
   const deleteEducation = (id: string) => {
     dispatch({ type: 'DELETE_EDUCATION', payload: id });
+  };
+
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    setDraggedItem(id);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', id);
+  };
+
+  const handleDragOver = (e: React.DragEvent, id: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverItem(id);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverItem(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropId: string) => {
+    e.preventDefault();
+    
+    if (!draggedItem || draggedItem === dropId) {
+      setDraggedItem(null);
+      setDragOverItem(null);
+      return;
+    }
+
+    const draggedIndex = education.findIndex(edu => edu.id === draggedItem);
+    const dropIndex = education.findIndex(edu => edu.id === dropId);
+
+    if (draggedIndex === -1 || dropIndex === -1) {
+      setDraggedItem(null);
+      setDragOverItem(null);
+      return;
+    }
+
+    const newEducation = [...education];
+    const [draggedEdu] = newEducation.splice(draggedIndex, 1);
+    newEducation.splice(dropIndex, 0, draggedEdu);
+
+    dispatch({ type: 'REORDER_EDUCATION', payload: newEducation });
+    setDraggedItem(null);
+    setDragOverItem(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+    setDragOverItem(null);
   };
 
   return (
@@ -55,14 +105,32 @@ export function EducationForm() {
       ) : (
         <div className="space-y-4">
           {education.map((edu, index) => (
-            <Card key={edu.id}>
+            <Card 
+              key={edu.id}
+              className={`transition-all duration-200 ${
+                draggedItem === edu.id ? 'opacity-50 scale-95' : ''
+              } ${
+                dragOverItem === edu.id ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
+              }`}
+              draggable
+              onDragStart={(e) => handleDragStart(e, edu.id)}
+              onDragOver={(e) => handleDragOver(e, edu.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, edu.id)}
+              onDragEnd={handleDragEnd}
+            >
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium">
                     {edu.degree || `Education ${index + 1}`}
                   </CardTitle>
                   <div className="flex items-center space-x-1">
-                    <GripVertical className="w-4 h-4 text-gray-400 cursor-move" />
+                    <div 
+                      className="cursor-move p-1 hover:bg-gray-100 rounded"
+                      title="Drag to reorder"
+                    >
+                      <GripVertical className="w-4 h-4 text-gray-400" />
+                    </div>
                     <Button
                       variant="ghost"
                       size="sm"

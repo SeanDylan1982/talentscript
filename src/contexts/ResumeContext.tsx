@@ -14,9 +14,11 @@ type ResumeAction =
   | { type: 'ADD_EXPERIENCE'; payload: WorkExperience }
   | { type: 'UPDATE_EXPERIENCE'; payload: { id: string; data: Partial<WorkExperience> } }
   | { type: 'DELETE_EXPERIENCE'; payload: string }
+  | { type: 'REORDER_EXPERIENCE'; payload: WorkExperience[] }
   | { type: 'ADD_EDUCATION'; payload: Education }
   | { type: 'UPDATE_EDUCATION'; payload: { id: string; data: Partial<Education> } }
   | { type: 'DELETE_EDUCATION'; payload: string }
+  | { type: 'REORDER_EDUCATION'; payload: Education[] }
   | { type: 'ADD_SKILL'; payload: Skill }
   | { type: 'UPDATE_SKILL'; payload: { id: string; data: Partial<Skill> } }
   | { type: 'DELETE_SKILL'; payload: string }
@@ -283,6 +285,16 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
         },
         hasUnsavedChanges: true
       };
+
+    case 'REORDER_EXPERIENCE':
+      return {
+        ...state,
+        resumeData: {
+          ...state.resumeData,
+          experience: action.payload
+        },
+        hasUnsavedChanges: true
+      };
       
     case 'ADD_EDUCATION':
       return {
@@ -312,6 +324,16 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
         resumeData: {
           ...state.resumeData,
           education: state.resumeData.education.filter(edu => edu.id !== action.payload)
+        },
+        hasUnsavedChanges: true
+      };
+
+    case 'REORDER_EDUCATION':
+      return {
+        ...state,
+        resumeData: {
+          ...state.resumeData,
+          education: action.payload
         },
         hasUnsavedChanges: true
       };

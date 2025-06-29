@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +12,8 @@ import { WorkExperience } from '@/types/resume';
 export function ExperienceForm() {
   const { state, dispatch } = useResume();
   const { experience } = state.resumeData;
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  const [dragOverItem, setDragOverItem] = useState<string | null>(null);
 
   const addExperience = () => {
     const newExperience: WorkExperience = {
@@ -61,6 +63,54 @@ export function ExperienceForm() {
     }
   };
 
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    setDraggedItem(id);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', id);
+  };
+
+  const handleDragOver = (e: React.DragEvent, id: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverItem(id);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverItem(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropId: string) => {
+    e.preventDefault();
+    
+    if (!draggedItem || draggedItem === dropId) {
+      setDraggedItem(null);
+      setDragOverItem(null);
+      return;
+    }
+
+    const draggedIndex = experience.findIndex(exp => exp.id === draggedItem);
+    const dropIndex = experience.findIndex(exp => exp.id === dropId);
+
+    if (draggedIndex === -1 || dropIndex === -1) {
+      setDraggedItem(null);
+      setDragOverItem(null);
+      return;
+    }
+
+    const newExperience = [...experience];
+    const [draggedExp] = newExperience.splice(draggedIndex, 1);
+    newExperience.splice(dropIndex, 0, draggedExp);
+
+    dispatch({ type: 'REORDER_EXPERIENCE', payload: newExperience });
+    setDraggedItem(null);
+    setDragOverItem(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+    setDragOverItem(null);
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -84,14 +134,32 @@ export function ExperienceForm() {
       ) : (
         <div className="space-y-4">
           {experience.map((exp, index) => (
-            <Card key={exp.id}>
+            <Card 
+              key={exp.id}
+              className={`transition-all duration-200 ${
+                draggedItem === exp.id ? 'opacity-50 scale-95' : ''
+              } ${
+                dragOverItem === exp.id ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
+              }`}
+              draggable
+              onDragStart={(e) => handleDragStart(e, exp.id)}
+              onDragOver={(e) => handleDragOver(e, exp.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, exp.id)}
+              onDragEnd={handleDragEnd}
+            >
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium">
                     {exp.jobTitle || `Position ${index + 1}`}
                   </CardTitle>
                   <div className="flex items-center space-x-1">
-                    <GripVertical className="w-4 h-4 text-gray-400 cursor-move" />
+                    <div 
+                      className="cursor-move p-1 hover:bg-gray-100 rounded"
+                      title="Drag to reorder"
+                    >
+                      <GripVertical className="w-4 h-4 text-gray-400" />
+                    </div>
                     <Button
                       variant="ghost"
                       size="sm"
