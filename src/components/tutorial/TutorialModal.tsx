@@ -27,7 +27,7 @@ const tutorialSteps: TutorialStep[] = [
     id: 2,
     title: 'Customize Your Resume Style',
     description: 'Switch to the Style tab to choose your resume template, change fonts, select accent colors, and toggle profile image visibility.',
-    targetElement: '[data-tutorial="style-form"]',
+    targetElement: '[data-value="customize"]',
     targetTab: 'customize',
     icon: <Palette className="w-5 h-5" />,
     position: 'right'
