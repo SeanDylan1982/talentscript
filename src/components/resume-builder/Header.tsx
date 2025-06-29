@@ -93,26 +93,27 @@ export function Header() {
   return (
     <>
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="px-6">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-bold text-gray-900">TalentScript</h1>
-              <span className="text-sm text-gray-500">Professional Resume Builder</span>
+        <div className="px-4">
+          <div className="flex items-center justify-between h-8">
+            <div className="flex items-center space-x-3">
+              <h1 className="text-sm font-bold text-gray-900">TalentScript</h1>
+              <span className="text-xs text-gray-500 hidden sm:inline">Professional Resume Builder</span>
               {state.hasUnsavedChanges && (
-                <span className="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                  Unsaved changes
+                <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+                  Unsaved
                 </span>
               )}
             </div>
             
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
               <Button 
                 variant="outline" 
                 size="sm" 
                 onClick={handleSaveClick}
                 disabled={isSaving}
+                className="h-6 px-2 text-xs"
               >
-                <Save className="w-4 h-4 mr-2" />
+                <Save className="w-3 h-3 mr-1" />
                 {isSaving ? 'Saving...' : 'Save'}
               </Button>
               
@@ -121,9 +122,10 @@ export function Header() {
                 size="sm" 
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
+                className="h-6 px-2 text-xs"
               >
-                <Download className="w-4 h-4 mr-2" />
-                {isDownloading ? 'Generating...' : 'Download PDF'}
+                <Download className="w-3 h-3 mr-1" />
+                {isDownloading ? 'Generating...' : 'PDF'}
               </Button>
             </div>
           </div>
