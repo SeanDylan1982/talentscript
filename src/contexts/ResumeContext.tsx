@@ -35,7 +35,8 @@ type ResumeAction =
   | { type: 'UPDATE_TEMPLATE'; payload: ResumeData['template'] }
   | { type: 'UPDATE_CUSTOMIZATION'; payload: Partial<ResumeData['customization']> }
   | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'MARK_SAVED' };
+  | { type: 'MARK_SAVED' }
+  | { type: 'LOAD_FROM_STORAGE'; payload: ResumeData };
 
 const initialResumeData: ResumeData = {
   personalInfo: {
@@ -231,6 +232,13 @@ const initialState: ResumeState = {
 function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
   switch (action.type) {
     case 'SET_RESUME_DATA':
+      return {
+        ...state,
+        resumeData: action.payload,
+        hasUnsavedChanges: false
+      };
+    
+    case 'LOAD_FROM_STORAGE':
       return {
         ...state,
         resumeData: action.payload,
@@ -510,6 +518,21 @@ const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 
 export function ResumeProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(resumeReducer, initialState);
+
+  // Load data from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedData = localStorage.getItem('talentscript_resume_data');
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        if (parsedData.resumeData && parsedData.version) {
+          dispatch({ type: 'LOAD_FROM_STORAGE', payload: parsedData.resumeData });
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to load saved data from localStorage:', error);
+    }
+  }, []);
 
   // Auto-save functionality (disabled for now since we don't have backend)
   useEffect(() => {
