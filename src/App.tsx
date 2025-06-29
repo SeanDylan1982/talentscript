@@ -4,7 +4,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ResumeBuilder } from '@/components/resume-builder/ResumeBuilder';
 import { stackClientApp } from './stack';
 import './App.css';
+import { StackHandler, StackProvider, StackTheme } from "@stackframe/react";
+import { Suspense } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { stackClientApp } from "./stack";
 
+function HandlerRoutes() {
+  const location = useLocation();
+  
+  return (
+    <StackHandler app={stackClientApp} location={location.pathname} fullPage />
+  );
+}
 function App() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -17,6 +28,7 @@ function App() {
         <StackProvider app={stackClientApp}>
           <StackTheme>
             <Routes>
+              <Route path="/handler/*" element={<HandlerRoutes />} />
               <Route path="/*" element={<ResumeBuilder />} />
             </Routes>
           </StackTheme>
@@ -27,3 +39,5 @@ function App() {
 }
 
 export default App;
+
+
