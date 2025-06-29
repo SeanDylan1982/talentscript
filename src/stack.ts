@@ -1,4 +1,4 @@
-import { StackClientApp } from "@stackframe/react";
+import { StackClientApp } from "@stackframe/stack";
 
 export const stackClientApp = new StackClientApp({
   projectId: import.meta.env.VITE_STACK_PROJECT_ID,
