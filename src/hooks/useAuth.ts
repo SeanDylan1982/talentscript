@@ -1,6 +1,4 @@
 import { useUser } from '@stackframe/stack';
-import { useEffect } from 'react';
-import { DatabaseService } from '@/lib/database';
 
 export interface AuthUser {
   id: string;
@@ -16,25 +14,6 @@ export function useAuth() {
     email: user.primaryEmail || '',
     name: user.displayName || user.primaryEmail || 'User'
   } : null;
-
-  // Initialize database and sync user when authenticated
-  useEffect(() => {
-    const initializeApp = async () => {
-      try {
-        // Initialize database tables
-        await DatabaseService.initializeTables();
-        
-        // Sync user to database if authenticated
-        if (authUser) {
-          await DatabaseService.createUser(authUser.id, authUser.email, authUser.name);
-        }
-      } catch (error) {
-        console.error('Error initializing app:', error);
-      }
-    };
-
-    initializeApp();
-  }, [authUser]);
 
   const login = async (email: string, password: string): Promise<void> => {
     try {

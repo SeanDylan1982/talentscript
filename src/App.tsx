@@ -1,17 +1,9 @@
 import React, { Suspense } from 'react';
-import { StackHandler, StackProvider, StackTheme } from "@stackframe/react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ResumeBuilder } from '@/components/resume-builder/ResumeBuilder';
 import { stackClientApp } from './stack';
 import './App.css';
-
-function HandlerRoutes() {
-  const location = useLocation();
-  
-  return (
-    <StackHandler app={stackClientApp} location={location.pathname} fullPage />
-  );
-}
 
 function App() {
   return (
@@ -25,7 +17,6 @@ function App() {
         <StackProvider app={stackClientApp}>
           <StackTheme>
             <Routes>
-              <Route path="/handler/*" element={<HandlerRoutes />} />
               <Route path="/*" element={<ResumeBuilder />} />
             </Routes>
           </StackTheme>
