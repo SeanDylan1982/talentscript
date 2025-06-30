@@ -8,7 +8,7 @@ interface TutorialStep {
   title: string;
   description: string;
   targetElement: string;
-  targetTab?: string;
+  targetTab: string;
   icon: React.ReactNode;
   position: 'left' | 'right' | 'center';
 }
@@ -27,7 +27,7 @@ const tutorialSteps: TutorialStep[] = [
     id: 2,
     title: 'Customize Your Resume Style',
     description: 'Switch to the Style tab to choose your resume template, change fonts, select accent colors, and toggle profile image visibility.',
-    targetElement: '[data-value="customize"]',
+    targetElement: '[data-tutorial="customize"]',
     targetTab: 'customize',
     icon: <Palette className="w-5 h-5" />,
     position: 'right'
@@ -94,16 +94,10 @@ export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalPro
       setHighlightedElement(element);
       element.style.position = 'relative';
       element.style.zIndex = '1000';
-      element.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3)';
-      element.style.borderRadius = '8px';
-      element.style.transition = 'all 0.3s ease';
-      
-      // Scroll element into view
-      element.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center',
-        inline: 'nearest'
-      });
+      element.style.boxShadow = '0 0 0 5px #5d9bff';
+      element.style.borderRadius = '6px';
+      element.style.background = '#f1f1f1';
+      element.style.color = '#1a1a1a';
     }
   };
 
@@ -113,6 +107,8 @@ export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalPro
       highlightedElement.style.zIndex = '';
       highlightedElement.style.position = '';
       highlightedElement.style.borderRadius = '';
+      highlightedElement.style.background = '';
+      highlightedElement.style.color = '';
       setHighlightedElement(null);
     }
   };
@@ -155,10 +151,10 @@ export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalPro
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-[999]" />
+      <div className="fixed inset-0 bg-black bg-opacity-30 z-[999]" />
       
       {/* Tutorial Modal */}
-      <div className={`${getModalPosition()} z-[1001]`}>
+      <div className={`${getModalPosition()} z-[1001]`} style={{ width: '40%', height: '40%' }}>
         <div className="bg-white rounded-lg shadow-xl border border-gray-200">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -206,7 +202,7 @@ export function TutorialModal({ isOpen, onClose, onTabChange }: TutorialModalPro
               variant="ghost"
               size="sm"
               onClick={handleSkip}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-300 hover:text-gray-700"
             >
               Skip Tutorial
             </Button>

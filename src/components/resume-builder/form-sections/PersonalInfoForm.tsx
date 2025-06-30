@@ -2,8 +2,9 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Upload, X } from 'lucide-react';
+import { Mail, Upload, X } from 'lucide-react';
 import { useResume } from '@/contexts/ResumeContext';
+import { SquareUser, FolderPen, Phone, Map, Globe, Linkedin, Github } from "lucide-react";
 
 export function PersonalInfoForm() {
   const { state, dispatch } = useResume();
@@ -39,17 +40,21 @@ export function PersonalInfoForm() {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-base font-medium text-gray-900">Personal Information</h3>
-      
+    <div className="space-y-6">
+      <h3 className="text-base font-medium text-gray-900">
+        Personal Information
+      </h3>
+
       {/* Profile Image Upload */}
-      <div className="space-y-2">
-        <Label>Profile Photo (Optional)</Label>
+      <div className="space-y-6">
+        <Label>
+          Profile Photo (Optional)
+        </Label>
         {personalInfo.profileImage ? (
           <div className="flex items-center space-x-3">
-            <img 
-              src={personalInfo.profileImage} 
-              alt="Profile" 
+            <img
+              src={personalInfo.profileImage}
+              alt="Profile"
               className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
             />
             <Button variant="outline" size="sm" onClick={removeImage}>
@@ -62,7 +67,9 @@ export function PersonalInfoForm() {
             <Upload className="mx-auto h-8 w-8 text-gray-400" />
             <div className="mt-2">
               <Label htmlFor="profile-upload" className="cursor-pointer">
-                <span className="text-sm text-blue-600 hover:text-blue-500">Upload a photo</span>
+                <span className="text-sm text-blue-600 hover:text-blue-500">
+                  Upload a photo
+                </span>
                 <input
                   id="profile-upload"
                   type="file"
@@ -79,74 +86,85 @@ export function PersonalInfoForm() {
 
       {/* Basic Information */}
       <div className="grid grid-cols-1 gap-4">
-        <div>
-          <Label htmlFor="fullName">Full Name *</Label>
+        <div className="col-span-2">
+          <Label htmlFor="fullName">
+            Full Name <span style={{ color: "red" }}>*</span>
+          </Label>
           <Input
             id="fullName"
             value={personalInfo.fullName}
-            onChange={(e) => handleInputChange('fullName', e.target.value)}
+            onChange={(e) => handleInputChange("fullName", e.target.value)}
             placeholder="John Smith"
           />
         </div>
 
         <div>
-          <Label htmlFor="email">Email Address *</Label>
+          <Label htmlFor="email">
+            Email Address <span style={{ color: "red" }}>*</span>
+          </Label>
           <Input
             id="email"
             type="email"
             value={personalInfo.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
+            onChange={(e) => handleInputChange("email", e.target.value)}
             placeholder="john.smith@email.com"
           />
         </div>
 
         <div>
-          <Label htmlFor="phone">Phone Number *</Label>
+          <Label htmlFor="phone">
+            Phone Number <span style={{ color: "red" }}>*</span>
+          </Label>
           <Input
             id="phone"
             value={personalInfo.phone}
-            onChange={(e) => handleInputChange('phone', e.target.value)}
+            onChange={(e) => handleInputChange("phone", e.target.value)}
             placeholder="(555) 123-4567"
           />
         </div>
 
         <div>
-          <Label htmlFor="location">Location *</Label>
+          <Label htmlFor="location">
+            Location <span style={{ color: "red" }}>*</span>
+          </Label>
           <Input
             id="location"
             value={personalInfo.location}
-            onChange={(e) => handleInputChange('location', e.target.value)}
+            onChange={(e) => handleInputChange("location", e.target.value)}
             placeholder="City, State"
           />
         </div>
 
         {/* Optional Fields */}
         <div>
-          <Label htmlFor="website">Website</Label>
+          <Label htmlFor="website">
+            Website</Label>
           <Input
             id="website"
-            value={personalInfo.website || ''}
-            onChange={(e) => handleInputChange('website', e.target.value)}
+            value={personalInfo.website || ""}
+            onChange={(e) => handleInputChange("website", e.target.value)}
             placeholder="https://yourwebsite.com"
           />
         </div>
 
         <div>
-          <Label htmlFor="linkedin">LinkedIn</Label>
+          <Label htmlFor="linkedin">
+            LinkedIn</Label>
           <Input
             id="linkedin"
-            value={personalInfo.linkedin || ''}
-            onChange={(e) => handleInputChange('linkedin', e.target.value)}
+            value={personalInfo.linkedin || ""}
+            onChange={(e) => handleInputChange("linkedin", e.target.value)}
             placeholder="https://linkedin.com/in/yourprofile"
           />
         </div>
 
         <div>
-          <Label htmlFor="github">GitHub</Label>
+          <Label htmlFor="github">
+            GitHub</Label>
           <Input
             id="github"
-            value={personalInfo.github || ''}
-            onChange={(e) => handleInputChange('github', e.target.value)}
+            value={personalInfo.github || ""}
+            onChange={(e) => handleInputChange("github", e.target.value)}
             placeholder="https://github.com/yourusername"
           />
         </div>

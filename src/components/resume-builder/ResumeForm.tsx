@@ -10,6 +10,7 @@ import { ProjectsForm } from './form-sections/ProjectsForm';
 import { ReferencesForm } from './form-sections/ReferencesForm';
 import { CustomizationForm } from './form-sections/CustomizationForm';
 import { User, FileText, Briefcase, Palette } from 'lucide-react';
+import '../../index.css' ; // Ensure global styles are applied
 
 interface ResumeFormProps {
   activeTab?: string;
@@ -40,43 +41,60 @@ export function ResumeForm({ activeTab = 'personal', onTabChange }: ResumeFormPr
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col resume-form">
       {/* Mini Navbar */}
-      <div className="p-4 border-b border-gray-200 bg-white">
-        <h3 className="text-sm font-medium text-gray-900">Resume Information</h3>
+      <div className="flex flex-col p-4 border-b border-gray-200 bg-white">
+        <h3 className="text-sm font-medium text-gray-900">
+          Resume Information
+        </h3>
         <p className="text-xs text-gray-500">
           Current Section: {getTabDisplayName(currentTab)}
         </p>
       </div>
-      
+
       <div className="flex-1 overflow-y-auto">
-        <div className="p-6">
-          <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-6">
-              <TabsTrigger value="personal" className="text-xs">
+        <div className="m-1">
+          <Tabs
+            value={currentTab}
+            onValueChange={handleTabChange}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-4 mb-6 mr-1 p-1 tabslist">
+              <TabsTrigger
+                value="personal"
+                className="text-xs trigger mr-1 p-1"
+                data-tutorial="personal"
+              >
                 <User className="w-4 h-4 mr-1" />
                 Personal
               </TabsTrigger>
-              <TabsTrigger value="content" className="text-xs">
+              <TabsTrigger value="content" className="text-xs trigger mr-1 p-1">
                 <FileText className="w-4 h-4 mr-1" />
                 Content
               </TabsTrigger>
-              <TabsTrigger value="experience" className="text-xs">
+              <TabsTrigger
+                value="experience"
+                className="text-xs trigger mr-1 p-1"
+              >
                 <Briefcase className="w-4 h-4 mr-1" />
                 Experience
               </TabsTrigger>
-              <TabsTrigger value="customize" className="text-xs">
+              <TabsTrigger
+                value="customize"
+                className="text-xs trigger mr-1 p-1"
+                data-tutorial="customize"
+              >
                 <Palette className="w-4 h-4 mr-1" />
                 Style
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="personal" className="space-y-6">
               <div data-tutorial="personal-form">
                 <PersonalInfoForm />
               </div>
             </TabsContent>
-            
+
             <TabsContent value="content" className="space-y-6">
               <div data-tutorial="content-form">
                 <SummaryForm />
@@ -87,13 +105,13 @@ export function ResumeForm({ activeTab = 'personal', onTabChange }: ResumeFormPr
                 <ReferencesForm />
               </div>
             </TabsContent>
-            
+
             <TabsContent value="experience" className="space-y-6">
               <div data-tutorial="experience-form">
                 <ExperienceForm />
               </div>
             </TabsContent>
-            
+
             <TabsContent value="customize" className="space-y-6">
               <div data-tutorial="style-form">
                 <CustomizationForm />
