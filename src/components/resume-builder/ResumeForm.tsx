@@ -10,7 +10,6 @@ import { ProjectsForm } from './form-sections/ProjectsForm';
 import { ReferencesForm } from './form-sections/ReferencesForm';
 import { CustomizationForm } from './form-sections/CustomizationForm';
 import { User, FileText, Briefcase, Palette } from 'lucide-react';
-import '../../index.css' ; // Ensure global styles are applied
 
 interface ResumeFormProps {
   activeTab?: string;
