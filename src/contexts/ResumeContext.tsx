@@ -47,7 +47,7 @@ const initialResumeData: ResumeData = {
     website: 'https://sarahjohnson.dev',
     linkedin: 'https://linkedin.com/in/sarahjohnson',
     github: 'https://github.com/sarahjohnson',
-    profileImage: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop&crop=face'
+    profileImage: '../img/user.jpeg'
   },
   summary: 'Experienced Software Engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable web applications and leading cross-functional teams. Passionate about creating user-centric solutions and mentoring junior developers.',
   experience: [
