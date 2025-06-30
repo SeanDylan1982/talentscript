@@ -15,19 +15,19 @@ export function SummaryForm() {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-base font-medium text-gray-900">Professional Summary</h3>
+    <div className="space-y-4 m-4 pb-2">
+      <h3 className="text-base font-medium text-gray-900 m-2">Professional Summary</h3>
       
-      <div>
+      <div className="m-2 p-2">
         <Label htmlFor="summary">Summary</Label>
         <Textarea
           id="summary"
           value={summary}
           onChange={(e) => handleSummaryChange(e.target.value)}
           placeholder="Write a brief professional summary highlighting your key skills, experience, and career objectives..."
-          className="min-h-[120px]"
+          className="min-h-[150px]"
         />
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 mt-2 ml-2">
           Write 2-3 sentences that capture your professional background and key strengths.
         </p>
       </div>

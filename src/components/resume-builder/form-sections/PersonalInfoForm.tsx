@@ -40,13 +40,13 @@ export function PersonalInfoForm() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 m-4">
       <h3 className="text-base font-medium text-gray-900">
         Personal Information
       </h3>
 
       {/* Profile Image Upload */}
-      <div className="space-y-6">
+      <div className="space-y-6 m-4">
         <Label id="profileImage">Profile Photo (Optional)</Label>
         {personalInfo.profileImage ? (
           <div className="flex items-center space-x-3">
@@ -84,8 +84,8 @@ export function PersonalInfoForm() {
       </div>
 
       {/* Basic Information */}
-      <div className="grid grid-cols-1 gap-4">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 gap-4 m-4">
+        <div className="col-span-1">
           <Label htmlFor="fullName">
             Full Name <span style={{ color: "red" }}>*</span>
           </Label>
@@ -106,7 +106,7 @@ export function PersonalInfoForm() {
             id="email"
             type="email"
             value={personalInfo.email}
-            onChange={(e) => handleInputChange("emails", e.target.value)}
+            onChange={(e) => handleInputChange("email", e.target.value)}
             placeholder="john.smith@email.com"
             autoComplete="true"
           />

@@ -83,10 +83,10 @@ export function EducationForm() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 m-2 p-2">
+      <div className="flex items-center justify-between m-2">
         <h3 className="text-base font-medium text-gray-900">Education</h3>
-        <Button onClick={addEducation} size="sm">
+        <Button onClick={addEducation} size="sm" className="mr-2">
           <Plus className="w-4 h-4 mr-1" />
           Add Education
         </Button>
@@ -103,14 +103,16 @@ export function EducationForm() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 pb-4">
           {education.map((edu, index) => (
-            <Card 
+            <Card
               key={edu.id}
-              className={`transition-all duration-200 ${
-                draggedItem === edu.id ? 'opacity-50 scale-95' : ''
+              className={`transition-all duration-200 m-4 pb-4 ${
+                draggedItem === edu.id ? "opacity-50 scale-95" : ""
               } ${
-                dragOverItem === edu.id ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
+                dragOverItem === edu.id
+                  ? "ring-2 ring-blue-500 ring-opacity-50"
+                  : ""
               }`}
               draggable
               onDragStart={(e) => handleDragStart(e, edu.id)}
@@ -125,8 +127,8 @@ export function EducationForm() {
                     {edu.degree || `Education ${index + 1}`}
                   </CardTitle>
                   <div className="flex items-center space-x-1">
-                    <div 
-                      className="cursor-move p-1 hover:bg-gray-100 rounded"
+                    <div
+                      className="cursor-move p-1 hover:bg-gray-200 rounded"
                       title="Drag to reorder"
                     >
                       <GripVertical className="w-4 h-4 text-gray-400" />
@@ -135,30 +137,38 @@ export function EducationForm() {
                       variant="ghost"
                       size="sm"
                       onClick={() => deleteEducation(edu.id)}
-                      className="text-red-600 hover:text-red-700"
+                      className="text-gray-200 hover:text-red-700"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                   <div>
-                    <Label>Degree *</Label>
+                    <Label>
+                      Degree <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                       value={edu.degree}
-                      onChange={(e) => updateEducation(edu.id, { degree: e.target.value })}
+                      onChange={(e) =>
+                        updateEducation(edu.id, { degree: e.target.value })
+                      }
                       placeholder="Bachelor of Science in Computer Science"
                     />
                   </div>
-                  
+
                   <div>
-                    <Label>School *</Label>
+                    <Label>
+                      School <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                       value={edu.school}
-                      onChange={(e) => updateEducation(edu.id, { school: e.target.value })}
+                      onChange={(e) =>
+                        updateEducation(edu.id, { school: e.target.value })
+                      }
                       placeholder="University of Technology"
                     />
                   </div>
@@ -169,17 +179,23 @@ export function EducationForm() {
                     <Label>Location</Label>
                     <Input
                       value={edu.location}
-                      onChange={(e) => updateEducation(edu.id, { location: e.target.value })}
+                      onChange={(e) =>
+                        updateEducation(edu.id, { location: e.target.value })
+                      }
                       placeholder="Boston, MA"
                     />
                   </div>
-                  
+
                   <div>
                     <Label>Graduation Date</Label>
                     <Input
                       type="month"
                       value={edu.graduationDate}
-                      onChange={(e) => updateEducation(edu.id, { graduationDate: e.target.value })}
+                      onChange={(e) =>
+                        updateEducation(edu.id, {
+                          graduationDate: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -187,8 +203,10 @@ export function EducationForm() {
                 <div>
                   <Label>GPA (Optional)</Label>
                   <Input
-                    value={edu.gpa || ''}
-                    onChange={(e) => updateEducation(edu.id, { gpa: e.target.value })}
+                    value={edu.gpa || ""}
+                    onChange={(e) =>
+                      updateEducation(edu.id, { gpa: e.target.value })
+                    }
                     placeholder="3.8"
                   />
                 </div>

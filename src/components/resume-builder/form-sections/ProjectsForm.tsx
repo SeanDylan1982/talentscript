@@ -52,7 +52,7 @@ export function ProjectsForm() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 m-4 p-4">
       <div className="flex items-center justify-between">
         <h3 className="text-base font-medium text-gray-900">Projects</h3>
         <Button onClick={addProject} size="sm">
@@ -72,7 +72,7 @@ export function ProjectsForm() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 pb-2">
           {projects.map((project, index) => (
             <Card key={project.id}>
               <CardHeader className="pb-3">
@@ -84,38 +84,48 @@ export function ProjectsForm() {
                     variant="ghost"
                     size="sm"
                     onClick={() => deleteProject(project.id)}
-                    className="text-red-600 hover:text-red-700"
+                    className="text-gray-200 hover:text-red-700"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </CardHeader>
-              
+
               <CardContent className="space-y-4">
                 <div>
-                  <Label>Project Name *</Label>
+                  <Label>
+                    Project Name <span className="text-red-500">*</span>
+                  </Label>
                   <Input
                     value={project.name}
-                    onChange={(e) => updateProject(project.id, { name: e.target.value })}
+                    onChange={(e) =>
+                      updateProject(project.id, { name: e.target.value })
+                    }
                     placeholder="E-commerce Website"
                   />
                 </div>
-                
+
                 <div>
-                  <Label>Description *</Label>
+                  <Label>
+                    Description <span className="text-red-500">*</span>
+                  </Label>
                   <Textarea
                     value={project.description}
-                    onChange={(e) => updateProject(project.id, { description: e.target.value })}
+                    onChange={(e) =>
+                      updateProject(project.id, { description: e.target.value })
+                    }
                     placeholder="Describe what the project does and your role in it..."
-                    className="min-h-[80px]"
+                    className="min-h-[120px]"
                   />
                 </div>
 
                 <div>
                   <Label>Project URL (Optional)</Label>
                   <Input
-                    value={project.url || ''}
-                    onChange={(e) => updateProject(project.id, { url: e.target.value })}
+                    value={project.url || ""}
+                    onChange={(e) =>
+                      updateProject(project.id, { url: e.target.value })
+                    }
                     placeholder="https://github.com/username/project"
                   />
                 </div>
@@ -126,16 +136,20 @@ export function ProjectsForm() {
                     <Input
                       type="month"
                       value={project.startDate}
-                      onChange={(e) => updateProject(project.id, { startDate: e.target.value })}
+                      onChange={(e) =>
+                        updateProject(project.id, { startDate: e.target.value })
+                      }
                     />
                   </div>
-                  
+
                   <div>
                     <Label>End Date (Optional)</Label>
                     <Input
                       type="month"
-                      value={project.endDate || ''}
-                      onChange={(e) => updateProject(project.id, { endDate: e.target.value })}
+                      value={project.endDate || ""}
+                      onChange={(e) =>
+                        updateProject(project.id, { endDate: e.target.value })
+                      }
                     />
                   </div>
                 </div>
@@ -144,12 +158,18 @@ export function ProjectsForm() {
                   <Label>Technologies Used</Label>
                   <div className="flex flex-wrap gap-2 mb-2">
                     {project.technologies.map((tech, techIndex) => (
-                      <Badge key={techIndex} variant="secondary" className="flex items-center space-x-1">
+                      <Badge
+                        key={techIndex}
+                        variant="secondary"
+                        className="flex items-center space-x-1"
+                      >
                         <span>{tech}</span>
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
-                          onClick={() => removeTechnology(project.id, techIndex)}
+                          onClick={() =>
+                            removeTechnology(project.id, techIndex)
+                          }
                           className="h-auto p-0 ml-1 hover:bg-transparent"
                         >
                           <X className="w-3 h-3" />
@@ -160,11 +180,11 @@ export function ProjectsForm() {
                   <Input
                     placeholder="Add technology (press Enter)"
                     onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         e.preventDefault();
                         const input = e.target as HTMLInputElement;
                         addTechnology(project.id, input.value);
-                        input.value = '';
+                        input.value = "";
                       }
                     }}
                   />

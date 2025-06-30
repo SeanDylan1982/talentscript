@@ -166,3 +166,8 @@ button:focus-visible {
 .tabs {
   color: #f1f1f1;
 }
+
+.absolute {
+  background: red;
+  color: #fff;
+}

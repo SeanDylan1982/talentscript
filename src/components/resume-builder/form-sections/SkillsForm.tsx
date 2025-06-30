@@ -39,10 +39,10 @@ export function SkillsForm() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 m-4 p-2">
       <h3 className="text-base font-medium text-gray-900">Skills</h3>
       
-      <div className="space-y-3">
+      <div className="space-y-3 m-2">
         <div className="flex space-x-2">
           <div className="flex-1">
             <Label htmlFor="skill-name">Skill Name</Label>
@@ -78,7 +78,7 @@ export function SkillsForm() {
         </div>
 
         {skills.length > 0 && (
-          <div className="space-y-2">
+          <div className="space-y-2 mb-4 pb-4">
             <Label>Your Skills</Label>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
@@ -86,12 +86,12 @@ export function SkillsForm() {
                   <span>{skill.name}</span>
                   <span className="text-xs opacity-70">({skill.level})</span>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={() => deleteSkill(skill.id)}
                     className="h-auto p-0 ml-1 hover:bg-transparent"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="w-3 h-3 " />
                   </Button>
                 </Badge>
               ))}

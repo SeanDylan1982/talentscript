@@ -63,13 +63,13 @@ export function CustomizationForm() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 m-4 p-2">
       <h3 className="text-base font-medium text-gray-900">Customize Your Resume</h3>
       
       {/* Template Selection */}
       <div className="space-y-3">
         <Label>Resume Template</Label>
-        <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 gap-3 m-2">
           {TEMPLATES.map((templateOption) => (
             <div
               key={templateOption.value}
@@ -99,7 +99,7 @@ export function CustomizationForm() {
       </div>
 
       {/* Font Selection */}
-      <div className="space-y-2">
+      <div className="space-y-2 m-2">
         <Label>Font Family</Label>
         <Select
           value={customization.fontFamily}

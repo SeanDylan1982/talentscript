@@ -112,7 +112,7 @@ export function ExperienceForm() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 m-4">
       <div className="flex items-center justify-between">
         <h3 className="text-base font-medium text-gray-900">Work Experience</h3>
         <Button onClick={addExperience} size="sm">
@@ -122,7 +122,7 @@ export function ExperienceForm() {
       </div>
 
       {experience.length === 0 ? (
-        <Card>
+        <Card className="p-6 text-center">
           <CardContent className="p-6 text-center">
             <p className="text-gray-500">No work experience added yet.</p>
             <Button onClick={addExperience} className="mt-2" variant="outline">
@@ -132,14 +132,16 @@ export function ExperienceForm() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 m-2 p-2">
           {experience.map((exp, index) => (
-            <Card 
+            <Card
               key={exp.id}
               className={`transition-all duration-200 ${
-                draggedItem === exp.id ? 'opacity-50 scale-95' : ''
+                draggedItem === exp.id ? "opacity-50 scale-95" : ""
               } ${
-                dragOverItem === exp.id ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
+                dragOverItem === exp.id
+                  ? "ring-2 ring-blue-500 ring-opacity-50"
+                  : ""
               }`}
               draggable
               onDragStart={(e) => handleDragStart(e, exp.id)}
@@ -154,7 +156,7 @@ export function ExperienceForm() {
                     {exp.jobTitle || `Position ${index + 1}`}
                   </CardTitle>
                   <div className="flex items-center space-x-1">
-                    <div 
+                    <div
                       className="cursor-move p-1 hover:bg-gray-100 rounded"
                       title="Drag to reorder"
                     >
@@ -164,30 +166,38 @@ export function ExperienceForm() {
                       variant="ghost"
                       size="sm"
                       onClick={() => deleteExperience(exp.id)}
-                      className="text-red-600 hover:text-red-700"
+                      className="text-gray-200 hover:text-red-700"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>Job Title *</Label>
+                    <Label>
+                      Job Title <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                       value={exp.jobTitle}
-                      onChange={(e) => updateExperience(exp.id, { jobTitle: e.target.value })}
+                      onChange={(e) =>
+                        updateExperience(exp.id, { jobTitle: e.target.value })
+                      }
                       placeholder="Software Engineer"
                     />
                   </div>
-                  
+
                   <div>
-                    <Label>Company *</Label>
+                    <Label>
+                      Company <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                       value={exp.company}
-                      onChange={(e) => updateExperience(exp.id, { company: e.target.value })}
+                      onChange={(e) =>
+                        updateExperience(exp.id, { company: e.target.value })
+                      }
                       placeholder="Tech Company Inc."
                     />
                   </div>
@@ -197,27 +207,35 @@ export function ExperienceForm() {
                   <Label>Location</Label>
                   <Input
                     value={exp.location}
-                    onChange={(e) => updateExperience(exp.id, { location: e.target.value })}
+                    onChange={(e) =>
+                      updateExperience(exp.id, { location: e.target.value })
+                    }
                     placeholder="San Francisco, CA"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>Start Date *</Label>
+                    <Label>
+                      Start Date <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                       type="month"
                       value={exp.startDate}
-                      onChange={(e) => updateExperience(exp.id, { startDate: e.target.value })}
+                      onChange={(e) =>
+                        updateExperience(exp.id, { startDate: e.target.value })
+                      }
                     />
                   </div>
-                  
+
                   <div>
                     <Label>End Date</Label>
                     <Input
                       type="month"
                       value={exp.endDate}
-                      onChange={(e) => updateExperience(exp.id, { endDate: e.target.value })}
+                      onChange={(e) =>
+                        updateExperience(exp.id, { endDate: e.target.value })
+                      }
                       disabled={exp.isCurrentJob}
                     />
                   </div>
@@ -227,33 +245,46 @@ export function ExperienceForm() {
                   <Checkbox
                     id={`current-${exp.id}`}
                     checked={exp.isCurrentJob}
-                    onCheckedChange={(checked) => 
-                      updateExperience(exp.id, { 
+                    onCheckedChange={(checked) =>
+                      updateExperience(exp.id, {
                         isCurrentJob: checked as boolean,
-                        endDate: checked ? '' : exp.endDate
+                        endDate: checked ? "" : exp.endDate,
                       })
                     }
                   />
-                  <Label htmlFor={`current-${exp.id}`}>I currently work here</Label>
+                  <Label htmlFor={`current-${exp.id}`}>
+                    I currently work here
+                  </Label>
                 </div>
 
                 <div>
                   <Label>Job Description</Label>
                   <div className="space-y-2">
                     {exp.description.map((bullet, bulletIndex) => (
-                      <div key={bulletIndex} className="flex items-start space-x-2">
+                      <div
+                        key={bulletIndex}
+                        className="flex items-start space-x-2"
+                      >
                         <Textarea
                           value={bullet}
-                          onChange={(e) => updateDescriptionBullet(exp.id, bulletIndex, e.target.value)}
+                          onChange={(e) =>
+                            updateDescriptionBullet(
+                              exp.id,
+                              bulletIndex,
+                              e.target.value
+                            )
+                          }
                           placeholder="Describe your responsibilities and achievements..."
-                          className="min-h-[60px]"
+                          className="min-h-[80px]"
                         />
                         {exp.description.length > 1 && (
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeDescriptionBullet(exp.id, bulletIndex)}
-                            className="text-red-600 hover:text-red-700 mt-1"
+                            onClick={() =>
+                              removeDescriptionBullet(exp.id, bulletIndex)
+                            }
+                            className="text-gray-200 hover:text-red-700 mt-1"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -261,7 +292,7 @@ export function ExperienceForm() {
                       </div>
                     ))}
                     <Button
-                      variant="outline"
+                      variant="default"
                       size="sm"
                       onClick={() => addDescriptionBullet(exp.id)}
                     >
