@@ -42,8 +42,6 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 
 **[Try TalentScript Now →](https://talentscript.netlify.app)**
 
-> **Note**: This project has been moved from `https://eclectic-panda-72e6c9.netlify.app/` to the new custom domain `https://talentscript.netlify.app/` for a more professional and memorable URL.
-
 ## 📸 Screenshots
 
 ### Main Interface
