@@ -47,12 +47,11 @@ export function PersonalInfoForm() {
 
       {/* Profile Image Upload */}
       <div className="space-y-6">
-        <Label>
-          Profile Photo (Optional)
-        </Label>
+        <Label id="profileImage">Profile Photo (Optional)</Label>
         {personalInfo.profileImage ? (
           <div className="flex items-center space-x-3">
             <img
+              id="profileImage"
               src={personalInfo.profileImage}
               alt="Profile"
               className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
@@ -95,6 +94,7 @@ export function PersonalInfoForm() {
             value={personalInfo.fullName}
             onChange={(e) => handleInputChange("fullName", e.target.value)}
             placeholder="John Smith"
+            autoComplete="true"
           />
         </div>
 
@@ -106,8 +106,9 @@ export function PersonalInfoForm() {
             id="email"
             type="email"
             value={personalInfo.email}
-            onChange={(e) => handleInputChange("email", e.target.value)}
+            onChange={(e) => handleInputChange("emails", e.target.value)}
             placeholder="john.smith@email.com"
+            autoComplete="true"
           />
         </div>
 
@@ -137,8 +138,7 @@ export function PersonalInfoForm() {
 
         {/* Optional Fields */}
         <div>
-          <Label htmlFor="website">
-            Website</Label>
+          <Label htmlFor="website">Website</Label>
           <Input
             id="website"
             value={personalInfo.website || ""}
@@ -148,8 +148,7 @@ export function PersonalInfoForm() {
         </div>
 
         <div>
-          <Label htmlFor="linkedin">
-            LinkedIn</Label>
+          <Label htmlFor="linkedin">LinkedIn</Label>
           <Input
             id="linkedin"
             value={personalInfo.linkedin || ""}
@@ -159,8 +158,7 @@ export function PersonalInfoForm() {
         </div>
 
         <div>
-          <Label htmlFor="github">
-            GitHub</Label>
+          <Label htmlFor="github">GitHub</Label>
           <Input
             id="github"
             value={personalInfo.github || ""}
