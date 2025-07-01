@@ -73,9 +73,9 @@ export function Header() {
       const filename = generateResumeFilename(state.resumeData.personalInfo.fullName);
       await generatePDF('resume-preview', {
         filename,
-        quality: 1,
+        quality: 2,
         format: 'a4',
-        margin: 10
+        margin: 12
       });
     } catch (error) {
       console.error('PDF generation failed:', error);

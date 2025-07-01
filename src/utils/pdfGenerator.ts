@@ -43,7 +43,7 @@ export const generatePDF = async (
       height: element.scrollHeight,
       width: element.scrollWidth,
       scrollX: 0,
-      scrollY: 0,
+      scrollY: 0
     });
 
     // PDF dimensions in mm
@@ -67,7 +67,7 @@ export const generatePDF = async (
     const pdf = new jsPDF(options);
 
     // Convert canvas to image data
-    const imgData = canvas.toDataURL('image/png', 2.0);
+    const imgData = canvas.toDataURL('image/png', 1);
 
     // If content fits on one page
     if (scaledHeight <= availableHeight) {
@@ -120,7 +120,7 @@ export const generatePDF = async (
           }
           
           // Add the page image to PDF
-          const pageImgData = pageCanvas.toDataURL('image/png', 2.0);
+          const pageImgData = pageCanvas.toDataURL('image/png', 1);
           pdf.addImage(
             pageImgData,
             'PNG',
