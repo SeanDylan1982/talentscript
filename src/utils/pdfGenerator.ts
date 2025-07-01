@@ -43,7 +43,7 @@ export const generatePDF = async (
       height: element.scrollHeight,
       width: element.scrollWidth,
       scrollX: 0,
-      scrollY: 0
+      scrollY: 0,
     });
 
     // PDF dimensions in mm
