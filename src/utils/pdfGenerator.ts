@@ -14,9 +14,9 @@ export const generatePDF = async (
 ): Promise<void> => {
   const {
     filename = 'resume.pdf',
-    quality = 1,
+    quality = 2,
     format = 'a4',
-    margin = 12,
+    margin = 14,
   } = options;
 
   try {
@@ -34,7 +34,7 @@ export const generatePDF = async (
 
     // Configure canvas options for better quality
     const canvas = await html2canvas(element, {
-      scale: quality * 1, // Higher scale for better quality
+      scale: quality * 2, // Higher scale for better quality
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
@@ -67,7 +67,7 @@ export const generatePDF = async (
     const pdf = new jsPDF(options);
 
     // Convert canvas to image data
-    const imgData = canvas.toDataURL('image/png', 1);
+    const imgData = canvas.toDataURL('image/png', 2.0);
 
     // If content fits on one page
     if (scaledHeight <= availableHeight) {
@@ -120,7 +120,7 @@ export const generatePDF = async (
           }
           
           // Add the page image to PDF
-          const pageImgData = pageCanvas.toDataURL('image/png', 1);
+          const pageImgData = pageCanvas.toDataURL('image/png', 2.0);
           pdf.addImage(
             pageImgData,
             'PNG',
