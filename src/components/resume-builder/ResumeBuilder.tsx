@@ -48,7 +48,7 @@ export function ResumeBuilder() {
           </div>
 
           {/* Right Side - Preview Section */}
-          <div className="w-7/12 bg-gray-100 flex flex-col min-h-0 ">
+          <div className="w-7/12 bg-gray-100 flex flex-col min-h-0 resume-preview">
             <div className="flex-1 overflow-y-auto">
               <ResumePreview />
             </div>

@@ -73,7 +73,7 @@ export function Header() {
       const filename = generateResumeFilename(state.resumeData.personalInfo.fullName);
       await generatePDF('resume-preview', {
         filename,
-        quality: 2,
+        quality: 1,
         format: 'a4',
         margin: 12
       });

@@ -171,3 +171,12 @@ button:focus-visible {
   /* background: red; */
   color: #fff;
 }
+
+@media print {
+  .resume-preview {
+    margin: 20px;
+    box-shadow: none !important;
+    background: white !important;
+    page-break-inside: avoid;
+  }
+}
