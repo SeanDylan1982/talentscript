@@ -1,0 +1,25 @@
+📄 Terms and Conditions — TalentScript
+Effective Date: 1 July 2025
+
+These Terms and Conditions govern your use of TalentScript ("we", "our", or "us"). By using TalentScript, you agree to the following terms.
+
+1. Scope of Service
+TalentScript provides an online resume builder tool for personal and professional use. Features and offerings may change at any time without notice.
+
+2. User Responsibilities
+You are responsible for the accuracy and legality of the information you enter into TalentScript. Do not submit false, misleading, or unlawful content.
+
+3. Data Storage
+TalentScript does not store your data on its own servers. Resume data is stored securely on a MongoDB server in Cape Town, managed by MongoDB.
+
+4. Ownership & Intellectual Property
+You retain ownership of the resumes and content you create. All app code, templates, and design remain the property of TalentScript.
+
+5. Limitation of Liability
+TalentScript is provided "as is" without warranties of any kind. We are not liable for any loss, damages, or inconvenience arising from your use of the app.
+
+6. Changes to Terms
+We may update these terms at any time. Continued use of TalentScript means you accept the latest version.
+
+7. Contact & Feedback
+For questions or clarifications, please submit a feedback ticket via the app.

@@ -1,0 +1,40 @@
+🛡️ Privacy Policy — TalentScript
+Last updated: 1 July 2025
+
+Welcome to TalentScript. Your privacy matters to us. This policy explains how we handle your personal information, especially in accordance with the Protection of Personal Information Act 4 of 2013 ("POPIA") for South African citizens and anyone handling data in South Africa.
+
+By using TalentScript, you confirm that you have read and agree to this Privacy Policy.
+
+1. Personal Information We Collect
+TalentScript does not store any user data on our own servers. When you save or submit your resume data, it is stored securely on a MongoDB server located in Cape Town, managed by MongoDB, a reputable service provider.
+
+We may collect:
+- Your email address (if you provide it for feedback or support)
+- Resume data you enter and choose to save
+- Feedback or support messages you submit
+
+2. Why We Collect Your Data
+With your consent, we use your information to:
+- Provide and improve the TalentScript resume builder service
+- Respond to inquiries and feedback
+- Ensure the security and reliability of the app
+
+We do not sell, rent, or share your personal data with third parties.
+
+3. Data Security
+While no online service can guarantee 100% security, your data is stored on a secure server managed by MongoDB in Cape Town. Only authorized personnel have access, and only as needed to maintain the service.
+
+4. Data Retention
+Your information is stored only as long as necessary to provide the service or as required by law.
+
+5. Log Files & Analytics
+We may collect non-identifiable technical information (such as IP address, browser type, and usage statistics) to improve the app. No personally identifiable information is tied to this data unless you submit it voluntarily.
+
+6. Cookies
+TalentScript may use cookies for core functionality and to enhance your experience. You can manage or delete cookies in your browser settings.
+
+7. Third-Party Links
+TalentScript may link to external platforms. We are not responsible for the privacy practices of third-party sites.
+
+8. Legal Disclosures
+We comply with POPIA and other applicable laws. For any questions or clarifications, please submit a feedback ticket via the app.

@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { ResumeBuilder } from '@/components/resume-builder/ResumeBuilder';
 import './App.css';
 import TestApi from '../src/components/TestApi.tsx';
+import Footer from './components/Footer.tsx'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       </div>
     </div>}>
       <ResumeBuilder />
+      <Footer />
       <TestApi />
     </Suspense>
   );
