@@ -15,7 +15,7 @@ export const generatePDF = async (
   const {
     filename = 'resume.pdf',
     quality = 2,
-    format = 'a4',
+    format = 'a4 || letter',
     margin = 14,
   } = options;
 
@@ -40,10 +40,10 @@ export const generatePDF = async (
       backgroundColor: '#ffffff',
       removeContainer: true,
       imageTimeout: 0,
-      height: element.scrollHeight,
+      height: element.scrollHeight-50,
       width: element.scrollWidth,
       scrollX: 0,
-      scrollY: 0
+      scrollY: 50
     });
 
     // PDF dimensions in mm
