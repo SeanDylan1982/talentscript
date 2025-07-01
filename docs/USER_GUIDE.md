@@ -249,35 +249,21 @@ Add a professional photo:
 - When photo quality is poor
 - If unsure about company culture
 
-## 💾 Saving Your Work
+## 🔐 Authentication & Data Storage
 
-### Local Storage
+- **🔑 Logged-in users**: Resume data is securely saved to your account in MongoDB Atlas. You can access your resume from any device after logging in.
+- **🖥️ Guests**: Resume data is saved only in your browser (local storage). **Warning:** Do not use this on public or shared computers.
 
-TalentScript saves your data locally in your browser:
+## 🛡️ Security
 
-#### How It Works
-- Data is stored on your device only
-- No information sent to external servers
-- Automatically saves as you work
-- Persists between browser sessions
+- Passwords are never stored in plain text. They are hashed and salted using bcrypt.
+- Authentication uses secure JWT tokens.
 
-#### Privacy Notice
-- **Safe on personal devices**: Your data stays private
-- **Avoid public computers**: Don't save on shared devices
-- **Browser data**: Clearing browser data removes your resume
-- **No cloud backup**: Data isn't backed up automatically
+## 👁️ Privacy Notice
 
-#### Manual Save
-Click the **Save** button to:
-- Explicitly save your current progress
-- Get confirmation of successful save
-- Understand privacy implications
-
-### Data Security
-- All processing happens in your browser
-- No data transmitted to servers
-- No tracking or analytics
-- Complete privacy control
+- We do not share your data with third parties.
+- Local storage is only accessible on your current device and browser.
+- Cloud storage is protected and only accessible to you after login.
 
 ## 📄 Downloading Your Resume
 

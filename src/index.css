@@ -168,6 +168,21 @@ button:focus-visible {
 }
 
 .absolute {
-  background: red;
+  /* background: red; */
   color: #fff;
+}
+
+@media print {
+  .resume-preview,
+  #resume-preview {
+    margin: 100px;
+    padding: 20px;
+  }
+
+  .resume-preview, #resume-preview {
+    margin-bottom: 200px;
+    box-shadow: none !important;
+    background: white !important;
+    page-break-inside: avoid;
+  }
 }

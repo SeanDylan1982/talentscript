@@ -99,7 +99,7 @@ export function CustomizationForm() {
       </div>
 
       {/* Font Selection */}
-      <div className="space-y-2 m-2">
+      <div className="space-y-2 m-2 fontSelector">
         <Label>Font Family</Label>
         <Select
           value={customization.fontFamily}

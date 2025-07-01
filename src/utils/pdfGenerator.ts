@@ -14,9 +14,9 @@ export const generatePDF = async (
 ): Promise<void> => {
   const {
     filename = 'resume.pdf',
-    quality = 1,
+    quality = 2,
     format = 'a4',
-    margin = 10
+    margin = 12,
   } = options;
 
   try {
@@ -47,8 +47,8 @@ export const generatePDF = async (
     });
 
     // PDF dimensions in mm
-    const pageWidth = format === 'a4' ? 210 : 216; // A4: 210mm, Letter: 216mm (8.5")
-    const pageHeight = format === 'a4' ? 297 : 279; // A4: 297mm, Letter: 279mm (11")
+    const pageWidth = format === 'a4' ? 200 : 206; // A4: 210mm, Letter: 216mm (8.5")
+    const pageHeight = format === 'a4' ? 279 : 259; // A4: 297mm, Letter: 279mm (11")
     
     // Available space after margins
     const availableWidth = pageWidth - (margin * 2);
@@ -64,14 +64,10 @@ export const generatePDF = async (
     const scaledHeight = canvasHeightMM * scale;
 
     // Create PDF
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: format === 'a4' ? 'a4' : [216, 279]
-    });
+    const pdf = new jsPDF(options);
 
     // Convert canvas to image data
-    const imgData = canvas.toDataURL('image/png', 1.0);
+    const imgData = canvas.toDataURL('image/png', 2.0);
 
     // If content fits on one page
     if (scaledHeight <= availableHeight) {
@@ -124,7 +120,7 @@ export const generatePDF = async (
           }
           
           // Add the page image to PDF
-          const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
+          const pageImgData = pageCanvas.toDataURL('image/png', 2.0);
           pdf.addImage(
             pageImgData,
             'PNG',
@@ -189,11 +185,11 @@ export const generatePDF = async (
 
 export const generateResumeFilename = (fullName: string): string => {
   const cleanName = fullName
-    .replace(/[^a-zA-Z0-9\s]/g, '') // Remove special characters
-    .replace(/\s+/g, '_') // Replace spaces with underscores
-    .toLowerCase();
+    .replace(/[^a-zA-Z0-9\s]/g, ' ') // Remove special characters
+    .replace(/\s+/g, ' '); // Replace spaces with underscores
+    // .toLowerCase();
   
   const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
   
-  return `${cleanName || 'resume'}_${timestamp}.pdf`;
+  return `${cleanName || 'resume'} ${timestamp}.pdf`;
 };

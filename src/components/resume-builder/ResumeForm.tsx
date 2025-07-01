@@ -42,11 +42,11 @@ export function ResumeForm({ activeTab = 'personal', onTabChange }: ResumeFormPr
   return (
     <div className="h-full flex flex-col resume-form">
       {/* Mini Navbar */}
-      <div className="flex flex-col p-4 border-b border-gray-200 bg-white">
-        <h3 className="text-sm font-medium text-gray-900">
+      <div className="flex flex-col p-1 border-b border-gray-200 bg-white h-14">
+        <h3 className="text-base pl-2 font-medium text-gray-900">
           Resume Information
         </h3>
-        <p className="text-xs text-gray-500">
+        <p className="text-sm pl-2 text-gray-500">
           Current Section: {getTabDisplayName(currentTab)}
         </p>
       </div>

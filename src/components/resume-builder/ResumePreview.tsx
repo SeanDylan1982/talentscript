@@ -33,9 +33,9 @@ export function ResumePreview() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-gray-200 bg-white">
-        <h3 className="text-sm font-medium text-gray-900">Resume Preview</h3>
-        <p className="text-xs text-gray-500">
+      <div className="p-1 border-b border-gray-200 bg-white h-14">
+        <h3 className="text-base pl-2 font-medium text-gray-900">Resume Preview</h3>
+        <p className="text-sm pl-2 text-gray-500">
           Template: {resumeData.template.charAt(0).toUpperCase() + resumeData.template.slice(1)} • 
           Font: {resumeData.customization.fontFamily}
         </p>

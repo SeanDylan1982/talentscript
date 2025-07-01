@@ -38,6 +38,21 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 - **Responsive Design**: Works perfectly on desktop and mobile
 - **Privacy-First**: No data sent to external servers
 
+## 🔐 Authentication & Data Storage
+
+- **🔑 Logged-in users**: Resume data is securely saved to your account in MongoDB Atlas. Access your resume from any device after logging in.
+- **🖥️ Guests**: Resume data is saved locally in your browser. Do not use this on public/shared computers.
+
+## 🛡️ Security
+
+- Passwords are hashed and salted using bcrypt before being stored in the database.
+- JWT is used for authentication.
+
+## 👁️ Privacy Notice
+
+- If you are not logged in, your data is only stored locally and is not sent to any server.
+- If you are logged in, your data is securely stored in the database and is not shared with third parties.
+
 ## 🚀 Live Demo
 
 **[Try TalentScript Now →](https://talentscript.netlify.app)**
@@ -51,6 +66,7 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 | Minimal | Modern | Creative |
 |---------|--------|----------|
 | ![Minimal Template](docs/screenshots/minimal-template.png) | ![Modern Template](docs/screenshots/modern-template.png) | ![Creative Template](docs/screenshots/creative-template.png) |
+
 
 ## 🛠️ Technology Stack
 
