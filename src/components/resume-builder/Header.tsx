@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Download, Save, AlertTriangle, CheckCircle, RotateCcw } from 'lucide-react';
+import {
+  Download,
+  Save,
+  AlertTriangle,
+  CheckCircle,
+  RotateCcw,
+  Share2,
+} from "lucide-react";
 import { useResume } from '@/contexts/ResumeContext';
 import { generatePDF, generateResumeFilename } from '@/utils/pdfGenerator';
 import initialResumeData from '@/contexts/ResumeData';
@@ -21,6 +28,28 @@ export function Header() {
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
   const [user, setUser] = useState(null);
+
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "TalentScript Resume",
+          text: "Check out my resume on TalentScript!",
+          url: shareUrl,
+        });
+      } catch (err) {
+        showToast("Share cancelled or failed.", "info");
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast("Link copied to clipboard!", "success");
+      } catch {
+        showToast("Unable to copy link.", "error");
+      }
+    }
+  };
 
   const handleResetClick = () => {
     setShowResetConfirmation(true);
@@ -247,10 +276,33 @@ export function Header() {
                 onClick={handleResetClick}
                 className="h-6 px-2 text-xs"
                 data-tutorial="reset-button"
+                style={{
+                  marginRight: 20,
+                  border: "1px solid red",
+                }}
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
                 Reset
               </Button>
+
+              <br></br>
+
+              <Button
+                variant="outline"
+                size="base"
+                onClick={handleShare}
+                className="h-6 px-2 text-xs"
+                data-tutorial="share-button"
+                title="Share this page"
+                style={{
+                  marginRight: 10,
+                }}
+              >
+                <Share2 className="w-3 h-3 mr-1" />
+                Share
+              </Button>
+
+              <br></br>
 
               <Button
                 variant="outline"
