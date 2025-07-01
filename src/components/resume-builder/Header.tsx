@@ -258,11 +258,6 @@ export function Header() {
         <div className="px-4">
           <div className="flex items-center justify-between h-12">
             <div className="flex items-center space-x-3">
-                <img
-                  src="/img/android-chrome-192x192.png"
-                  alt="TalentScript Logo"
-                  className="h-8 w-8 ml-2"
-                  />
                 <span className="font-bold text-2xl text-blue-600">
                   TalentScript
                 </span>
