@@ -14,7 +14,7 @@ export const generatePDF = async (
 ): Promise<void> => {
   const {
     filename = 'resume.pdf',
-    quality = 2,
+    quality = 1,
     format = 'a4',
     margin = 12,
   } = options;
@@ -34,7 +34,7 @@ export const generatePDF = async (
 
     // Configure canvas options for better quality
     const canvas = await html2canvas(element, {
-      scale: quality * 2, // Higher scale for better quality
+      scale: quality * 1, // Higher scale for better quality
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
