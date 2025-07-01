@@ -130,8 +130,8 @@ export default function Footer() {
             {/* Honeypot field for bots */}
             <input type="hidden" name="bot-field" />
             {/* Optional: Name and Email fields */}
-            {/* <input className="border rounded p-2 text-xs" type="text" name="name" placeholder="Your name (optional)" /> */}
-            {/* <input className="border rounded p-2 text-xs" type="email" name="email" placeholder="Your email (optional)" /> */}
+            <input className="border rounded p-2 text-xs" type="text" name="name" placeholder="Your name (optional)" />
+            <input className="border rounded p-2 text-xs" type="email" name="email" placeholder="Your email (optional)" />
             <textarea
               className="border rounded p-2 min-h-[48px] text-xs"
               placeholder="Your feedback..."
