@@ -6,19 +6,19 @@ const DOCS = [
   {
     key: 'disclaimer',
     label: 'Disclaimer',
-    file: '/src/docs/services_disclaimer.txt',
+    file: '/docs/services_disclaimer.txt',
     title: 'Disclaimer',
   },
   {
     key: 'privacy',
     label: 'Privacy Policy (POPIA)',
-    file: '/src/docs/privacy_policy_popia.txt',
+    file: '/docs/privacy_policy_popia.txt',
     title: 'Privacy Policy (POPIA)',
   },
   {
     key: 'terms',
     label: 'Terms & Conditions',
-    file: '/src/docs/terms_and_conditions.txt',
+    file: '/docs/terms_and_conditions.txt',
     title: 'Terms & Conditions',
   },
 ];
