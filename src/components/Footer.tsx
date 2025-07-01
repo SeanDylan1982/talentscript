@@ -112,7 +112,10 @@ export default function Footer() {
       ))}
 
       {/* Feedback Modal */}
-      <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+      <Dialog
+        open={feedbackOpen}
+        onOpenChange={setFeedbackOpen}
+      >
         <DialogContent className="max-h-[90vh] w-full max-w-md">
           <DialogHeader>
             <DialogTitle>Submit Feedback</DialogTitle>
@@ -126,12 +129,34 @@ export default function Footer() {
             className="flex flex-col gap-3"
           >
             {/* Netlify form-name hidden field */}
-            <input type="hidden" name="form-name" value="feedback" />
+            <input
+              type="hidden"
+              name="form-name"
+              value="feedback"
+            />
             {/* Honeypot field for bots */}
             <input type="hidden" name="bot-field" />
             {/* Optional: Name and Email fields */}
-            <input className="border rounded p-2 text-xs" type="text" name="name" placeholder="Your name (optional)" />
-            <input className="border rounded p-2 text-xs" type="email" name="email" placeholder="Your email (optional)" />
+            <input
+              className="border rounded p-2 text-xs"
+              type="text"
+              name="name"
+              placeholder="Your name (optional)"
+              style={{
+                color: "black",
+                background: "#f1f1f1",
+              }}
+            />
+            <input
+              className="border rounded p-2 text-xs"
+              type="email"
+              name="email"
+              placeholder="Your email (optional)"
+              style={{
+                color: "black",
+                background: "#f1f1f1",
+              }}
+            />
             <textarea
               className="border rounded p-2 min-h-[48px] text-xs"
               placeholder="Your feedback..."
@@ -139,9 +164,22 @@ export default function Footer() {
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               required
-              style={{ fontSize: "12px" }}
+              rows="10"
+              cols="5"
+              style={{
+                color: "black",
+                background: "#f1f1f1",
+              }}
             />
-            <Button type="submit" className="w-full h-7 text-xs py-1">
+            <Button
+              type="submit"
+              className="w-full h-7 text-xs py-1"
+              style={{
+                color: "#f1f1f1",
+                background: "blue",
+                fontSize: "14px",
+              }}
+            >
               Send
             </Button>
             {feedbackStatus && (

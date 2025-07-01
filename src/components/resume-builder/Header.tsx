@@ -258,10 +258,17 @@ export function Header() {
         <div className="px-4">
           <div className="flex items-center justify-between h-12">
             <div className="flex items-center space-x-3">
-              <h1 className="text-lg font-bold text-gray-900">TalentScript</h1>
-              <span className="text-base text-gray-500 hidden sm:inline">
-                Professional Resume Builder
-              </span>
+                <img
+                  src="/img/android-chrome-192x192.png"
+                  alt="TalentScript Logo"
+                  className="h-8 w-8 ml-2"
+                  />
+                <span className="font-bold text-2xl text-blue-600">
+                  TalentScript
+                </span>
+                <span className="font-light text-xl text-gray-700">
+                  Your Talent, Scripted
+                </span>
               {state.hasUnsavedChanges && (
                 <span className="text-base text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
                   Unsaved
@@ -301,9 +308,6 @@ export function Header() {
                 <Share2 className="w-3 h-3 mr-1" />
                 Share
               </Button>
-
-              <br></br>
-
               <Button
                 variant="outline"
                 size="base"
