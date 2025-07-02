@@ -1,55 +1,59 @@
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 function encode(data: Record<string, string>) {
   return Object.keys(data)
-    .map(
-      (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
-    )
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
     .join("&");
 }
 
 const DOCS = [
   {
-    key: 'disclaimer',
-    label: 'Disclaimer',
-    file: '/docs/services_disclaimer.txt',
-    title: 'Disclaimer',
+    key: "disclaimer",
+    label: "Disclaimer",
+    file: "/docs/services_disclaimer.txt",
+    title: "Disclaimer",
   },
   {
-    key: 'privacy',
-    label: 'Privacy Policy (POPIA)',
-    file: '/docs/privacy_policy_popia.txt',
-    title: 'Privacy Policy (POPIA)',
+    key: "privacy",
+    label: "Privacy Policy (POPIA)",
+    file: "/docs/privacy_policy_popia.txt",
+    title: "Privacy Policy (POPIA)",
   },
   {
-    key: 'terms',
-    label: 'Terms & Conditions',
-    file: '/docs/terms_and_conditions.txt',
-    title: 'Terms & Conditions',
+    key: "terms",
+    label: "Terms & Conditions",
+    file: "/docs/terms_and_conditions.txt",
+    title: "Terms & Conditions",
   },
 ];
 
 export default function Footer() {
   const [openDoc, setOpenDoc] = useState(null);
-  const [docContent, setDocContent] = useState('');
+  const [docContent, setDocContent] = useState("");
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [feedback, setFeedback] = useState('');
-  const [feedbackStatus, setFeedbackStatus] = useState('');
+  const [feedback, setFeedback] = useState("");
+  const [feedbackStatus, setFeedbackStatus] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleOpenDoc = async (doc) => {
-    setDocContent('Loading...');
+    setDocContent("Loading...");
     setOpenDoc(doc.key);
     try {
       const res = await fetch(doc.file);
       const text = await res.text();
       setDocContent(text);
     } catch {
-      setDocContent('Failed to load document.');
+      setDocContent("Failed to load document.");
     }
   };
 
@@ -71,6 +75,25 @@ export default function Footer() {
       setFeedback("");
       setName("");
       setEmail("");
+      useEffect(() => {
+        if (feedbackStatus === "Thank you for your feedback!") {
+          setCountdown(3);
+          // Focus the close button and add glow
+          if (closeBtnRef.current) {
+            closeBtnRef.current.focus();
+          }
+          const interval = setInterval(() => {
+            setCountdown((prev) => {
+              if (prev && prev > 1) return prev - 1;
+              clearInterval(interval);
+              setFeedbackOpen(false);
+              setCountdown(null);
+              return null;
+            });
+          }, 1000);
+          return () => clearInterval(interval);
+        }
+      }, [feedbackStatus]);
     } catch (error) {
       setFeedbackStatus("There was an error submitting your feedback.");
     }
@@ -142,6 +165,19 @@ export default function Footer() {
         <DialogContent className="max-h-[90vh] w-full max-w-md">
           <DialogHeader>
             <DialogTitle>Submit Feedback</DialogTitle>
+            <button
+              ref={closeBtnRef}
+              className={`absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded text-lg font-bold transition-shadow duration-300
+                ${feedbackStatus === "Thank you for your feedback!" ? "ring-2 ring-red-400 ring-offset-2" : ""}
+              `}
+              aria-label="Close"
+              type="button"
+              onClick={() => setFeedbackOpen(false)}
+              tabIndex={0}
+              style={{ background: "#fff", border: "1px solid #eee" }}
+            >
+              ×
+            </button>
           </DialogHeader>
           <form
             name="feedback"
@@ -185,6 +221,24 @@ export default function Footer() {
             <button
               type="submit"
               className="bg-blue-600 text-white rounded text-sm font-semibold shadow px-4 py-2"
+              disabled={feedbackStatus === "Thank you for your feedback!"}
+            >
+              Send
+            </button>
+            {feedbackStatus && (
+              <div className="text-green-600 text-xs mt-1 text-center">
+                {feedbackStatus}
+                {countdown !== null && (
+                  <div className="mt-2 text-gray-700">
+                    This message will close in {countdown}...
+                  </div>
+                )}
+              </div>
+            )}
+          </form>
+            {/* <button
+              type="submit"
+              className="bg-blue-600 text-white rounded text-sm font-semibold shadow px-4 py-2"
             >
               Send
             </button>
@@ -193,7 +247,7 @@ export default function Footer() {
                 {feedbackStatus}
               </div>
             )}
-          </form>
+          </form> */}
         </DialogContent>
       </Dialog>
     </footer>
