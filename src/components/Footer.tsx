@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
+function encode(data: Record<string, string>) {
+  return Object.keys(data)
+    .map(
+      (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+    )
+    .join("&");
+}
+
 const DOCS = [
   {
     key: 'disclaimer',
@@ -29,6 +37,9 @@ export default function Footer() {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [feedbackStatus, setFeedbackStatus] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
 
   const handleOpenDoc = async (doc) => {
     setDocContent('Loading...');
@@ -42,12 +53,27 @@ export default function Footer() {
     }
   };
 
-  const handleFeedbackSubmit = (e) => {
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFeedbackStatus('Thank you for your feedback!');
-    setFeedback('');
-    setTimeout(() => setFeedbackStatus(''), 3000);
-    // Netlify integration to be added later
+    setFeedbackStatus("");
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": "feedback",
+          name,
+          email,
+          message: feedback,
+        }),
+      });
+      setFeedbackStatus("Thank you for your feedback!");
+      setFeedback("");
+      setName("");
+      setEmail("");
+    } catch (error) {
+      setFeedbackStatus("There was an error submitting your feedback.");
+    }
   };
 
   return (
@@ -112,10 +138,7 @@ export default function Footer() {
       ))}
 
       {/* Feedback Modal */}
-      <Dialog
-        open={feedbackOpen}
-        onOpenChange={setFeedbackOpen}
-      >
+      <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
         <DialogContent className="max-h-[90vh] w-full max-w-md">
           <DialogHeader>
             <DialogTitle>Submit Feedback</DialogTitle>
@@ -128,34 +151,25 @@ export default function Footer() {
             onSubmit={handleFeedbackSubmit}
             className="flex flex-col gap-3"
           >
-            {/* Netlify form-name hidden field */}
-            <input
-              type="hidden"
-              name="form-name"
-              value="feedback"
-            />
-            {/* Honeypot field for bots */}
+            <input type="hidden" name="form-name" value="feedback" />
             <input type="hidden" name="bot-field" />
-            {/* Optional: Name and Email fields */}
             <input
               className="border rounded p-2 text-xs"
               type="text"
               name="name"
               placeholder="Your name (optional)"
-              style={{
-                color: "black",
-                background: "#f1f1f1",
-              }}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              style={{ color: "black", background: "#f1f1f1" }}
             />
             <input
               className="border rounded p-2 text-xs"
               type="email"
               name="email"
               placeholder="Your email (optional)"
-              style={{
-                color: "black",
-                background: "#f1f1f1",
-              }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ color: "black", background: "#f1f1f1" }}
             />
             <textarea
               className="border rounded p-2 min-h-[48px] text-xs"
@@ -164,24 +178,16 @@ export default function Footer() {
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               required
-              rows="10"
-              cols="5"
-              style={{
-                color: "black",
-                background: "#f1f1f1",
-              }}
+              rows={10}
+              cols={5}
+              style={{ color: "black", background: "#f1f1f1" }}
             />
-            <Button
+            <button
               type="submit"
-              className="w-full h-7 text-xs py-1"
-              style={{
-                color: "#f1f1f1",
-                background: "blue",
-                fontSize: "14px",
-              }}
+              className="bg-blue-600 text-white rounded text-sm font-semibold shadow px-4 py-2"
             >
               Send
-            </Button>
+            </button>
             {feedbackStatus && (
               <div className="text-green-600 text-xs mt-1">
                 {feedbackStatus}
