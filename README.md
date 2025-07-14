@@ -65,12 +65,12 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 ## 📸 Screenshots
 
 ### Main Interface
-![TalentScript Main Interface](docs/screenshots/main-interface.png)
+![TalentScript Main Interface](docs/main-interface.png)
 
 ### Template Showcase
 | Minimal | Modern | Creative |
 |---------|--------|----------|
-| ![Minimal Template](docs/screenshots/minimal-template.png) | ![Modern Template](docs/screenshots/modern-template.png) | ![Creative Template](docs/screenshots/creative-template.png) |
+| ![Minimal Template](docs/minimal-template.png) | ![Modern Template](docs/modern-template.png) | ![Creative Template](docs/creative-template.png) |
 
 
 ## 🛠️ Technology Stack
