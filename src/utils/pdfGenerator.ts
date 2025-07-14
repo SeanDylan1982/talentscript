@@ -16,14 +16,25 @@ export const generatePDF = async (
     filename = 'resume.pdf',
     quality = 2,
     format = 'a4 || letter',
-    margin = 14,
+    margin = 12,
   } = options;
 
   try {
-    // Find the resume element
-    const element = document.getElementById(elementId);
-    if (!element) {
+    // Find all page elements
+    const allPages = [];
+    const firstPage = document.getElementById(elementId);
+    if (!firstPage) {
       throw new Error('Resume element not found');
+    }
+    allPages.push(firstPage);
+    
+    // Find additional pages
+    let pageIndex = 2;
+    while (true) {
+      const nextPage = document.getElementById(`resume-preview-page-${pageIndex}`);
+      if (!nextPage) break;
+      allPages.push(nextPage);
+      pageIndex++;
     }
 
     // Show loading state
@@ -32,112 +43,50 @@ export const generatePDF = async (
     loadingToast.className = 'fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
     document.body.appendChild(loadingToast);
 
-    // Configure canvas options for better quality
-    const canvas = await html2canvas(element, {
-      scale: quality * 2, // Higher scale for better quality
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      removeContainer: true,
-      imageTimeout: 0,
-      height: element.scrollHeight-50,
-      width: element.scrollWidth,
-      scrollX: 0,
-      scrollY: 50
-    });
-
     // PDF dimensions in mm
-    const pageWidth = format === 'a4' ? 200 : 206; // A4: 210mm, Letter: 216mm (8.5")
-    const pageHeight = format === 'a4' ? 279 : 259; // A4: 297mm, Letter: 279mm (11")
-    
-    // Available space after margins
-    const availableWidth = pageWidth - (margin * 2);
-    const availableHeight = pageHeight - (margin * 2);
-    
-    // Convert canvas dimensions to mm (96 DPI to mm conversion)
-    const canvasWidthMM = (canvas.width * 25.4) / (96 * quality * 2);
-    const canvasHeightMM = (canvas.height * 25.4) / (96 * quality * 2);
-    
-    // Calculate scale to fit width
-    const scale = availableWidth / canvasWidthMM;
-    const scaledWidth = availableWidth;
-    const scaledHeight = canvasHeightMM * scale;
+    const pageWidth = format === 'a4' ? 216 : 210;
+    const pageHeight = format === 'a4' ? 279 : 297;
 
     // Create PDF
-    const pdf = new jsPDF(options);
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: format === 'a4' ? 'a4' : [pageWidth, pageHeight]
+    });
 
-    // Convert canvas to image data
-    const imgData = canvas.toDataURL('image/png', 2.0);
-
-    // If content fits on one page
-    if (scaledHeight <= availableHeight) {
-      pdf.addImage(
-        imgData, 
-        'PNG', 
-        margin, 
-        margin, 
-        scaledWidth, 
-        scaledHeight,
-        undefined,
-        'FAST'
-      );
-    } else {
-      // Multi-page handling
-      let remainingHeight = scaledHeight;
-      let currentY = 0;
-      let pageNumber = 0;
-
-      while (remainingHeight > 0) {
-        // Calculate the height for this page
-        const pageContentHeight = Math.min(remainingHeight, availableHeight);
-        
-        // Calculate the source rectangle for this page
-        const sourceY = (currentY / scaledHeight) * canvas.height;
-        const sourceHeight = (pageContentHeight / scaledHeight) * canvas.height;
-        
-        // Create a canvas for this page section
-        const pageCanvas = document.createElement('canvas');
-        const pageCtx = pageCanvas.getContext('2d');
-        
-        pageCanvas.width = canvas.width;
-        pageCanvas.height = sourceHeight;
-        
-        if (pageCtx) {
-          // Fill with white background
-          pageCtx.fillStyle = '#ffffff';
-          pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-          
-          // Draw the section of the original canvas
-          pageCtx.drawImage(
-            canvas,
-            0, sourceY, canvas.width, sourceHeight,
-            0, 0, pageCanvas.width, pageCanvas.height
-          );
-          
-          // Add new page if not the first page
-          if (pageNumber > 0) {
-            pdf.addPage();
-          }
-          
-          // Add the page image to PDF
-          const pageImgData = pageCanvas.toDataURL('image/png', 2.0);
-          pdf.addImage(
-            pageImgData,
-            'PNG',
-            margin,
-            margin,
-            scaledWidth,
-            pageContentHeight,
-            undefined,
-            'FAST'
-          );
-        }
-        
-        // Update for next page
-        currentY += pageContentHeight;
-        remainingHeight -= pageContentHeight;
-        pageNumber++;
+    // Process each page element
+    for (let i = 0; i < allPages.length; i++) {
+      const pageElement = allPages[i];
+      
+      // Create canvas for this page
+      const pageCanvas = await html2canvas(pageElement, {
+        scale: quality,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        removeContainer: true,
+        imageTimeout: 0,
+        width: pageElement.scrollWidth,
+        height: pageElement.scrollHeight
+      });
+      
+      // Convert to image
+      const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
+      
+      // Add new page if not the first
+      if (i > 0) {
+        pdf.addPage();
       }
+      
+      // Add image to PDF (full page)
+      pdf.addImage(
+        pageImgData,
+        'PNG',
+        0,
+        0,
+        pageWidth,
+        pageHeight
+      );
     }
 
     // Save the PDF
@@ -181,6 +130,73 @@ export const generatePDF = async (
       }
     }, 5000);
   }
+};
+
+export const generatePDFBlob = async (
+  elementId: string, 
+  options: PDFOptions = {}
+): Promise<Blob> => {
+  const {
+    quality = 2,
+    format = 'letter'
+  } = options;
+
+  // Find all page elements
+  const allPages = [];
+  const firstPage = document.getElementById(elementId);
+  if (!firstPage) {
+    throw new Error('Resume element not found');
+  }
+  allPages.push(firstPage);
+  
+  let pageIndex = 2;
+  while (true) {
+    const nextPage = document.getElementById(`resume-preview-page-${pageIndex}`);
+    if (!nextPage) break;
+    allPages.push(nextPage);
+    pageIndex++;
+  }
+
+  const pageWidth = format === 'letter' ? 216 : 210;
+  const pageHeight = format === 'letter' ? 279 : 297;
+
+  const pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: format === 'a4' ? 'a4' : [pageWidth, pageHeight]
+  });
+
+  for (let i = 0; i < allPages.length; i++) {
+    const pageElement = allPages[i];
+    
+    const pageCanvas = await html2canvas(pageElement, {
+      scale: quality,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      removeContainer: true,
+      imageTimeout: 0,
+      width: pageElement.scrollWidth,
+      height: pageElement.scrollHeight
+    });
+    
+    const pageImgData = pageCanvas.toDataURL('image/png', 1.0);
+    
+    if (i > 0) {
+      pdf.addPage();
+    }
+    
+    pdf.addImage(
+      pageImgData,
+      'PNG',
+      0,
+      0,
+      pageWidth,
+      pageHeight
+    );
+  }
+
+  return pdf.output('blob');
 };
 
 export const generateResumeFilename = (fullName: string): string => {

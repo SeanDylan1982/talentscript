@@ -1,6 +1,6 @@
 import { ResumeData } from '@/types/resume'
 
-const initialResumeData: ResumeData = {
+const initialData: ResumeData = {
   personalInfo: {
     fullName: "Sarah Johnson",
     email: "sarah.johnson@email.com",
@@ -246,4 +246,4 @@ const initialResumeData: ResumeData = {
   },
 };
 
-export default initialResumeData;
+export default initialData;

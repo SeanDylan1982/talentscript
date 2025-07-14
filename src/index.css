@@ -172,11 +172,44 @@ button:focus-visible {
   color: #fff;
 }
 
+/* Resume print styles */
+.resume-preview {
+  page-break-inside: avoid;
+  break-inside: 
+  avoid;
+}
+
+#resume-preview h1,
+#resume-preview h2,
+#resume-preview h3,
+#resume-preview h4,
+#resume-preview h5,
+#resume-preview h6 {
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+#resume-preview p,
+#resume-preview li,
+#resume-preview div {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+#resume-preview .break-inside-avoid {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
 @media print {
   .resume-preview {
     margin: 20px;
     box-shadow: none !important;
     background: white !important;
     page-break-inside: avoid;
+  }
+  
+  #resume-preview {
+    box-shadow: none !important;
   }
 }

@@ -27,8 +27,14 @@ export default function Footer() {
   const [openDoc, setOpenDoc] = useState(null);
   const [docContent, setDocContent] = useState('');
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [feedback, setFeedback] = useState('');
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [feedbackStatus, setFeedbackStatus] = useState('');
+
+  const encode = (data) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
 
   const handleOpenDoc = async (doc) => {
     setDocContent('Loading...');
@@ -42,12 +48,38 @@ export default function Footer() {
     }
   };
 
-  const handleFeedbackSubmit = (e) => {
+  const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
-    setFeedbackStatus('Thank you for your feedback!');
-    setFeedback('');
-    setTimeout(() => setFeedbackStatus(''), 3000);
-    // Netlify integration to be added later
+    setFeedbackStatus('Sending...');
+    
+    // Check if running on Netlify (production)
+    if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('netlify.com')) {
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encode({ 'form-name': 'feedback', ...formData })
+        });
+        
+        setFeedbackStatus('Thank you for your feedback!');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => {
+          setFeedbackStatus('');
+          setFeedbackOpen(false);
+        }, 2000);
+      } catch (error) {
+        setFeedbackStatus('Failed to send feedback. Please try again.');
+        setTimeout(() => setFeedbackStatus(''), 3000);
+      }
+    } else {
+      // Local development fallback
+      setFeedbackStatus('Thank you for your feedback! (Local mode - not actually sent)');
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => {
+        setFeedbackStatus('');
+        setFeedbackOpen(false);
+      }, 2000);
+    }
   };
 
   return (
@@ -141,6 +173,8 @@ export default function Footer() {
               className="border rounded p-2 text-xs"
               type="text"
               name="name"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
               placeholder="Your name (optional)"
               style={{
                 color: "black",
@@ -151,6 +185,8 @@ export default function Footer() {
               className="border rounded p-2 text-xs"
               type="email"
               name="email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
               placeholder="Your email (optional)"
               style={{
                 color: "black",
@@ -161,8 +197,8 @@ export default function Footer() {
               className="border rounded p-2 min-h-[48px] text-xs"
               placeholder="Your feedback..."
               name="message"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
+              value={formData.message}
+              onChange={(e) => setFormData({...formData, message: e.target.value})}
               required
               rows="10"
               cols="5"

@@ -312,7 +312,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
   };
 
   return (
-    <div className="bg-white p-6 min-h-full" style={{ fontFamily: customization.fontFamily, fontSize: '14px', lineHeight: '1.4' }}>
+    <div className="bg-white min-h-full" style={{ fontFamily: customization.fontFamily, fontSize: '14px', lineHeight: '1.4' }}>
       {visibleSections.map(renderSection)}
     </div>
   );

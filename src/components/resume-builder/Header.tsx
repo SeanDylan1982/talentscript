@@ -10,9 +10,8 @@ import {
   Share2,
 } from "lucide-react";
 import { useResume } from '@/contexts/ResumeContext';
-import { generatePDF, generateResumeFilename } from '@/utils/pdfGenerator';
-import initialResumeData from '@/contexts/ResumeData';
-
+import { generatePDF, generatePDFBlob, generateResumeFilename } from '@/utils/pdfGenerator';
+import initialData from '@/contexts/ResumeData';
 
 export function Header() {
   const { state, dispatch } = useResume();
@@ -29,25 +28,39 @@ export function Header() {
   const [authError, setAuthError] = useState("");
   const [user, setUser] = useState(null);
 
+  
+
   const handleShare = async () => {
-    const shareUrl = window.location.href;
-    if (navigator.share) {
-      try {
+    try {
+      const filename = generateResumeFilename(state.resumeData.personalInfo.fullName);
+      const pdfBlob = await generatePDFBlob('resume-preview', {
+        filename,
+        quality: 2,
+        format: 'letter'
+      });
+      
+      const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+      
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
-          title: "TalentScript Resume",
-          text: "Check out my resume on TalentScript!",
-          url: shareUrl,
+          title: "My Resume",
+          text: "Here's my resume from TalentScript",
+          files: [file]
         });
-      } catch (err) {
-        showToast("Share cancelled or failed.", "info");
+        showToast("Resume shared successfully!", "success");
+      } else {
+        // Fallback: download the PDF
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Resume downloaded for sharing!", "info");
       }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        showToast("Link copied to clipboard!", "success");
-      } catch {
-        showToast("Unable to copy link.", "error");
-      }
+    } catch (error) {
+      console.error('Share failed:', error);
+      showToast("Failed to share resume.", "error");
     }
   };
 
@@ -57,13 +70,13 @@ export function Header() {
 
   const handleConfirmReset = () => {
     const dataToSave = {
-      resumeData: initialResumeData,
+      resumeData: initialData,
       savedAt: new Date().toISOString(),
       version: "1.0",
     };
-    dispatch({ type: 'SET_RESUME_DATA', payload: initialResumeData });
+    dispatch({ type: 'SET_RESUME_DATA', payload: initialData });
     setShowResetConfirmation(false);    
-    localStorage.setItem(
+    localStorage.setItem( 
       "talentscript_resume_data",
       JSON.stringify(dataToSave)
     );
@@ -128,10 +141,12 @@ export function Header() {
         savedAt: new Date().toISOString(),
         version: "1.0",
       };
-      localStorage.setItem(
-        "talentscript_resume_data",
-        JSON.stringify(dataToSave)
-      );
+      if (!user) {
+        localStorage.setItem(
+          "talentscript_resume_data",
+          JSON.stringify(dataToSave)
+        );
+      }
 
       // If user is logged in, save to backend
       if (user && user.token) {
@@ -170,6 +185,7 @@ export function Header() {
 
   const handleLogout = () => {
     setUser(null);
+    dispatch({ type: 'SET_RESUME_DATA', payload: initialData });
     showToast("Logged out successfully", "info");
   };
 
@@ -231,11 +247,25 @@ export function Header() {
                     }),
                   });
                   const data = await res.json();
+
                   if (!res.ok) throw new Error(data.message || "Auth failed");
                   if (authTab === "login") {
-                    setUser({ email: authEmail, token: data.token });
+                    setUser({
+                      email: data.email,
+                      token: data.token,
+                      name: data.name,
+                      avatar: data.avatar,
+                    });
+                    
+                    // Load user's resume data if it exists
+                    if (data.resumeData) {
+                      dispatch({ type: 'SET_RESUME_DATA', payload: data.resumeData });
+                      showToast("Login successful! Resume data loaded.", "success");
+                    } else {
+                      showToast("Login successful!", "success");
+                    }
+                    
                     setShowAuthModal(false);
-                    showToast("Login successful!", "success");
                   } else {
                     setAuthTab("login");
                     setAuthError("Sign up successful! Please log in.");

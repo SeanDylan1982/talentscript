@@ -19,6 +19,7 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 - **11 Accent Colors**: Customize your resume's color scheme
 - **Profile Image Support**: Optional photo placement with privacy controls
 - **Real-time Preview**: See changes instantly as you edit
+- **Multi-Page Preview**: Accurate page-by-page representation with print boundaries
 
 ### 📝 **Comprehensive Content Management**
 - **Personal Information**: Contact details, social links, and profile photo
@@ -32,26 +33,30 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 
 ### 🔧 **Advanced Functionality**
 - **Drag & Drop Reordering**: Organize experience and education entries
-- **Local Data Persistence**: Automatic saving to browser storage
-- **PDF Export**: High-quality PDF generation for download
+- **Smart PDF Generation**: Multi-page PDF export with proper page breaks
+- **PDF Sharing**: Direct PDF sharing via native share API
+- **Print Area Visualization**: Clear boundaries showing printable content
+- **User Authentication**: Secure login with cloud data synchronization
 - **Interactive Tutorial**: Guided onboarding for new users
 - **Responsive Design**: Works perfectly on desktop and mobile
-- **Privacy-First**: No data sent to external servers
+- **User Feedback System**: Integrated feedback collection via Netlify Forms
 
 ## 🔐 Authentication & Data Storage
 
-- **🔑 Logged-in users**: Resume data is securely saved to your account in MongoDB Atlas. Access your resume from any device after logging in.
+- **🔑 Logged-in users**: Resume data is securely saved to your account in MongoDB Atlas. Access your resume from any device after logging in. Data automatically loads upon login and resets upon logout.
 - **🖥️ Guests**: Resume data is saved locally in your browser. Do not use this on public/shared computers.
 
 ## 🛡️ Security
 
 - Passwords are hashed and salted using bcrypt before being stored in the database.
-- JWT is used for authentication.
+- JWT is used for authentication with 7-day expiration.
+- Client-side data validation and sanitization.
 
 ## 👁️ Privacy Notice
 
 - If you are not logged in, your data is only stored locally and is not sent to any server.
 - If you are logged in, your data is securely stored in the database and is not shared with third parties.
+- Feedback submissions are processed through Netlify Forms with optional contact information.
 
 ## 🚀 Live Demo
 
@@ -82,9 +87,10 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 - **Lucide React** - Consistent icon library
 - **Framer Motion** - Smooth animations (via Tailwind)
 
-### PDF Generation
-- **html2canvas 1.4.1** - HTML to canvas conversion
-- **jsPDF 2.5.1** - Client-side PDF generation
+### PDF Generation & Sharing
+- **html2canvas 1.4.1** - HTML to canvas conversion with multi-page support
+- **jsPDF 2.5.1** - Client-side PDF generation with automatic page splitting
+- **Web Share API** - Native PDF sharing capabilities
 
 ### Development Tools
 - **ESLint** - Code linting and formatting
@@ -175,17 +181,25 @@ npm run preview
 
 ### Getting Started
 1. **Launch the Application**: Open TalentScript in your browser
-2. **Complete the Tutorial**: Follow the interactive guide for new users
-3. **Add Your Information**: Fill in your personal details, experience, and education
-4. **Customize Your Design**: Choose a template, font, and color scheme
-5. **Save Your Progress**: Use the save button to store your data locally
-6. **Download Your Resume**: Export as PDF when ready
+2. **Sign Up or Continue as Guest**: Create an account for cloud sync or use locally
+3. **Complete the Tutorial**: Follow the interactive guide for new users
+4. **Add Your Information**: Fill in your personal details, experience, and education
+5. **Customize Your Design**: Choose a template, font, and color scheme
+6. **Preview Your Resume**: View multi-page layout with print boundaries
+7. **Save Your Progress**: Data saves automatically (locally or to cloud)
+8. **Share or Download**: Export as PDF or share directly
 
 ### Data Management
-- **Local Storage**: All data is saved locally in your browser
-- **Privacy First**: No information is sent to external servers
+- **Cloud Sync**: Logged-in users get cross-device synchronization
+- **Local Storage**: Guest data saved in browser with privacy protection
 - **Auto-Save**: Changes are automatically preserved
-- **Export Options**: Download as high-quality PDF
+- **Smart Export**: Multi-page PDF generation with proper formatting
+- **Direct Sharing**: Share PDF files via native device sharing
+
+### Print Preview Features
+- **Page Boundaries**: Visual indicators show printable areas
+- **Multi-Page Layout**: Content automatically flows across pages
+- **Print-Safe Formatting**: Prevents content from being cut mid-line
 
 ### Customization Options
 
@@ -242,18 +256,25 @@ To modify templates or add new features:
 ## 🚀 Deployment
 
 ### Netlify (Recommended)
-The application is optimized for Netlify deployment:
+The application is optimized for Netlify deployment with integrated services:
 
 1. **Connect your repository** to Netlify
 2. **Build settings**:
    - Build command: `npm run build`
    - Publish directory: `dist`
-3. **Deploy**: Automatic deployment on git push
+3. **Environment variables**: Configure MongoDB and JWT secrets
+4. **Enable Netlify Forms**: Automatic form detection for feedback system
+5. **Deploy**: Automatic deployment on git push
+
+### Backend Deployment
+- **MongoDB Atlas**: Cloud database hosting
+- **Node.js Server**: Deploy to Heroku, Railway, or similar platforms
+- **Environment Configuration**: Secure credential management
 
 ### Other Platforms
-- **Vercel**: Works out of the box
-- **GitHub Pages**: Requires build step configuration
-- **AWS S3**: Static hosting with CloudFront
+- **Vercel**: Works with additional configuration for forms
+- **GitHub Pages**: Static hosting (limited backend functionality)
+- **AWS S3**: Static hosting with CloudFront (requires separate backend)
 
 ## 🤝 Contributing
 
@@ -293,16 +314,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🗺️ Roadmap
 
 ### Upcoming Features
-- [ ] Multiple resume support
-- [ ] Cloud storage integration
-- [ ] Additional templates
-- [ ] Cover letter builder
-- [ ] LinkedIn import
+- [ ] Additional professional templates
+- [ ] Cover letter builder integration
+- [ ] LinkedIn profile import
 - [ ] ATS optimization scoring
-- [ ] Collaborative editing
-- [ ] Mobile app
+- [ ] Collaborative editing features
+- [ ] Mobile app development
+- [ ] Advanced analytics dashboard
+- [ ] Custom branding options
 
 ### Version History
+- **v1.3.0** - Multi-page preview, PDF sharing, user authentication, feedback system
 - **v1.2.0** - Interactive tutorial, drag-and-drop reordering, enhanced privacy controls
 - **v1.1.0** - Multiple templates, font customization, color themes
 - **v1.0.0** - Initial release with core functionality
