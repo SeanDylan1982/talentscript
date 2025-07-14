@@ -25,17 +25,17 @@
 *::-webkit-scrollbar {
   height: 5px;
   width: 5px;
-  background-color:#5f5f5f5b;
+  background-color:#788ca96c;
   scale: 1;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color:#6f6f6fc8;
-  border-radius: 10px;
+  background-color:#67979552;
+  border-radius: 10px;  
 }
-
+s
 *::-webkit-scrollbar-tracks {
-  background-color:#545454;
+  background-color:#88abb967;
 } 
 
 a {
