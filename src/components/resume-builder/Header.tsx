@@ -12,6 +12,7 @@ import {
 import { useResume } from '@/contexts/ResumeContext';
 import { generatePDF, generatePDFBlob, generateResumeFilename } from '@/utils/pdfGenerator';
 import initialData from '@/contexts/ResumeData';
+import logo from './logo.png';
 
 export function Header() {
   const { state, dispatch } = useResume();
@@ -256,15 +257,21 @@ export function Header() {
                       name: data.name,
                       avatar: data.avatar,
                     });
-                    
+
                     // Load user's resume data if it exists
                     if (data.resumeData) {
-                      dispatch({ type: 'SET_RESUME_DATA', payload: data.resumeData });
-                      showToast("Login successful! Resume data loaded.", "success");
+                      dispatch({
+                        type: "SET_RESUME_DATA",
+                        payload: data.resumeData,
+                      });
+                      showToast(
+                        "Login successful! Resume data loaded.",
+                        "success"
+                      );
                     } else {
                       showToast("Login successful!", "success");
                     }
-                    
+
                     setShowAuthModal(false);
                   } else {
                     setAuthTab("login");
@@ -289,14 +296,14 @@ export function Header() {
           <div className="flex items-center justify-between h-12">
             <div className="flex items-center space-x-3">
               <span className="font-bold text-2xl text-gray-700">
-                <img src="../../../img/perspective_matte-7-128x128.png" alt="logo" style={{  width: 40, height: 40 }} />
-                </span>
-                <span className="font-bold text-2xl text-blue-600">
-                  Talent<span style={{ color: '#998fe8ff' }}>Script</span>
-                </span>
-                <span className="font-light text-xl text-gray-700">
-                  Your Talent, Scripted
-                </span>
+                <img src={logo} alt="Talent Script Logo" style= {{ width: "40px", height: "40px" }} />
+              </span>
+              <span className="font-bold text-2xl text-blue-600">
+                Talent<span style={{ color: "#998fe8ff" }}>Script</span>
+              </span>
+              <span className="font-light text-xl text-gray-700">
+                Your Talent, Scripted
+              </span>
               {state.hasUnsavedChanges && (
                 <span className="text-base text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
                   Unsaved
