@@ -172,6 +172,15 @@ button:focus-visible {
   color: #fff;
 }
 
+.resume-preview-header {
+  width: 100%;
+  display: block;
+  position: fixed;
+  z-index: 99;
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+}
+
 /* Resume print styles */
 .resume-preview {
   page-break-inside: avoid;

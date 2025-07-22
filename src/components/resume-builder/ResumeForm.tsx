@@ -51,7 +51,7 @@ export function ResumeForm({ activeTab = 'personal', onTabChange }: ResumeFormPr
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pt-2">
         <div className="m-1">
           <Tabs
             value={currentTab}

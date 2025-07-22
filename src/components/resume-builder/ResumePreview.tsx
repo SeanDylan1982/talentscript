@@ -47,7 +47,7 @@ export function ResumePreview() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-1 border-b border-gray-200 bg-white h-14">
+      <div className="p-1 border-b border-gray-200 bg-white h-14 resume-preview-header">
         <h3 className="text-base pl-2 font-medium text-gray-900">
           Resume Preview
         </h3>
@@ -59,7 +59,7 @@ export function ResumePreview() {
         </p>
       </div>
 
-      <div className="flex-1 p-6 c-hidden bg-gray-100">
+      <div className="flex-1 p-6 c-hidden bg-gray-100 mt-20">
         {/* Hidden measurement container */}
         <div
           className="invisible absolute"
