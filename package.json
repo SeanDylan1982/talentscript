@@ -49,6 +49,7 @@
     "embla-carousel-react": "^8.3.0",
     "express": "^5.1.0",
     "html2canvas": "^1.4.1",
+    "huggingface": "^1.4.0",
     "input-otp": "^1.2.4",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",

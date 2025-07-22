@@ -288,8 +288,11 @@ export function Header() {
         <div className="px-4">
           <div className="flex items-center justify-between h-12">
             <div className="flex items-center space-x-3">
+              <span className="font-bold text-2xl text-gray-700">
+                <img src="../../../img/perspective_matte-7-128x128.png" alt="logo" style={{  width: 40, height: 40 }} />
+                </span>
                 <span className="font-bold text-2xl text-blue-600">
-                  TalentScript
+                  Talent<span style={{ color: '#998fe8ff' }}>Script</span>
                 </span>
                 <span className="font-light text-xl text-gray-700">
                   Your Talent, Scripted
