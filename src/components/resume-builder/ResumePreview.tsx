@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { useResume } from "@/contexts/ResumeContext";
-import { MinimalTemplate } from "./templates/MinimalTemplate";
-import { ModernTemplate } from "./templates/ModernTemplate";
-import { CreativeTemplate } from "./templates/CreativeTemplate";
 import { loadGoogleFont } from "@/utils/fontLoader";
+import { getTemplateComponent } from "./templateRegistry";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function ResumePreview() {
   const { state } = useResume();
@@ -32,17 +31,19 @@ export function ResumePreview() {
 
   const renderTemplate = () => {
     const templateProps = { data: resumeData };
-
-    switch (resumeData.template) {
-      case "minimal":
-        return <MinimalTemplate {...templateProps} />;
-      case "modern":
-        return <ModernTemplate {...templateProps} />;
-      case "creative":
-        return <CreativeTemplate {...templateProps} />;
-      default:
-        return <MinimalTemplate {...templateProps} />;
-    }
+    const TemplateComponent = getTemplateComponent(resumeData.template);
+    
+    return (
+      <Suspense fallback={
+        <div className="space-y-4 p-4">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      }>
+        <TemplateComponent {...templateProps} />
+      </Suspense>
+    );
   };
 
   return (
@@ -84,10 +85,10 @@ export function ResumePreview() {
               id={i === 0 ? "resume-preview" : `resume-preview-page-${i + 1}`}
               className="bg-white shadow-lg relative"
               style={{
+                '--accent-color': resumeData.customization.accentColor,
+                fontFamily: resumeData.customization.fontFamily,
                 width: "8.5in",
                 height: "11in",
-                fontFamily: resumeData.customization.fontFamily,
-                fontDisplay: "swap",
                 padding: "0.5in",
                 boxSizing: "border-box",
                 overflow: "hidden",

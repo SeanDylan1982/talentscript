@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useResume } from '@/contexts/ResumeContext';
 import { GOOGLE_FONTS, loadGoogleFont, preloadAllFonts } from '@/utils/fontLoader';
+import { TemplateSelector } from '../TemplateSelector';
 
 const ACCENT_COLORS = [
   { name: 'Blue', value: '#3B82F6' },
@@ -18,12 +19,6 @@ const ACCENT_COLORS = [
   { name: 'Teal', value: '#14B8A6' },
   { name: 'Cyan', value: '#06B6D4' },
   { name: 'Gray', value: '#6B7280' }
-];
-
-const TEMPLATES = [
-  { name: 'Minimal', value: 'minimal', description: 'Clean and simple design, perfect for ATS systems' },
-  { name: 'Modern', value: 'modern', description: 'Contemporary layout with accent colors and clean typography' },
-  { name: 'Creative', value: 'creative', description: 'Stand out with a unique design that includes photo placement' }
 ];
 
 export function CustomizationForm() {
@@ -42,8 +37,9 @@ export function CustomizationForm() {
     }
   }, [customization.fontFamily]);
 
-  const updateTemplate = (newTemplate: typeof template) => {
-    dispatch({ type: 'UPDATE_TEMPLATE', payload: newTemplate });
+  const updateTemplate = (templateId: string) => {
+    // Type assertion to satisfy TypeScript - we'll ensure templateId is valid in the TemplateSelector
+    dispatch({ type: 'UPDATE_TEMPLATE', payload: templateId as any });
   };
 
   const updateCustomization = (updates: Partial<typeof customization>) => {
@@ -68,33 +64,12 @@ export function CustomizationForm() {
       
       {/* Template Selection */}
       <div className="space-y-3">
-        <Label>Resume Template</Label>
-        <div className="grid grid-cols-1 gap-3 m-2">
-          {TEMPLATES.map((templateOption) => (
-            <div
-              key={templateOption.value}
-              className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                template === templateOption.value
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
-              onClick={() => updateTemplate(templateOption.value as typeof template)}
-            >
-              <div className="flex items-center space-x-3">
-                <div
-                  className={`w-4 h-4 rounded-full border-2 ${
-                    template === templateOption.value
-                      ? 'border-blue-500 bg-blue-500'
-                      : 'border-gray-300'
-                  }`}
-                />
-                <div>
-                  <h4 className="font-medium text-gray-900">{templateOption.name}</h4>
-                  <p className="text-sm text-gray-500">{templateOption.description}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+        <Label className="text-base font-medium">Resume Template</Label>
+        <div className="m-2">
+          <TemplateSelector 
+            onSelectTemplate={updateTemplate}
+            selectedTemplateId={template}
+          />
         </div>
       </div>
 

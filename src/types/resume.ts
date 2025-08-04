@@ -1,5 +1,6 @@
 export interface PersonalInfo {
   fullName: string;
+  title?: string;
   email: string;
   phone: string;
   location: string;
@@ -72,7 +73,8 @@ export type ResumeSectionType =
   | 'skills'
   | 'certifications'
   | 'projects'
-  | 'references';
+  | 'references'
+  | 'publications';
 
 export interface ResumeSection {
   id: string;
@@ -93,7 +95,7 @@ export interface ResumeData {
   projects: Project[];
   references: Reference[];
   sections: ResumeSection[];
-  template: 'minimal' | 'modern' | 'creative';
+  template: string; // Template IDs are now validated at runtime
   customization: {
     fontFamily: string;
     accentColor: string;

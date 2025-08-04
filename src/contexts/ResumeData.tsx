@@ -238,7 +238,7 @@ const initialData: ResumeData = {
       order: 8,
     },
   ],
-  template: "minimal",
+  template: "clean-minimalist",
   customization: {
     fontFamily: "Inter",
     accentColor: "#3B82F6",

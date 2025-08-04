@@ -276,7 +276,7 @@ const initialResumeData: ResumeData = {
       order: 8,
     },
   ],
-  template: "minimal",
+  template: "minimalist",
   customization: {
     fontFamily: "Inter",
     accentColor: "#3B82F6",
@@ -542,12 +542,19 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
         hasUnsavedChanges: true
       };
       
-    case 'UPDATE_TEMPLATE':
+    case 'UPDATE_TEMPLATE': {
+      // Ensure the template ID exists in the registry, otherwise fall back to 'clean-minimalist'
+      const templateId = typeof action.payload === 'string' ? action.payload : 'clean-minimalist';
+      console.log('Updating template to:', templateId);
       return {
         ...state,
-        resumeData: { ...state.resumeData, template: action.payload },
+        resumeData: { 
+          ...state.resumeData, 
+          template: templateId 
+        },
         hasUnsavedChanges: true
       };
+    }
       
     case 'UPDATE_CUSTOMIZATION':
       return {

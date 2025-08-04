@@ -1,65 +1,15 @@
-import { ResumeData, Certification as CertificationType, Project as ProjectType } from '@/types/resume';
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Award } from 'lucide-react';
 import React from 'react';
-
-// Define the Section interface since it's not exported from resume.ts
-interface Section {
-  id: string;
-  type: string;
-  title: string;
-  isVisible: boolean;
-  order: number;
-}
+import { ResumeData } from '@/types/resume';
+import { Mail, Phone, MapPin, Globe, Linkedin, Github } from 'lucide-react';
 
 interface TemplateProps {
   data: ResumeData;
 }
 
-interface SectionWithOrder extends Section {
-  order: number;
-  isVisible: boolean;
-}
-
-// Default values for customization
-const defaultCustomization = {
-  fontFamily: 'Arial, sans-serif',
-  accentColor: '#2563eb',
-  showProfileImage: true
-};
-
-// Type guard to check if an object is a Certification
-const isCertification = (item: unknown): item is CertificationType => {
-  return item !== null && 
-         typeof item === 'object' && 
-         'name' in item && 
-         'issuer' in item && 
-         'date' in item;
-};
-
-// Type guard to check if an object is a Project
-const isProject = (item: unknown): item is ProjectType => {
-  return item !== null && 
-         typeof item === 'object' && 
-         'name' in item && 
-         'description' in item;
-};
-
 export function MinimalTemplate({ data }: TemplateProps) {
-  // Destructure with default values to prevent undefined errors
-  const { 
-    personalInfo = { fullName: '', email: '', phone: '', location: '' },
-    summary = '',
-    experience = [],
-    education = [],
-    skills = [],
-    certifications = [],
-    projects = [],
-    references = [],
-    sections = [],
-    customization = defaultCustomization
-  } = data || {};
+  const { personalInfo, summary, experience, education, skills, certifications, projects, references, sections, customization } = data;
   
-  const visibleSections = (sections as SectionWithOrder[]).filter(section => section.isVisible).sort((a, b) => a.order - b.order);
+  const visibleSections = sections.filter(section => section.isVisible).sort((a, b) => a.order - b.order);
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -73,7 +23,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
     return url.replace(/^https?:\/\/(www\.)?/, '');
   };
 
-  const renderSection = (section: Section) => {
+  const renderSection = (section: typeof sections[0]) => {
     switch (section.type) {
       case 'personalInfo':
         return (
@@ -243,16 +193,15 @@ export function MinimalTemplate({ data }: TemplateProps) {
         );
 
       case 'certifications':
-        if (validCertifications.length === 0) return null;
-        
+        if (certifications.length === 0) return null;
         return (
-          <div key={section.id} className="p-6 border-b border-gray-200">
-            <h2 className="text-base font-semibold mb-4 flex items-center text-gray-800" style={{ fontFamily: customization.fontFamily }}>
-              <Award className="w-4 h-4 mr-2" style={{ color: customization.accentColor }} />
+          <div key={section.id} className="mb-5">
+            <h2 className="text-base font-semibold text-gray-900 mb-3 pb-1 border-b" 
+                style={{ fontFamily: customization.fontFamily, borderColor: customization.accentColor }}>
               Certifications
             </h2>
-            <div className="space-y-3">
-              {validCertifications.map((cert) => (
+            <div className="space-y-2">
+              {certifications.map((cert) => (
                 <div key={cert.id} className="flex justify-between items-start break-inside-avoid">
                   <div>
                     <h3 className="text-sm font-medium text-gray-900" style={{ fontFamily: customization.fontFamily }}>
@@ -281,7 +230,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
               Projects
             </h2>
             <div className="space-y-4">
-              {projects.map((project: Project) => (
+              {projects.map((project) => (
                 <div key={project.id} className="break-inside-avoid">
                   <div className="flex justify-between items-start mb-1">
                     <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
@@ -297,7 +246,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
                   </p>
                   {project.technologies.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-1">
-                      {project.technologies.map((tech: string, index: number) => (
+                      {project.technologies.map((tech, index) => (
                         <span
                           key={index}
                           className="px-2 py-1 text-xs rounded"
@@ -332,7 +281,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
               Professional References
             </h2>
             <div className="space-y-3">
-              {references.map((ref: any) => (
+              {references.map((ref) => (
                 <div key={ref.id} className="break-inside-avoid">
                   <div className="flex justify-between items-start">
                     <div>
@@ -362,27 +311,9 @@ export function MinimalTemplate({ data }: TemplateProps) {
     }
   };
 
-  // Filter projects to only include those that match the ProjectType
-  const validProjects = projects.filter(isProject);
-  
-  // Filter certifications to only include those that match the CertificationType
-  const validCertifications = certifications.filter(isCertification);
-
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow overflow-hidden">
-        {/* Render sections based on visibility and order */}
-        {visibleSections.map((section) => {
-          // Pass filtered data to renderSection
-          const sectionData = {
-            ...section,
-            projects: validProjects,
-            certifications: validCertifications,
-            customization
-          };
-          return renderSection(sectionData);
-        })}
-      </div>
+    <div className="bg-white min-h-full" style={{ fontFamily: customization.fontFamily, fontSize: '14px', lineHeight: '1.4' }}>
+      {visibleSections.map(renderSection)}
     </div>
   );
 }
