@@ -7,6 +7,10 @@
 
 A modern, feature-rich resume builder that helps professionals create stunning resumes with ease. Built with React, TypeScript, and Tailwind CSS.
 
+## Live Preview
+
+[(https://talentscript.netlify.app/)]
+
 ## 🌟 Features
 
 ### ✨ **Professional Templates**
