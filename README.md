@@ -9,7 +9,7 @@ A modern, feature-rich resume builder that helps professionals create stunning r
 
 ## Live Preview
 
-[(https://talentscript.netlify.app/)]
+[!](https://talentscript.netlify.app/)
 
 ## 🌟 Features
 
