@@ -286,9 +286,9 @@ export const getTemplateComponent = (templateId: string) => {
     return templates[componentKey as keyof typeof templates];
   }
   
-  // If still not found, log a warning and return MinimalTemplate as fallback
-  console.warn(`Template component for ID "${templateId}" not found, falling back to MinimalTemplate`);
-  return templates.MinimalTemplate || templates.CleanProfessionalTemplate;
+  // If still not found, log a warning and return MinimalistTemplate as fallback
+  console.warn(`Template component for ID "${templateId}" not found, falling back to MinimalistTemplate`);
+  return templates.MinimalistTemplate || templates.CleanProfessionalTemplate;
 };
 
 export default templateRegistry;

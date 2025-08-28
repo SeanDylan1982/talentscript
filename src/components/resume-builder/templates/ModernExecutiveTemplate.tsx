@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Linkedin, Globe, Briefcase, GraduationCap, Award, Code } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Globe, Briefcase, GraduationCap } from 'lucide-react';
 import { ResumeData } from '@/types/resume';
 
 type TemplateProps = {

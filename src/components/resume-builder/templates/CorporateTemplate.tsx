@@ -1,5 +1,5 @@
 import { ResumeData } from '@/types/resume';
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, Code, Award, BookOpen, User } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, Code, Award, User } from 'lucide-react';
 
 interface TemplateProps {
   data: ResumeData;

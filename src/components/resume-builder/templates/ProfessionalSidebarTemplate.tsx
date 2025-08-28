@@ -6,7 +6,7 @@ type TemplateProps = {
 };
 
 export function ProfessionalSidebarTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications } = data;
+  const { personalInfo, summary, experience, education, skills } = data;
   const accentColor = data.customization.accentColor || '#2563eb';
   
   const formatDate = (dateStr: string) => {

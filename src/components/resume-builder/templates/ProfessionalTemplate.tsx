@@ -1,4 +1,3 @@
-import React from 'react';
 import { ResumeData } from '@/types/resume';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github } from 'lucide-react';
 
@@ -7,7 +6,7 @@ interface TemplateProps {
 }
 
 export function ProfessionalTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications, projects, references, sections, customization } = data;
+  const { personalInfo, summary, experience, sections, customization } = data;
   
   const visibleSections = sections.filter(section => section.isVisible).sort((a, b) => a.order - b.order);
 
@@ -32,9 +31,9 @@ export function ProfessionalTemplate({ data }: TemplateProps) {
                   style={{ color: customization.accentColor, fontFamily: customization.fontFamily }}>
                 {personalInfo.fullName || 'Your Name'}
               </h1>
-              {personalInfo.jobTitle && (
+              {personalInfo.title && (
                 <p className="text-sm font-medium text-gray-600" style={{ fontFamily: customization.fontFamily }}>
-                  {personalInfo.jobTitle}
+                  {personalInfo.title}
                 </p>
               )}
             </div>

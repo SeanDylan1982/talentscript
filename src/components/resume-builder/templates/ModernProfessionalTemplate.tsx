@@ -16,11 +16,6 @@ export function ModernProfessionalTemplate({ data }: TemplateProps) {
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
   };
 
-  const formatUrl = (url: string) => {
-    if (!url) return '';
-    return url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
-  };
-
   const renderSection = (section: typeof sections[0]) => {
     switch (section.type) {
       case 'personalInfo':

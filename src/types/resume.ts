@@ -22,13 +22,15 @@ export interface WorkExperience {
 }
 
 export interface Education {
-  id: string;
+  id:string;
   degree: string;
   school: string;
   location: string;
   graduationDate: string;
   gpa?: string;
+  fieldOfStudy?: string;
   relevantCourses?: string[];
+  achievements?: string[];
 }
 
 export interface Skill {

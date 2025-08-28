@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, Code, Award } from 'lucide-react';
+import { Briefcase, GraduationCap, Code, Award } from 'lucide-react';
 import { ResumeData } from '@/types/resume';
 
 type TemplateProps = {
@@ -52,7 +52,7 @@ export function TimelineTemplate({ data }: TemplateProps) {
                 Work Experience
               </h2>
               <div className="space-y-8">
-                {experience.map((exp, idx) => (
+                {experience.map((exp) => (
                   <div key={exp.id} className="relative pl-10">
                     <div 
                       className="absolute left-0 w-3 h-3 rounded-full border-2 border-white shadow-md" 

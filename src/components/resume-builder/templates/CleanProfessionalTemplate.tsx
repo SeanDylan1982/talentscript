@@ -1,8 +1,8 @@
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, Code, Award } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Briefcase, GraduationCap, Code, Award } from 'lucide-react';
 import { TemplateProps } from './types';
 
 export function CleanProfessionalTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications, projects, sections, customization } = data;
+  const { personalInfo, summary, experience, education, skills, certifications, sections, customization } = data;
   const visibleSections = sections.filter(section => section.isVisible).sort((a, b) => a.order - b.order);
 
   const formatDate = (dateStr: string) => {

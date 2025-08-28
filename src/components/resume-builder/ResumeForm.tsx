@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PersonalInfoForm } from './form-sections/PersonalInfoForm';
 import { SummaryForm } from './form-sections/SummaryForm';

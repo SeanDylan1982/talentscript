@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, Code, Award, User, BookOpen } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, User, BookOpen } from 'lucide-react';
 import { ResumeData } from '@/types/resume';
 
 type TemplateProps = {
@@ -6,8 +6,7 @@ type TemplateProps = {
 };
 
 export function ModernSidebarTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications, projects, sections, customization } = data;
-  const visibleSections = sections.filter(section => section.isVisible).sort((a, b) => a.order - b.order);
+  const { personalInfo, summary, experience, education, skills, certifications, projects, customization } = data;
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';

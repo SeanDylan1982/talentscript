@@ -1,5 +1,5 @@
 import { ResumeData } from '@/types/resume';
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Code, Cpu, BookOpen, Award, Briefcase, GraduationCap } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Linkedin, Github, Code, Cpu, Award, Briefcase, GraduationCap } from 'lucide-react';
 
 interface TemplateProps {
   data: ResumeData;
@@ -14,11 +14,6 @@ export function TechTemplate({ data }: TemplateProps) {
     if (!dateStr) return '';
     const date = new Date(dateStr + '-01');
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-  };
-
-  const formatUrl = (url: string) => {
-    if (!url) return '';
-    return url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
   };
 
   const renderSection = (section: typeof sections[0]) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ResumeData } from '@/types/resume';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github } from 'lucide-react';
 

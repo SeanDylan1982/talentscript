@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -27,10 +27,7 @@ export function Header() {
   const [authPassword, setAuthPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [user, setUser] = useState(null);
-
-  
-
+  const [user, setUser] = useState<{ email: string; token: string; name: string; avatar: string; } | null>(null);
   const handleShare = async () => {
     try {
       const filename = generateResumeFilename(state.resumeData.personalInfo.fullName);
@@ -314,7 +311,6 @@ export function Header() {
             <div className="flex items-center space-x-2">
               <Button
                 variant="outline"
-                size="base"
                 onClick={handleResetClick}
                 className="h-6 px-2 text-xs"
                 data-tutorial="reset-button"
@@ -331,7 +327,6 @@ export function Header() {
 
               <Button
                 variant="outline"
-                size="base"
                 onClick={handleShare}
                 className="h-6 px-2 text-xs"
                 data-tutorial="share-button"
@@ -345,7 +340,6 @@ export function Header() {
               </Button>
               <Button
                 variant="outline"
-                size="base"
                 onClick={handleSaveClick}
                 disabled={isSaving}
                 className="h-6 px-2 text-xs"
@@ -357,7 +351,6 @@ export function Header() {
 
               <Button
                 variant="default"
-                size="base"
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
                 className="h-6 px-2 text-xs"
@@ -368,7 +361,6 @@ export function Header() {
               </Button>
               <Button
                 variant="outline"
-                size="base"
                 onClick={user ? handleLogout : () => setShowAuthModal(true)}
                 className="h-6 px-2 text-xs"
                 data-tutorial="auth-button"

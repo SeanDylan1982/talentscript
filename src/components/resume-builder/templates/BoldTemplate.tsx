@@ -156,7 +156,7 @@ export function BoldTemplate({ data }: TemplateProps) {
                   )}
                   {edu.achievements && edu.achievements.length > 0 && (
                     <ul className="mt-2 space-y-1 text-sm text-gray-700">
-                      {edu.achievements.map((achievement, idx) => (
+                      {edu.achievements.map((achievement: any, idx: any) => (
                         <li key={idx} className="flex">
                           <span className="text-blue-600 mr-2">•</span>
                           <span>{achievement}</span>

@@ -1,6 +1,5 @@
 import { ResumeData, Certification as CertificationType, Project as ProjectType } from '@/types/resume';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, Award } from 'lucide-react';
-import React from 'react';
 
 // Define the Section interface since it's not exported from resume.ts
 interface Section {
@@ -281,7 +280,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
               Projects
             </h2>
             <div className="space-y-4">
-              {projects.map((project: Project) => (
+              {projects.map((project: ProjectType) => (
                 <div key={project.id} className="break-inside-avoid">
                   <div className="flex justify-between items-start mb-1">
                     <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
