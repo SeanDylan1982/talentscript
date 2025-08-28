@@ -16,7 +16,6 @@ export const generatePDF = async (
     filename = 'resume.pdf',
     quality = 2,
     format = 'a4 || letter',
-    margin = 12,
   } = options;
 
   try {

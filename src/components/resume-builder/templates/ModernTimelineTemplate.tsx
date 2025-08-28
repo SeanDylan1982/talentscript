@@ -1,13 +1,9 @@
-import { Mail, Phone, MapPin, Linkedin, Globe, Briefcase, GraduationCap, Award } from 'lucide-react';
-import { ResumeData } from '@/types/resume';
-
-type TemplateProps = {
-  data: ResumeData;
-};
+import { Mail, Phone, MapPin, Briefcase, GraduationCap, Award, Star, BookOpen } from 'lucide-react';
+import { TemplateProps } from './types';
 
 export function ModernTimelineTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications } = data;
-  const accentColor = data.customization.accentColor || '#3b82f6';
+  const { personalInfo, summary, experience, education, skills, certifications, projects, publications, customization } = data || {};
+  const accentColor = customization?.accentColor || '#3b82f6';
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -16,31 +12,31 @@ export function ModernTimelineTemplate({ data }: TemplateProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white" style={{ fontFamily: data.customization.fontFamily }}>
+    <div className="max-w-4xl mx-auto p-6 bg-white" style={{ fontFamily: customization?.fontFamily }}>
       {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-gray-900 mb-1">
-          {personalInfo.fullName}
+          {personalInfo?.fullName}
         </h1>
-        {personalInfo.title && (
+        {personalInfo?.title && (
           <p className="text-lg text-gray-600 mb-4">
             {personalInfo.title}
           </p>
         )}
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-gray-600">
-          {personalInfo.email && (
+          {personalInfo?.email && (
             <span className="flex items-center">
               <Mail className="w-3.5 h-3.5 mr-1" />
               {personalInfo.email}
             </span>
           )}
-          {personalInfo.phone && (
+          {personalInfo?.phone && (
             <span className="flex items-center">
               <Phone className="w-3.5 h-3.5 mr-1" />
               {personalInfo.phone}
             </span>
           )}
-          {personalInfo.location && (
+          {personalInfo?.location && (
             <span className="flex items-center">
               <MapPin className="w-3.5 h-3.5 mr-1" />
               {personalInfo.location}
@@ -71,7 +67,7 @@ export function ModernTimelineTemplate({ data }: TemplateProps) {
                 Work Experience
               </h2>
               <div className="space-y-8">
-                {experience.map((exp, idx) => (
+                {experience.map((exp) => (
                   <div key={exp.id} className="relative pl-10">
                     <div 
                       className="absolute left-0 w-3 h-3 rounded-full border-2 border-white shadow-md" 
@@ -158,7 +154,7 @@ export function ModernTimelineTemplate({ data }: TemplateProps) {
       {/* Skills & Certifications */}
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Skills */}
-        {skills.length > 0 && (
+        {skills && skills.length > 0 && (
           <div>
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
               <Award className="w-5 h-5 mr-2" style={{ color: accentColor }} />
@@ -183,7 +179,7 @@ export function ModernTimelineTemplate({ data }: TemplateProps) {
         )}
 
         {/* Certifications */}
-        {certifications.length > 0 && (
+        {certifications && certifications.length > 0 && (
           <div>
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
               <Award className="w-5 h-5 mr-2" style={{ color: accentColor }} />
@@ -202,6 +198,72 @@ export function ModernTimelineTemplate({ data }: TemplateProps) {
           </div>
         )}
       </div>
+
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+            <div className="mt-10">
+                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <Star className="w-5 h-5 mr-2" style={{ color: accentColor }} />
+                    Projects
+                </h2>
+                <div className="space-y-8">
+                    {projects.map((project) => (
+                        <div key={project.id} className="relative pl-10">
+                            <div
+                                className="absolute left-0 w-3 h-3 rounded-full border-2 border-white shadow-md"
+                                style={{
+                                    backgroundColor: accentColor,
+                                    top: '0.25rem',
+                                    left: '-0.125rem'
+                                }}
+                            ></div>
+                            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                <h3 className="text-lg font-semibold">{project.name}</h3>
+                                <p className="text-gray-700 mt-1">{project.description}</p>
+                                {project.technologies && project.technologies.length > 0 && (
+                                    <div className="mt-2 flex flex-wrap gap-2">
+                                        {project.technologies.map((tech, i) => (
+                                            <span key={i} className="text-xs px-2 py-0.5 bg-gray-100 rounded-full text-gray-700">{tech}</span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
+
+        {/* Publications */}
+        {publications && publications.length > 0 && (
+            <div className="mt-10">
+                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2" style={{ color: accentColor }} />
+                    Publications
+                </h2>
+                <div className="space-y-8">
+                    {publications.map((pub) => (
+                        <div key={pub.id} className="relative pl-10">
+                            <div
+                                className="absolute left-0 w-3 h-3 rounded-full border-2 border-white shadow-md"
+                                style={{
+                                    backgroundColor: accentColor,
+                                    top: '0.25rem',
+                                    left: '-0.125rem'
+                                }}
+                            ></div>
+                            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                <h3 className="text-lg font-semibold">{pub.title}</h3>
+                                <p className="text-gray-700 font-medium">
+                                    {pub.journal}
+                                    {pub.publicationDate && ` • ${formatDate(pub.publicationDate)}`}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
     </div>
   );
 }

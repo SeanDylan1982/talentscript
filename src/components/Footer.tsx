@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
@@ -30,13 +30,13 @@ export default function Footer() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [feedbackStatus, setFeedbackStatus] = useState('');
 
-  const encode = (data) => {
+  const encode = (data: any) => {
     return Object.keys(data)
       .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
       .join("&");
   };
 
-  const handleOpenDoc = async (doc) => {
+  const handleOpenDoc = async (doc: any) => {
     setDocContent('Loading...');
     setOpenDoc(doc.key);
     try {
@@ -48,7 +48,7 @@ export default function Footer() {
     }
   };
 
-  const handleFeedbackSubmit = async (e) => {
+  const handleFeedbackSubmit = async (e: any) => {
     e.preventDefault();
     setFeedbackStatus('Sending...');
     
@@ -93,8 +93,8 @@ export default function Footer() {
             key={doc.key}
             className="hover:underline focus:outline-none px-1 py-0.5 rounded transition-colors duration-100"
             style={{
-              fontSize: "11px",
-              lineHeight: "1.2",
+              fontSize: 11,
+              lineHeight: 1.2,
               color: "#1a1a1a",
               background: "#f1f1f1",
               border: "1px solid #1a1a1a",
@@ -109,8 +109,8 @@ export default function Footer() {
         <button
           className="hover:underline focus:outline-none px-1 py-0.5 rounded transition-colors duration-100"
           style={{
-            fontSize: "11px",
-            lineHeight: "1.2",
+            fontSize: 11,
+            lineHeight: 1.2,
             color: "#1a1a1a",
             background: "#f1f1f1",
             border: "1px solid #1a1a1a",
@@ -200,8 +200,8 @@ export default function Footer() {
               value={formData.message}
               onChange={(e) => setFormData({...formData, message: e.target.value})}
               required
-              rows="10"
-              cols="5"
+              rows={10}
+              cols={5}
               style={{
                 color: "black",
                 background: "#f1f1f1",
@@ -213,7 +213,7 @@ export default function Footer() {
               style={{
                 color: "#f1f1f1",
                 background: "blue",
-                fontSize: "14px",
+                fontSize: 14,
               }}
             >
               Send

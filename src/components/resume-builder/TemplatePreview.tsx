@@ -1,12 +1,8 @@
 import { useEffect, useState, useMemo } from 'react';
 import { getTemplateById } from './templateRegistry';
 import { TemplateCategory, TemplateMeta } from './types';
-import { TemplateProps } from './templates/types';
 import { AlertCircle, FileQuestion, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-// Define a type for the template component
-type TemplateComponent = React.LazyExoticComponent<React.ComponentType<TemplateProps>>;
 
 type TemplateLayout = 'one-column' | 'two-column' | 'sidebar' | 'creative';
 
@@ -185,10 +181,10 @@ const generateSvgPreview = (layout: TemplateLayout, colors: TemplateColors): str
 const useTemplate = (templateId: string): TemplateMeta | null => {
   return useMemo(() => {
     try {
-      const t = getTemplateById(templateId);
+      const t: TemplateMeta | undefined = getTemplateById(templateId);
       if (!t) {
         console.warn(`Template not found: ${templateId}, falling back to 'minimalist'`);
-        return getTemplateById('minimalist');
+        return getTemplateById('minimalist') || null;
       }
       return t;
     } catch (err) {

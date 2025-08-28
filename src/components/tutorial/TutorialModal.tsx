@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { X, ChevronLeft, ChevronRight, User, FileText, Briefcase, Palette, Save, Download } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, User, Palette, Save, Download } from 'lucide-react';
 
 interface TutorialStep {
   id: number;

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-function CookieBanner({ onShowTerms }: { onShowTerms: () => void }) {
+function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const [glow, setGlow] = useState(true);
 

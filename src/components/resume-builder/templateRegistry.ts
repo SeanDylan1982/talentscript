@@ -55,10 +55,10 @@ const templates = {
     () => import('./templates/ExecutiveTemplate'),
     'ExecutiveTemplate'
   ),
-  // MinimalTemplate: createLazyTemplate(
-  //   () => import('./templates/MinimalTemplate'),
-  //   'MinimalTemplate'
-  // ),
+  MinimalTemplate: createLazyTemplate(
+    () => import('./templates/MinimalTemplate'),
+    'MinimalTemplate'
+  ),
   MinimalistATS: createLazyTemplate(
     () => import('./templates/MinimalistATS'),
     'MinimalistATS'
@@ -242,6 +242,146 @@ export const templateRegistry: TemplateMeta[] = [
     atsFriendly: true,
     lastUpdated: '2025-07-23',
   },
+  {
+    id: 'creative',
+    name: 'Creative',
+    description: 'A creative resume with a sidebar and timeline.',
+    category: TemplateCategory.CREATIVE,
+    component: templates.CreativeTemplate,
+    tags: ['creative', 'sidebar', 'timeline'],
+    atsFriendly: false,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'elegant',
+    name: 'Elegant',
+    description: 'An elegant and sophisticated resume template.',
+    category: TemplateCategory.PROFESSIONAL,
+    component: templates.ElegantTemplate,
+    tags: ['elegant', 'professional', 'sophisticated'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'executive',
+    name: 'Executive',
+    description: 'A resume template for executives and managers.',
+    category: TemplateCategory.PROFESSIONAL,
+    component: templates.ExecutiveTemplate,
+    tags: ['executive', 'professional', 'manager'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal',
+    description: 'A minimal resume template with a clean and simple layout.',
+    category: TemplateCategory.MINIMALIST,
+    component: templates.MinimalTemplate,
+    tags: ['minimal', 'simple', 'clean'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'minimalist-professional',
+    name: 'Minimalist Professional',
+    description: 'A minimalist and professional resume template.',
+    category: TemplateCategory.MINIMALIST,
+    component: templates.MinimalistProfessionalTemplate,
+    tags: ['minimalist', 'professional', 'clean'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'minimalist-sidebar',
+    name: 'Minimalist Sidebar',
+    description: 'A minimalist resume with a sidebar for key information.',
+    category: TemplateCategory.MINIMALIST,
+    component: templates.MinimalistSidebarTemplate,
+    tags: ['minimalist', 'sidebar', 'clean'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'modern-dark-sidebar',
+    name: 'Modern Dark Sidebar',
+    description: 'A modern resume with a dark sidebar for a stylish look.',
+    category: TemplateCategory.MODERN,
+    component: templates.ModernDarkSidebarTemplate,
+    tags: ['modern', 'dark', 'sidebar'],
+    atsFriendly: false,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'modern',
+    name: 'Modern',
+    description: 'A modern and stylish resume template.',
+    category: TemplateCategory.MODERN,
+    component: templates.ModernTemplate,
+    tags: ['modern', 'stylish', 'creative'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'modern-two-column',
+    name: 'Modern Two Column',
+    description: 'A modern resume with a two-column layout.',
+    category: TemplateCategory.MODERN,
+    component: templates.ModernTwoColumn,
+    tags: ['modern', 'two-column', 'professional'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'professional-blue',
+    name: 'Professional Blue',
+    description: 'A professional resume with blue accents.',
+    category: TemplateCategory.PROFESSIONAL,
+    component: templates.ProfessionalBlueTemplate,
+    tags: ['professional', 'blue', 'corporate'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'professional-summary',
+    name: 'Professional Summary',
+    description: 'A professional resume with a prominent summary section.',
+    category: TemplateCategory.PROFESSIONAL,
+    component: templates.ProfessionalSummaryTemplate,
+    tags: ['professional', 'summary', 'corporate'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'professional',
+    name: 'Professional',
+    description: 'A classic and professional resume template.',
+    category: TemplateCategory.PROFESSIONAL,
+    component: templates.ProfessionalTemplate,
+    tags: ['professional', 'classic', 'corporate'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'tech',
+    name: 'Tech',
+    description: 'A resume template for tech professionals.',
+    category: TemplateCategory.SPECIALIZED,
+    component: templates.TechTemplate,
+    tags: ['tech', 'software', 'developer'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
+  {
+    id: 'timeline',
+    name: 'Timeline',
+    description: 'A resume template with a timeline layout for experience.',
+    category: TemplateCategory.CREATIVE,
+    component: templates.TimelineTemplate,
+    tags: ['timeline', 'creative', 'modern'],
+    atsFriendly: true,
+    lastUpdated: '2025-07-23',
+  },
 ];
 
 // Helper functions
@@ -286,9 +426,9 @@ export const getTemplateComponent = (templateId: string) => {
     return templates[componentKey as keyof typeof templates];
   }
   
-  // If still not found, log a warning and return MinimalTemplate as fallback
-  console.warn(`Template component for ID "${templateId}" not found, falling back to MinimalTemplate`);
-  return templates.MinimalTemplate || templates.CleanProfessionalTemplate;
+  // If still not found, log a warning and return MinimalistTemplate as fallback
+  console.warn(`Template component for ID "${templateId}" not found, falling back to MinimalistTemplate`);
+  return templates.MinimalistTemplate || templates.CleanProfessionalTemplate;
 };
 
 export default templateRegistry;

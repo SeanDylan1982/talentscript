@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { register, login, saveResume, fetchResume } from "../api/userApi";
 import initialResumeData from "@/contexts/ResumeData";
 

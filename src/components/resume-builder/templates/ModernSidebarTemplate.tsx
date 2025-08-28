@@ -1,13 +1,8 @@
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, Code, Award, User, BookOpen } from 'lucide-react';
-import { ResumeData } from '@/types/resume';
-
-type TemplateProps = {
-  data: ResumeData;
-};
+import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, User, BookOpen } from 'lucide-react';
+import { TemplateProps } from './types';
 
 export function ModernSidebarTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications, projects, sections, customization } = data;
-  const visibleSections = sections.filter(section => section.isVisible).sort((a, b) => a.order - b.order);
+  const { personalInfo, summary, experience, education, skills, certifications, projects, publications, customization } = data || {};
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -17,7 +12,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
 
   const renderSidebar = () => (
     <div className="w-full md:w-1/3 bg-gray-800 text-white p-6">
-      {personalInfo.profileImage && (
+      {personalInfo?.profileImage && (
         <div className="w-32 h-32 rounded-full bg-white p-1 mb-6 mx-auto">
           <img 
             src={personalInfo.profileImage} 
@@ -31,7 +26,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
         <div>
           <h2 className="text-lg font-semibold mb-3 text-white border-b pb-2">CONTACT</h2>
           <div className="space-y-2 text-sm">
-            {personalInfo.email && (
+            {personalInfo?.email && (
               <div className="flex items-center">
                 <Mail className="w-4 h-4 mr-2 text-gray-300" />
                 <a href={`mailto:${personalInfo.email}`} className="hover:underline">
@@ -39,7 +34,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
                 </a>
               </div>
             )}
-            {personalInfo.phone && (
+            {personalInfo?.phone && (
               <div className="flex items-center">
                 <Phone className="w-4 h-4 mr-2 text-gray-300" />
                 <a href={`tel:${personalInfo.phone}`} className="hover:underline">
@@ -47,13 +42,13 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
                 </a>
               </div>
             )}
-            {personalInfo.location && (
+            {personalInfo?.location && (
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 mr-2 text-gray-300" />
                 <span>{personalInfo.location}</span>
               </div>
             )}
-            {personalInfo.website && (
+            {personalInfo?.website && (
               <div className="flex items-center">
                 <Globe className="w-4 h-4 mr-2 text-gray-300" />
                 <a href={personalInfo.website} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -61,7 +56,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
                 </a>
               </div>
             )}
-            {personalInfo.linkedin && (
+            {personalInfo?.linkedin && (
               <div className="flex items-center">
                 <Linkedin className="w-4 h-4 mr-2 text-gray-300" />
                 <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -69,7 +64,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
                 </a>
               </div>
             )}
-            {personalInfo.github && (
+            {personalInfo?.github && (
               <div className="flex items-center">
                 <Github className="w-4 h-4 mr-2 text-gray-300" />
                 <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -80,7 +75,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
           </div>
         </div>
 
-        {skills.length > 0 && (
+        {skills && skills.length > 0 && (
           <div>
             <h2 className="text-lg font-semibold mb-3 text-white border-b pb-2">SKILLS</h2>
             <div className="space-y-2">
@@ -100,7 +95,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
           </div>
         )}
 
-        {certifications.length > 0 && (
+        {certifications && certifications.length > 0 && (
           <div>
             <h2 className="text-lg font-semibold mb-3 text-white border-b pb-2">CERTIFICATIONS</h2>
             <div className="space-y-2 text-sm">
@@ -124,11 +119,11 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
   const renderMainContent = () => (
     <div className="w-full md:w-2/3 p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-1" style={{ fontFamily: customization.fontFamily }}>
-          {personalInfo.fullName}
+        <h1 className="text-3xl font-bold text-gray-900 mb-1" style={{ fontFamily: customization?.fontFamily }}>
+          {personalInfo?.fullName}
         </h1>
-        {personalInfo.title && (
-          <p className="text-lg text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+        {personalInfo?.title && (
+          <p className="text-lg text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
             {personalInfo.title}
           </p>
         )}
@@ -137,17 +132,17 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
       {summary && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-3 text-gray-800 border-b pb-1 flex items-center">
-            <User className="w-5 h-5 mr-2" style={{ color: customization.accentColor }} />
+            <User className="w-5 h-5 mr-2" style={{ color: customization?.accentColor }} />
             PROFILE
           </h2>
-          <p className="text-gray-700" style={{ fontFamily: customization.fontFamily }}>{summary}</p>
+          <p className="text-gray-700" style={{ fontFamily: customization?.fontFamily }}>{summary}</p>
         </div>
       )}
 
-      {experience.length > 0 && (
+      {experience && experience.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-1 flex items-center">
-            <Briefcase className="w-5 h-5 mr-2" style={{ color: customization.accentColor }} />
+            <Briefcase className="w-5 h-5 mr-2" style={{ color: customization?.accentColor }} />
             EXPERIENCE
           </h2>
           <div className="space-y-6">
@@ -155,10 +150,10 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
               <div key={exp.id} className="break-inside-avoid">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                    <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                       {exp.jobTitle}
                     </h3>
-                    <p className="text-gray-700" style={{ fontFamily: customization.fontFamily }}>
+                    <p className="text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
                       {exp.company}
                       {exp.location && ` • ${exp.location}`}
                     </p>
@@ -169,7 +164,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
                 </div>
                 <ul className="mt-2 space-y-1 text-gray-700">
                   {exp.description.map((desc, idx) => (
-                    <li key={idx} className="flex" style={{ fontFamily: customization.fontFamily }}>
+                    <li key={idx} className="flex" style={{ fontFamily: customization?.fontFamily }}>
                       <span className="mr-2">•</span>
                       <span>{desc}</span>
                     </li>
@@ -181,10 +176,10 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
         </div>
       )}
 
-      {education.length > 0 && (
+      {education && education.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-1 flex items-center">
-            <GraduationCap className="w-5 h-5 mr-2" style={{ color: customization.accentColor }} />
+            <GraduationCap className="w-5 h-5 mr-2" style={{ color: customization?.accentColor }} />
             EDUCATION
           </h2>
           <div className="space-y-4">
@@ -192,10 +187,10 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
               <div key={edu.id}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                    <h3 className="font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                       {edu.degree}
                     </h3>
-                    <p className="text-gray-700" style={{ fontFamily: customization.fontFamily }}>
+                    <p className="text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
                       {edu.school}
                       {edu.location && `, ${edu.location}`}
                     </p>
@@ -215,17 +210,17 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
         </div>
       )}
 
-      {projects.length > 0 && (
+      {projects && projects.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-1 flex items-center">
-            <BookOpen className="w-5 h-5 mr-2" style={{ color: customization.accentColor }} />
+            <BookOpen className="w-5 h-5 mr-2" style={{ color: customization?.accentColor }} />
             PROJECTS
           </h2>
           <div className="space-y-4">
             {projects.map((project) => (
               <div key={project.id}>
                 <div className="flex justify-between items-start">
-                  <h3 className="font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                  <h3 className="font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                     {project.name}
                   </h3>
                   <span className="text-sm text-gray-500">
@@ -233,7 +228,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
                     {project.endDate && ` - ${formatDate(project.endDate)}`}
                   </span>
                 </div>
-                <p className="text-gray-700 mt-1" style={{ fontFamily: customization.fontFamily }}>
+                <p className="text-gray-700 mt-1" style={{ fontFamily: customization?.fontFamily }}>
                   {project.description}
                 </p>
                 {project.technologies.length > 0 && (
@@ -242,7 +237,7 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
                       <span 
                         key={idx} 
                         className="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded"
-                        style={{ fontFamily: customization.fontFamily }}
+                        style={{ fontFamily: customization?.fontFamily }}
                       >
                         {tech}
                       </span>
@@ -254,11 +249,33 @@ export function ModernSidebarTemplate({ data }: TemplateProps) {
           </div>
         </div>
       )}
+
+        {publications && publications.length > 0 && (
+            <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-1 flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2" style={{ color: customization?.accentColor }} />
+                    PUBLICATIONS
+                </h2>
+                <div className="space-y-4">
+                    {publications.map((pub) => (
+                        <div key={pub.id}>
+                            <h3 className="font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
+                                {pub.title}
+                            </h3>
+                            <p className="text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
+                                {pub.journal}
+                                {pub.publicationDate && ` • ${formatDate(pub.publicationDate)}`}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
     </div>
   );
 
   return (
-    <div className="bg-white text-gray-800 max-w-6xl mx-auto shadow-lg flex flex-col md:flex-row min-h-screen" style={{ fontFamily: customization.fontFamily }}>
+    <div className="bg-white text-gray-800 max-w-6xl mx-auto shadow-lg flex flex-col md:flex-row min-h-screen" style={{ fontFamily: customization?.fontFamily }}>
       {renderSidebar()}
       {renderMainContent()}
     </div>

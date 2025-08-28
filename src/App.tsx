@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { ResumeBuilder } from '@/components/resume-builder/ResumeBuilder';
 import './App.css';
 import TestApi from '../src/components/TestApi.tsx';
@@ -14,9 +14,7 @@ function App() {
       </div>
     </div>}>
       <ResumeBuilder />
-      <CookieBanner onShowTerms={() => {
-        
-      }} />
+      <CookieBanner />
       <Footer />
       <TestApi />
     </Suspense>

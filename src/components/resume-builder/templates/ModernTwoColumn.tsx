@@ -1,13 +1,9 @@
-import { Mail, Phone, MapPin, Globe, Linkedin, Github, Briefcase, GraduationCap, Code, Award } from 'lucide-react';
-import { ResumeData } from '@/types/resume';
-
-type TemplateProps = {
-  data: ResumeData;
-};
+import { Mail, Phone, MapPin, Linkedin } from 'lucide-react';
+import { TemplateProps } from './types';
 
 export function ModernTwoColumn({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications } = data;
-  const accentColor = data.customization.accentColor || '#3b82f6';
+  const { personalInfo, summary, experience, education, skills, certifications, projects, publications, customization } = data || {};
+  const accentColor = customization?.accentColor || '#3b82f6';
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -16,13 +12,13 @@ export function ModernTwoColumn({ data }: TemplateProps) {
   };
 
   return (
-    <div className="bg-white text-gray-800 max-w-5xl mx-auto shadow-lg flex flex-col md:flex-row" style={{ fontFamily: data.customization.fontFamily }}>
+    <div className="bg-white text-gray-800 max-w-5xl mx-auto shadow-lg flex flex-col md:flex-row" style={{ fontFamily: customization?.fontFamily }}>
       {/* Left Column */}
       <div className="w-full md:w-2/5 bg-gray-50 p-6">
         {/* Profile */}
         <div className="mb-8 text-center">
           <div className="w-32 h-32 rounded-full bg-white p-1 shadow-md mx-auto mb-4 overflow-hidden">
-            {personalInfo.profileImage ? (
+            {personalInfo?.profileImage ? (
               <img 
                 src={personalInfo.profileImage} 
                 alt={personalInfo.fullName}
@@ -31,13 +27,13 @@ export function ModernTwoColumn({ data }: TemplateProps) {
             ) : (
               <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center">
                 <span className="text-4xl text-gray-400">
-                  {personalInfo.fullName.split(' ').map(n => n[0]).join('')}
+                  {personalInfo?.fullName.split(' ').map(n => n[0]).join('')}
                 </span>
               </div>
             )}
           </div>
-          <h1 className="text-xl font-bold text-gray-900">{personalInfo.fullName}</h1>
-          {personalInfo.title && (
+          <h1 className="text-xl font-bold text-gray-900">{personalInfo?.fullName}</h1>
+          {personalInfo?.title && (
             <p className="text-sm text-gray-600 mt-1">{personalInfo.title}</p>
           )}
         </div>
@@ -46,25 +42,25 @@ export function ModernTwoColumn({ data }: TemplateProps) {
         <div className="mb-8">
           <h2 className="text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">Contact</h2>
           <ul className="space-y-2 text-sm">
-            {personalInfo.email && (
+            {personalInfo?.email && (
               <li className="flex items-center">
                 <Mail className="w-4 h-4 mr-2 text-gray-500" />
                 <span>{personalInfo.email}</span>
               </li>
             )}
-            {personalInfo.phone && (
+            {personalInfo?.phone && (
               <li className="flex items-center">
                 <Phone className="w-4 h-4 mr-2 text-gray-500" />
                 <span>{personalInfo.phone}</span>
               </li>
             )}
-            {personalInfo.location && (
+            {personalInfo?.location && (
               <li className="flex items-center">
                 <MapPin className="w-4 h-4 mr-2 text-gray-500" />
                 <span>{personalInfo.location}</span>
               </li>
             )}
-            {personalInfo.linkedin && (
+            {personalInfo?.linkedin && (
               <li className="flex items-center">
                 <Linkedin className="w-4 h-4 mr-2 text-gray-500" />
                 <span>LinkedIn</span>
@@ -74,7 +70,7 @@ export function ModernTwoColumn({ data }: TemplateProps) {
         </div>
 
         {/* Skills */}
-        {skills.length > 0 && (
+        {skills && skills.length > 0 && (
           <div className="mb-8">
             <h2 className="text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">Skills</h2>
             <div className="space-y-3">
@@ -115,7 +111,7 @@ export function ModernTwoColumn({ data }: TemplateProps) {
         )}
 
         {/* Experience */}
-        {experience.length > 0 && (
+        {experience && experience.length > 0 && (
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-gray-900 mb-3 pb-1 border-b border-gray-200">
               Work Experience
@@ -150,7 +146,7 @@ export function ModernTwoColumn({ data }: TemplateProps) {
         )}
 
         {/* Education */}
-        {education.length > 0 && (
+        {education && education.length > 0 && (
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-gray-900 mb-3 pb-1 border-b border-gray-200">
               Education
@@ -181,8 +177,55 @@ export function ModernTwoColumn({ data }: TemplateProps) {
           </div>
         )}
 
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-3 pb-1 border-b border-gray-200">
+              Projects
+            </h2>
+            <div className="space-y-4">
+              {projects.map((project) => (
+                <div key={project.id}>
+                  <h3 className="text-base font-semibold">{project.name}</h3>
+                  <p className="text-sm text-gray-700 mt-1">{project.description}</p>
+                  {project.technologies && project.technologies.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {project.technologies.map((tech, i) => (
+                        <span key={i} className="text-xs px-2 py-0.5 bg-gray-100 rounded">{tech}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Publications */}
+        {publications && publications.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-3 pb-1 border-b border-gray-200">
+              Publications
+            </h2>
+            <div className="space-y-4">
+              {publications.map((pub) => (
+                <div key={pub.id}>
+                  <h3 className="text-base font-semibold">{pub.title}</h3>
+                  <p className="text-sm text-gray-700">
+                    {pub.journal}
+                    {pub.publicationDate && ` • ${formatDate(pub.publicationDate)}`}
+                  </p>
+                  <a href={pub.url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline">
+                    View Publication
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Certifications */}
-        {certifications.length > 0 && (
+        {certifications && certifications.length > 0 && (
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-3 pb-1 border-b border-gray-200">
               Certifications

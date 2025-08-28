@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { ResumeData, ResumeSection, WorkExperience, Education, Skill, Certification, Project, Reference } from '@/types/resume';
+import { ResumeData, WorkExperience, Education, Skill, Certification, Project, Publication, Reference } from '@/types/resume';
 
 interface ResumeState {
   resumeData: ResumeData;
@@ -28,10 +28,12 @@ type ResumeAction =
   | { type: 'ADD_PROJECT'; payload: Project }
   | { type: 'UPDATE_PROJECT'; payload: { id: string; data: Partial<Project> } }
   | { type: 'DELETE_PROJECT'; payload: string }
+  | { type: 'ADD_PUBLICATION'; payload: Publication }
+  | { type: 'UPDATE_PUBLICATION'; payload: { id: string; data: Partial<Publication> } }
+  | { type: 'DELETE_PUBLICATION'; payload: string }
   | { type: 'ADD_REFERENCE'; payload: Reference }
   | { type: 'UPDATE_REFERENCE'; payload: { id: string; data: Partial<Reference> } }
   | { type: 'DELETE_REFERENCE'; payload: string }
-  | { type: 'REORDER_SECTIONS'; payload: ResumeSection[] }
   | { type: 'UPDATE_TEMPLATE'; payload: ResumeData['template'] }
   | { type: 'UPDATE_CUSTOMIZATION'; payload: Partial<ResumeData['customization']> }
   | { type: 'SET_LOADING'; payload: boolean }
@@ -201,6 +203,17 @@ const initialResumeData: ResumeData = {
       endDate: "2022-01",
     },
   ],
+  publications: [
+    {
+      id: "1",
+      title: "The Impact of Machine Learning on Software Development Lifecycles",
+      authors: ["Sarah Johnson", "John Doe"],
+      journal: "Journal of Computer Science",
+      publicationDate: "2022-10",
+      doi: "10.1234/jcs.2022.5678",
+      url: "https://example.com/publication1"
+    }
+  ],
   references: [
     {
       id: "1",
@@ -228,52 +241,6 @@ const initialResumeData: ResumeData = {
       email: "j.wilson@berkeley.edu",
       phone: "(510) 642-1234",
       relationship: "Academic Reference",
-    },
-  ],
-  sections: [
-    {
-      id: "1",
-      type: "personalInfo",
-      title: "Personal Information",
-      isVisible: true,
-      order: 1,
-    },
-    {
-      id: "2",
-      type: "summary",
-      title: "Professional Summary",
-      isVisible: true,
-      order: 2,
-    },
-    {
-      id: "3",
-      type: "experience",
-      title: "Work Experience",
-      isVisible: true,
-      order: 3,
-    },
-    {
-      id: "4",
-      type: "education",
-      title: "Education",
-      isVisible: true,
-      order: 4,
-    },
-    { id: "5", type: "skills", title: "Skills", isVisible: true, order: 5 },
-    {
-      id: "6",
-      type: "certifications",
-      title: "Certifications",
-      isVisible: true,
-      order: 6,
-    },
-    { id: "7", type: "projects", title: "Projects", isVisible: true, order: 7 },
-    {
-      id: "8",
-      type: "references",
-      title: "References",
-      isVisible: true,
-      order: 8,
     },
   ],
   template: "minimalist",
@@ -503,6 +470,38 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
         hasUnsavedChanges: true
       };
       
+    case 'ADD_PUBLICATION':
+      return {
+        ...state,
+        resumeData: {
+          ...state.resumeData,
+          publications: [...state.resumeData.publications, action.payload]
+        },
+        hasUnsavedChanges: true
+      };
+
+    case 'UPDATE_PUBLICATION':
+      return {
+        ...state,
+        resumeData: {
+          ...state.resumeData,
+          publications: state.resumeData.publications.map(pub =>
+            pub.id === action.payload.id ? { ...pub, ...action.payload.data } : pub
+          )
+        },
+        hasUnsavedChanges: true
+      };
+
+    case 'DELETE_PUBLICATION':
+      return {
+        ...state,
+        resumeData: {
+          ...state.resumeData,
+          publications: state.resumeData.publications.filter(pub => pub.id !== action.payload)
+        },
+        hasUnsavedChanges: true
+      };
+
     case 'ADD_REFERENCE':
       return {
         ...state,
@@ -532,13 +531,6 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
           ...state.resumeData,
           references: state.resumeData.references.filter(ref => ref.id !== action.payload)
         },
-        hasUnsavedChanges: true
-      };
-      
-    case 'REORDER_SECTIONS':
-      return {
-        ...state,
-        resumeData: { ...state.resumeData, sections: action.payload },
         hasUnsavedChanges: true
       };
       

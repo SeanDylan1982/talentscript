@@ -1,13 +1,9 @@
 import { Mail, Phone, MapPin, Linkedin, Globe } from 'lucide-react';
-import { ResumeData } from '@/types/resume';
-
-type TemplateProps = {
-  data: ResumeData;
-};
+import { TemplateProps } from './types';
 
 export function CleanMinimalistTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications } = data;
-  const accentColor = data.customization.accentColor || '#2563eb';
+  const { personalInfo, summary, experience, education, skills, certifications, projects, publications, customization } = data || {};
+  const accentColor = customization?.accentColor || '#2563eb';
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -16,43 +12,43 @@ export function CleanMinimalistTemplate({ data }: TemplateProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white" style={{ fontFamily: data.customization.fontFamily }}>
+    <div className="max-w-4xl mx-auto p-8 bg-white" style={{ fontFamily: customization?.fontFamily }}>
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-1">
-          {personalInfo.fullName}
+          {personalInfo?.fullName}
         </h1>
-        {personalInfo.title && (
+        {personalInfo?.title && (
           <p className="text-lg text-gray-600 mb-3">
             {personalInfo.title}
           </p>
         )}
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-gray-600">
-          {personalInfo.email && (
+          {personalInfo?.email && (
             <span className="flex items-center">
               <Mail className="w-3.5 h-3.5 mr-1" />
               {personalInfo.email}
             </span>
           )}
-          {personalInfo.phone && (
+          {personalInfo?.phone && (
             <span className="flex items-center">
               <Phone className="w-3.5 h-3.5 mr-1" />
               {personalInfo.phone}
             </span>
           )}
-          {personalInfo.location && (
+          {personalInfo?.location && (
             <span className="flex items-center">
               <MapPin className="w-3.5 h-3.5 mr-1" />
               {personalInfo.location}
             </span>
           )}
-          {personalInfo.linkedin && (
+          {personalInfo?.linkedin && (
             <span className="flex items-center">
               <Linkedin className="w-3.5 h-3.5 mr-1" />
               LinkedIn
             </span>
           )}
-          {personalInfo.website && (
+          {personalInfo?.website && (
             <span className="flex items-center">
               <Globe className="w-3.5 h-3.5 mr-1" />
               {personalInfo.website.replace(/^https?:\/\//, '')}
@@ -172,7 +168,7 @@ export function CleanMinimalistTemplate({ data }: TemplateProps) {
           )}
 
           {/* Certifications */}
-          {certifications.length > 0 && (
+          {certifications && certifications.length > 0 && (
             <div>
               <h2 className="text-lg font-semibold text-gray-800 mb-4 pb-1 border-b border-gray-200">
                 CERTIFICATIONS
@@ -185,6 +181,50 @@ export function CleanMinimalistTemplate({ data }: TemplateProps) {
                     <p className="text-xs text-gray-500">
                       {formatDate(cert.date)}
                       {cert.expirationDate && ` • Expires: ${formatDate(cert.expirationDate)}`}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Projects */}
+          {projects && projects.length > 0 && (
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800 mb-4 pb-1 border-b border-gray-200">
+                PROJECTS
+              </h2>
+              <div className="space-y-6">
+                {projects.map((project) => (
+                  <div key={project.id}>
+                    <h3 className="text-base font-semibold">{project.name}</h3>
+                    <p className="text-sm text-gray-700 mt-1">{project.description}</p>
+                    {project.technologies && project.technologies.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {project.technologies.map((tech, i) => (
+                          <span key={i} className="text-xs px-2 py-0.5 bg-gray-100 rounded-full text-gray-700">{tech}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Publications */}
+          {publications && publications.length > 0 && (
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800 mb-4 pb-1 border-b border-gray-200">
+                PUBLICATIONS
+              </h2>
+              <div className="space-y-4">
+                {publications.map((pub) => (
+                  <div key={pub.id}>
+                    <h3 className="font-semibold">{pub.title}</h3>
+                    <p className="text-sm text-gray-700">
+                      {pub.journal}
+                      {pub.publicationDate && ` • ${formatDate(pub.publicationDate)}`}
                     </p>
                   </div>
                 ))}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ResumeProvider } from '@/contexts/ResumeContext';
 import { ResumeForm } from './ResumeForm';
 import { ResumePreview } from './ResumePreview';

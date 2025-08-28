@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, Suspense } from "react";
+import React, { useEffect, useRef, useState, Suspense } from "react";
 import { useResume } from "@/contexts/ResumeContext";
 import { loadGoogleFont } from "@/utils/fontLoader";
 import { getTemplateComponent } from "./templateRegistry";
@@ -7,7 +7,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function ResumePreview() {
   const { state } = useResume();
   const { resumeData } = state;
-  const measureRef = useRef<HTMLDivElement>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -84,7 +83,7 @@ export function ResumePreview() {
               width: '8.27in',
               height: '11.69in',
               boxSizing: 'border-box',
-            }}
+            } as React.CSSProperties}
           >
             <div
               className="p-[0.5in] h-full"

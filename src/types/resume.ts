@@ -22,13 +22,15 @@ export interface WorkExperience {
 }
 
 export interface Education {
-  id: string;
+  id:string;
   degree: string;
   school: string;
   location: string;
   graduationDate: string;
   gpa?: string;
+  fieldOfStudy?: string;
   relevantCourses?: string[];
+  achievements?: string[];
 }
 
 export interface Skill {
@@ -55,6 +57,16 @@ export interface Project {
   endDate?: string;
 }
 
+export interface Publication {
+  id: string;
+  title: string;
+  authors: string[];
+  journal: string;
+  publicationDate: string;
+  doi?: string;
+  url?: string;
+}
+
 export interface Reference {
   id: string;
   name: string;
@@ -76,14 +88,6 @@ export type ResumeSectionType =
   | 'references'
   | 'publications';
 
-export interface ResumeSection {
-  id: string;
-  type: ResumeSectionType;
-  title: string;
-  isVisible: boolean;
-  order: number;
-}
-
 export interface ResumeData {
   id?: string;
   personalInfo: PersonalInfo;
@@ -93,8 +97,8 @@ export interface ResumeData {
   skills: Skill[];
   certifications: Certification[];
   projects: Project[];
+  publications: Publication[];
   references: Reference[];
-  sections: ResumeSection[];
   template: string; // Template IDs are now validated at runtime
   customization: {
     fontFamily: string;

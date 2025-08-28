@@ -1,10 +1,8 @@
-import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Mail, Upload, X } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import { useResume } from '@/contexts/ResumeContext';
-import { SquareUser, FolderPen, Phone, Map, Globe, Linkedin, Github } from "lucide-react";
 
 export function PersonalInfoForm() {
   const { state, dispatch } = useResume();
