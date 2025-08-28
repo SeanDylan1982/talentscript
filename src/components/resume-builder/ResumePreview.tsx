@@ -7,8 +7,27 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function ResumePreview() {
   const { state } = useResume();
   const { resumeData } = state;
-  const [numPages, setNumPages] = useState(1);
   const measureRef = useRef<HTMLDivElement>(null);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  // Handle responsive scaling of the resume preview
+  useEffect(() => {
+    const calculateScale = () => {
+      if (previewContainerRef.current) {
+        const containerWidth = previewContainerRef.current.offsetWidth;
+        // A4 width is 8.27 inches, which is 794px at 96 DPI.
+        // We use a slightly smaller value to account for padding and margins.
+        const a4WidthInPx = 800;
+        const newScale = Math.min(1, containerWidth / a4WidthInPx);
+        setScale(newScale);
+      }
+    };
+
+    calculateScale();
+    window.addEventListener("resize", calculateScale);
+    return () => window.removeEventListener("resize", calculateScale);
+  }, []);
 
   // Ensure the current font is loaded whenever it changes
   useEffect(() => {
@@ -16,18 +35,6 @@ export function ResumePreview() {
       loadGoogleFont(resumeData.customization.fontFamily).catch(console.warn);
     }
   }, [resumeData.customization.fontFamily]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (measureRef.current) {
-        const totalHeight = measureRef.current.scrollHeight;
-        const pageHeight = 960; // 10 inches at 96 DPI
-        const calculatedPages = Math.ceil(totalHeight / pageHeight);
-        setNumPages(Math.max(1, calculatedPages));
-      }
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [resumeData]);
 
   const renderTemplate = () => {
     const templateProps = { data: resumeData };
@@ -60,70 +67,37 @@ export function ResumePreview() {
         </p>
       </div>
 
-      <div className="flex-1 p-6 c-hidden bg-gray-100 mt-20">
-        {/* Hidden measurement container */}
+      <div ref={previewContainerRef} className="flex-1 p-6 c-hidden bg-gray-100 mt-20 overflow-auto">
         <div
-          className="invisible absolute"
-          style={{ width: "7.5in", top: "-9999px" }}
+          className="mx-auto origin-top"
+          style={{
+            transform: `scale(${scale})`,
+            height: `${scale * 11.69 * 96}px`, // Approximate height in pixels for the container
+          }}
         >
           <div
-            ref={measureRef}
+            id="resume-preview"
+            className="bg-white shadow-lg overflow-hidden"
             style={{
+              '--accent-color': resumeData.customization.accentColor,
               fontFamily: resumeData.customization.fontFamily,
-              fontSize: "14px",
-              lineHeight: "1.4",
+              width: '8.27in',
+              height: '11.69in',
+              boxSizing: 'border-box',
             }}
           >
-            {renderTemplate()}
-          </div>
-        </div>
-
-        <div className="mx-auto space-y-6" style={{ width: "8.5in" }}>
-          {Array.from({ length: numPages }, (_, i) => (
             <div
-              key={i}
-              id={i === 0 ? "resume-preview" : `resume-preview-page-${i + 1}`}
-              className="bg-white shadow-lg relative"
+              className="p-[0.5in] h-full"
               style={{
-                '--accent-color': resumeData.customization.accentColor,
-                fontFamily: resumeData.customization.fontFamily,
-                width: "8.5in",
-                height: "11in",
-                padding: "0.5in",
-                boxSizing: "border-box",
-                overflow: "hidden",
+                columnWidth: '7.27in', // 8.27in - 1in padding
+                columnGap: '0.5in',
+                columnFill: 'auto',
+                height: '10.69in', // 11.69in - 1in padding
               }}
             >
-              <div
-                className="absolute inset-0 pointer-events-none border-2 border-dashed border-gray-400 opacity-20"
-                style={{ margin: "0.45in" }}
-              >
-                <div className="absolute bottom-2 right-2 text-xs text-gray-600 bg-white px-1 rounded">
-                  Print Area
-                </div>
-              </div>
-
-              <div
-                style={{
-                  height: "10in",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    height: "30in",
-                    transform: `translateY(-${i * 960}px)`,
-                  }}
-                >
-                  {renderTemplate()}
-                </div>
-              </div>
-
-              <div className="absolute bottom-2 left-2 text-xs text-gray-400">
-                Page {i + 1} of {numPages}
-              </div>
+              {renderTemplate()}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

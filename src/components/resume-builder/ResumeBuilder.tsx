@@ -39,16 +39,16 @@ export function ResumeBuilder() {
     <ResumeProvider>
       <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
         <Header />
-        <div className="flex flex-1 min-h-0">
+        <div className="flex flex-col lg:flex-row flex-1 min-h-0">
           {/* Left Side - Form Section */}
-          <div className="w-3/10 bg-white border-r border-gray-200 flex flex-col min-h-0 pb-[40px]">
+          <div className="w-full lg:w-[40%] bg-white border-r border-gray-200 flex flex-col min-h-0 pb-[40px]">
             <div className="flex-1 overflow-y-auto">
               <ResumeForm activeTab={activeTab} onTabChange={handleTabChange} />
             </div>
           </div>
 
           {/* Right Side - Preview Section */}
-          <div className="w-7/10 bg-gray-100 flex flex-col min-h-0 resume-preview pb-[40px]">
+          <div className="w-full lg:w-[60%] bg-gray-100 flex flex-col min-h-0 resume-preview pb-[40px]">
             <div className="flex-1 overflow-y-auto">
               <ResumePreview />
             </div>
