@@ -1,12 +1,8 @@
-import { ResumeData } from '@/types/resume';
-import { Briefcase, GraduationCap, User, Code, Mail, Phone, MapPin, Globe } from 'lucide-react';
-
-interface TemplateProps {
-  data: ResumeData;
-}
+import { Briefcase, GraduationCap, User, Code, Mail, Phone, MapPin, Globe, Award } from 'lucide-react';
+import { TemplateProps } from './types';
 
 export function CreativeColorBlocksTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, projects } = data;
+  const { personalInfo, summary, experience, education, skills, certifications, projects, publications } = data || {};
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -29,7 +25,7 @@ export function CreativeColorBlocksTemplate({ data }: TemplateProps) {
       <div className={`${colorVariants.primary} p-8`}>
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row items-center">
-            {personalInfo.profileImage && (
+            {personalInfo?.profileImage && (
               <div className="w-32 h-32 rounded-full bg-white p-1 mb-6 md:mb-0 md:mr-8 overflow-hidden">
                 <img 
                   src={personalInfo.profileImage} 
@@ -39,8 +35,8 @@ export function CreativeColorBlocksTemplate({ data }: TemplateProps) {
               </div>
             )}
             <div className="text-center md:text-left">
-              <h1 className="text-4xl font-bold mb-2">{personalInfo.fullName || 'Your Name'}</h1>
-              <p className="text-xl text-blue-100">{personalInfo.title || 'Professional Title'}</p>
+              <h1 className="text-4xl font-bold mb-2">{personalInfo?.fullName || 'Your Name'}</h1>
+              <p className="text-xl text-blue-100">{personalInfo?.title || 'Professional Title'}</p>
             </div>
           </div>
         </div>
@@ -54,25 +50,25 @@ export function CreativeColorBlocksTemplate({ data }: TemplateProps) {
             <div className={`${colorVariants.secondary} p-6 rounded-lg`}>
               <h2 className="text-xl font-bold mb-4">CONTACT</h2>
               <div className="space-y-3">
-                {personalInfo.email && (
+                {personalInfo?.email && (
                   <div className="flex items-start">
                     <Mail className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-sm">{personalInfo.email}</span>
                   </div>
                 )}
-                {personalInfo.phone && (
+                {personalInfo?.phone && (
                   <div className="flex items-start">
                     <Phone className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-sm">{personalInfo.phone}</span>
                   </div>
                 )}
-                {personalInfo.location && (
+                {personalInfo?.location && (
                   <div className="flex items-start">
                     <MapPin className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" />
                     <span className="text-sm">{personalInfo.location}</span>
                   </div>
                 )}
-                {personalInfo.website && (
+                {personalInfo?.website && (
                   <div className="flex items-start">
                     <Globe className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" />
                     <a href={personalInfo.website} className="text-sm hover:underline">
@@ -114,7 +110,7 @@ export function CreativeColorBlocksTemplate({ data }: TemplateProps) {
             )}
 
             {/* Education */}
-            {education.length > 0 && (
+            {education && education.length > 0 && (
               <div className={`${colorVariants.secondary} p-6 rounded-lg`}>
                 <h2 className="text-xl font-bold mb-4 flex items-center">
                   <GraduationCap className="w-5 h-5 mr-2" />
@@ -134,6 +130,28 @@ export function CreativeColorBlocksTemplate({ data }: TemplateProps) {
                           {edu.gpa && ` • GPA: ${edu.gpa}`}
                         </p>
                       )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Certifications */}
+            {certifications && certifications.length > 0 && (
+              <div className={`${colorVariants.light} p-6 rounded-lg`}>
+                <h2 className="text-xl font-bold mb-4 flex items-center">
+                  <Award className="w-5 h-5 mr-2 text-blue-600" />
+                  CERTIFICATIONS
+                </h2>
+                <div className="space-y-3">
+                  {certifications.map((cert) => (
+                    <div key={cert.id}>
+                      <h3 className="font-medium text-sm">{cert.name}</h3>
+                      <p className="text-sm text-gray-600">{cert.issuer}</p>
+                      <p className="text-xs text-gray-500">
+                        {formatDate(cert.date)}
+                        {cert.expirationDate && ` • Expires: ${formatDate(cert.expirationDate)}`}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -207,6 +225,24 @@ export function CreativeColorBlocksTemplate({ data }: TemplateProps) {
                         </a>
                       )}
                       <p className="text-sm text-gray-700 mt-1">{project.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Publications */}
+            {publications && publications.length > 0 && (
+              <div className={`${colorVariants.light} p-6 rounded-lg`}>
+                <h2 className="text-xl font-bold mb-4">PUBLICATIONS</h2>
+                <div className="space-y-4">
+                  {publications.map((pub) => (
+                    <div key={pub.id} className="border-l-4 border-blue-500 pl-4 py-1">
+                      <h3 className="font-semibold">{pub.title}</h3>
+                      <p className="text-sm text-gray-700">
+                        {pub.journal}
+                        {pub.publicationDate && ` • ${formatDate(pub.publicationDate)}`}
+                      </p>
                     </div>
                   ))}
                 </div>

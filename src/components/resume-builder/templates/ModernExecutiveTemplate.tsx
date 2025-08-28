@@ -1,13 +1,9 @@
-import { Mail, Phone, MapPin, Linkedin, Globe, Briefcase, GraduationCap } from 'lucide-react';
-import { ResumeData } from '@/types/resume';
-
-type TemplateProps = {
-  data: ResumeData;
-};
+import { Mail, Phone, MapPin, Linkedin, Globe, Briefcase, GraduationCap, Star, BookOpen } from 'lucide-react';
+import { TemplateProps } from './types';
 
 export function ModernExecutiveTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications } = data;
-  const accentColor = data.customization.accentColor || '#2563eb';
+  const { personalInfo, summary, experience, education, skills, certifications, projects, publications, customization } = data || {};
+  const accentColor = customization?.accentColor || '#2563eb';
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -16,11 +12,11 @@ export function ModernExecutiveTemplate({ data }: TemplateProps) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-white" style={{ fontFamily: data.customization.fontFamily }}>
+    <div className="flex flex-col md:flex-row min-h-screen bg-white" style={{ fontFamily: customization?.fontFamily }}>
       {/* Sidebar */}
       <div className="w-full md:w-1/3 bg-gray-50 p-8">
         {/* Profile Image */}
-        {personalInfo.profileImage && (
+        {personalInfo?.profileImage && (
           <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 border-4 border-white shadow-md">
             <img 
               src={personalInfo.profileImage} 
@@ -36,31 +32,31 @@ export function ModernExecutiveTemplate({ data }: TemplateProps) {
             Contact
           </h2>
           <ul className="space-y-2">
-            {personalInfo.email && (
+            {personalInfo?.email && (
               <li className="flex items-center text-gray-700">
                 <Mail className="w-4 h-4 mr-2 text-gray-500" />
                 <span>{personalInfo.email}</span>
               </li>
             )}
-            {personalInfo.phone && (
+            {personalInfo?.phone && (
               <li className="flex items-center text-gray-700">
                 <Phone className="w-4 h-4 mr-2 text-gray-500" />
                 <span>{personalInfo.phone}</span>
               </li>
             )}
-            {personalInfo.location && (
+            {personalInfo?.location && (
               <li className="flex items-center text-gray-700">
                 <MapPin className="w-4 h-4 mr-2 text-gray-500" />
                 <span>{personalInfo.location}</span>
               </li>
             )}
-            {personalInfo.linkedin && (
+            {personalInfo?.linkedin && (
               <li className="flex items-center text-gray-700">
                 <Linkedin className="w-4 h-4 mr-2 text-gray-500" />
                 <span>LinkedIn</span>
               </li>
             )}
-            {personalInfo.website && (
+            {personalInfo?.website && (
               <li className="flex items-center text-gray-700">
                 <Globe className="w-4 h-4 mr-2 text-gray-500" />
                 <span>{personalInfo.website.replace(/^https?:\/\//, '')}</span>
@@ -70,7 +66,7 @@ export function ModernExecutiveTemplate({ data }: TemplateProps) {
         </div>
 
         {/* Skills */}
-        {skills.length > 0 && (
+        {skills && skills.length > 0 && (
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
               Skills
@@ -126,9 +122,9 @@ export function ModernExecutiveTemplate({ data }: TemplateProps) {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-1">
-            {personalInfo.fullName}
+            {personalInfo?.fullName}
           </h1>
-          {personalInfo.title && (
+          {personalInfo?.title && (
             <p className="text-lg text-gray-600">
               {personalInfo.title}
             </p>
@@ -185,7 +181,7 @@ export function ModernExecutiveTemplate({ data }: TemplateProps) {
         )}
 
         {/* Education */}
-        {education.length > 0 && (
+        {education && education.length > 0 && (
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center">
               <GraduationCap className="w-5 h-5 mr-2" style={{ color: accentColor }} />
@@ -209,6 +205,52 @@ export function ModernExecutiveTemplate({ data }: TemplateProps) {
                       GPA: {edu.gpa}
                     </p>
                   )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center">
+              <Star className="w-5 h-5 mr-2" style={{ color: accentColor }} />
+              Projects
+            </h2>
+            <div className="space-y-6">
+              {projects.map((project) => (
+                <div key={project.id} className="relative pl-6 border-l-2" style={{ borderLeftColor: accentColor }}>
+                  <div className="absolute -left-1.5 top-0 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }}></div>
+                  <h3 className="text-lg font-semibold">{project.name}</h3>
+                  <p className="text-gray-700 mt-1">{project.description}</p>
+                  {project.technologies && project.technologies.length > 0 && (
+                    <p className="text-sm text-gray-600 mt-2">
+                      <strong>Technologies:</strong> {project.technologies.join(', ')}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Publications */}
+        {publications && publications.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center">
+              <BookOpen className="w-5 h-5 mr-2" style={{ color: accentColor }} />
+              Publications
+            </h2>
+            <div className="space-y-4">
+              {publications.map((pub) => (
+                <div key={pub.id} className="relative pl-6 border-l-2" style={{ borderLeftColor: accentColor }}>
+                  <div className="absolute -left-1.5 top-0 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }}></div>
+                  <h3 className="font-semibold">{pub.title}</h3>
+                  <p className="text-gray-700">
+                    {pub.journal}
+                    {pub.publicationDate && ` • ${formatDate(pub.publicationDate)}`}
+                  </p>
                 </div>
               ))}
             </div>

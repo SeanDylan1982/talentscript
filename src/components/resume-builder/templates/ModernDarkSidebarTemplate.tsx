@@ -1,12 +1,8 @@
-import { ResumeData } from '@/types/resume';
-import { Mail, Phone, MapPin, Globe, Briefcase, GraduationCap, User } from 'lucide-react';
-
-interface TemplateProps {
-  data: ResumeData;
-}
+import { Mail, Phone, MapPin, Globe, Briefcase, GraduationCap, User, BookOpen, Star } from 'lucide-react';
+import { TemplateProps } from './types';
 
 export function ModernDarkSidebarTemplate({ data }: TemplateProps) {
-  const { personalInfo, summary, experience, education, skills, certifications } = data;
+  const { personalInfo, summary, experience, education, skills, certifications, projects, publications } = data || {};
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -16,7 +12,7 @@ export function ModernDarkSidebarTemplate({ data }: TemplateProps) {
 
   const renderSidebar = () => (
     <div className="bg-gray-900 text-white p-8 w-full md:w-1/3">
-      {personalInfo.profileImage && (
+      {personalInfo?.profileImage && (
         <div className="w-40 h-40 rounded-full bg-gray-800 mx-auto mb-8 overflow-hidden border-4 border-blue-500">
           <img 
             src={personalInfo.profileImage} 
@@ -30,25 +26,25 @@ export function ModernDarkSidebarTemplate({ data }: TemplateProps) {
         <div>
           <h2 className="text-xl font-bold mb-4 text-blue-400">CONTACT</h2>
           <div className="space-y-3 text-gray-300">
-            {personalInfo.email && (
+            {personalInfo?.email && (
               <div className="flex items-start">
                 <Mail className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-400" />
                 <span className="text-sm">{personalInfo.email}</span>
               </div>
             )}
-            {personalInfo.phone && (
+            {personalInfo?.phone && (
               <div className="flex items-start">
                 <Phone className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-400" />
                 <span className="text-sm">{personalInfo.phone}</span>
               </div>
             )}
-            {personalInfo.location && (
+            {personalInfo?.location && (
               <div className="flex items-start">
                 <MapPin className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-400" />
                 <span className="text-sm">{personalInfo.location}</span>
               </div>
             )}
-            {personalInfo.website && (
+            {personalInfo?.website && (
               <div className="flex items-start">
                 <Globe className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-400" />
                 <a href={personalInfo.website} className="text-sm hover:text-blue-400 transition-colors">
@@ -59,7 +55,7 @@ export function ModernDarkSidebarTemplate({ data }: TemplateProps) {
           </div>
         </div>
 
-        {skills.length > 0 && (
+        {skills && skills.length > 0 && (
           <div>
             <h2 className="text-xl font-bold mb-4 text-blue-400">SKILLS</h2>
             <div className="space-y-3">
@@ -105,10 +101,10 @@ export function ModernDarkSidebarTemplate({ data }: TemplateProps) {
     <div className="p-8 w-full md:w-2/3 bg-white">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-1">
-          {personalInfo.fullName || 'Your Name'}
+          {personalInfo?.fullName || 'Your Name'}
         </h1>
         <p className="text-blue-600 text-xl font-medium">
-          {personalInfo.title || 'Professional Title'}
+          {personalInfo?.title || 'Professional Title'}
         </p>
       </div>
 
@@ -155,7 +151,7 @@ export function ModernDarkSidebarTemplate({ data }: TemplateProps) {
         </div>
       )}
 
-      {education.length > 0 && (
+      {education && education.length > 0 && (
         <div>
           <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
             <GraduationCap className="w-5 h-5 mr-2 text-blue-600" />
@@ -174,6 +170,47 @@ export function ModernDarkSidebarTemplate({ data }: TemplateProps) {
                   {edu.school}
                   {edu.location && `, ${edu.location}`}
                   {edu.gpa && ` • GPA: ${edu.gpa}`}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {projects && projects.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <Star className="w-5 h-5 mr-2 text-blue-600" />
+            PROJECTS
+          </h2>
+          <div className="space-y-6">
+            {projects.map((project) => (
+              <div key={project.id} className="border-l-2 border-blue-100 pl-4">
+                <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
+                <p className="text-sm text-gray-700 mt-1">{project.description}</p>
+                {project.technologies && project.technologies.length > 0 && (
+                  <p className="text-xs text-gray-600 mt-1">
+                    Technologies: {project.technologies.join(', ')}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {publications && publications.length > 0 && (
+        <div>
+          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
+            PUBLICATIONS
+          </h2>
+          <div className="space-y-4">
+            {publications.map((pub) => (
+              <div key={pub.id} className="border-l-2 border-blue-100 pl-4">
+                <h3 className="text-base font-semibold text-gray-900">{pub.title}</h3>
+                <p className="text-sm text-gray-600">
+                  {pub.journal} • {formatDate(pub.publicationDate)}
                 </p>
               </div>
             ))}

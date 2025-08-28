@@ -1,65 +1,21 @@
-import { ResumeData, Certification as CertificationType, Project as ProjectType } from '@/types/resume';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, Award } from 'lucide-react';
-
-// Define the Section interface since it's not exported from resume.ts
-interface Section {
-  id: string;
-  type: string;
-  title: string;
-  isVisible: boolean;
-  order: number;
-}
-
-interface TemplateProps {
-  data: ResumeData;
-}
-
-interface SectionWithOrder extends Section {
-  order: number;
-  isVisible: boolean;
-}
-
-// Default values for customization
-const defaultCustomization = {
-  fontFamily: 'Arial, sans-serif',
-  accentColor: '#2563eb',
-  showProfileImage: true
-};
-
-// Type guard to check if an object is a Certification
-const isCertification = (item: unknown): item is CertificationType => {
-  return item !== null && 
-         typeof item === 'object' && 
-         'name' in item && 
-         'issuer' in item && 
-         'date' in item;
-};
-
-// Type guard to check if an object is a Project
-const isProject = (item: unknown): item is ProjectType => {
-  return item !== null && 
-         typeof item === 'object' && 
-         'name' in item && 
-         'description' in item;
-};
+import { TemplateProps } from './types';
 
 export function MinimalTemplate({ data }: TemplateProps) {
   // Destructure with default values to prevent undefined errors
   const { 
-    personalInfo = { fullName: '', email: '', phone: '', location: '' },
-    summary = '',
-    experience = [],
-    education = [],
-    skills = [],
-    certifications = [],
-    projects = [],
-    references = [],
-    sections = [],
-    customization = defaultCustomization
+    personalInfo,
+    summary,
+    experience,
+    education,
+    skills,
+    certifications,
+    projects,
+    publications,
+    references,
+    customization
   } = data || {};
   
-  const visibleSections = (sections as SectionWithOrder[]).filter(section => section.isVisible).sort((a, b) => a.order - b.order);
-
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
     const date = new Date(dateStr + '-01');
@@ -72,90 +28,87 @@ export function MinimalTemplate({ data }: TemplateProps) {
     return url.replace(/^https?:\/\/(www\.)?/, '');
   };
 
-  const renderSection = (section: Section) => {
-    switch (section.type) {
-      case 'personalInfo':
-        return (
-          <div key={section.id} className="mb-6">
-            <div className="text-center">
-              {customization.showProfileImage && personalInfo.profileImage && (
-                <img
-                  src={personalInfo.profileImage}
-                  alt="Profile"
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-gray-200"
-                />
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow overflow-hidden p-6">
+        {/* Personal Info */}
+        <div className="mb-6">
+          <div className="text-center">
+            {customization?.showProfileImage && personalInfo?.profileImage && (
+              <img
+                src={personalInfo.profileImage}
+                alt="Profile"
+                className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-gray-200"
+              />
+            )}
+            <h1 className="text-2xl font-bold text-gray-900 mb-2" style={{ fontFamily: customization?.fontFamily }}>
+              {personalInfo?.fullName || 'Your Name'}
+            </h1>
+
+            <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-600 mb-2">
+              {personalInfo?.email && (
+                <div className="flex items-center">
+                  <Mail className="w-3 h-3 mr-1" />
+                  {personalInfo.email}
+                </div>
               )}
-              <h1 className="text-2xl font-bold text-gray-900 mb-2" style={{ fontFamily: customization.fontFamily }}>
-                {personalInfo.fullName || 'Your Name'}
-              </h1>
-              
-              <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-600 mb-2">
-                {personalInfo.email && (
-                  <div className="flex items-center">
-                    <Mail className="w-3 h-3 mr-1" />
-                    {personalInfo.email}
-                  </div>
-                )}
-                {personalInfo.phone && (
-                  <div className="flex items-center">
-                    <Phone className="w-3 h-3 mr-1" />
-                    {personalInfo.phone}
-                  </div>
-                )}
-                {personalInfo.location && (
-                  <div className="flex items-center">
-                    <MapPin className="w-3 h-3 mr-1" />
-                    {personalInfo.location}
-                  </div>
-                )}
-              </div>
-              
-              {(personalInfo.website || personalInfo.linkedin || personalInfo.github) && (
-                <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-600">
-                  {personalInfo.website && (
-                    <div className="flex items-center">
-                      <Globe className="w-3 h-3 mr-1" />
-                      {formatUrl(personalInfo.website)}
-                    </div>
-                  )}
-                  {personalInfo.linkedin && (
-                    <div className="flex items-center">
-                      <Linkedin className="w-3 h-3 mr-1" />
-                      {formatUrl(personalInfo.linkedin)}
-                    </div>
-                  )}
-                  {personalInfo.github && (
-                    <div className="flex items-center">
-                      <Github className="w-3 h-3 mr-1" />
-                      {formatUrl(personalInfo.github)}
-                    </div>
-                  )}
+              {personalInfo?.phone && (
+                <div className="flex items-center">
+                  <Phone className="w-3 h-3 mr-1" />
+                  {personalInfo.phone}
+                </div>
+              )}
+              {personalInfo?.location && (
+                <div className="flex items-center">
+                  <MapPin className="w-3 h-3 mr-1" />
+                  {personalInfo.location}
                 </div>
               )}
             </div>
-          </div>
-        );
 
-      case 'summary':
-        if (!summary) return null;
-        return (
-          <div key={section.id} className="mb-5">
+            {(personalInfo?.website || personalInfo?.linkedin || personalInfo?.github) && (
+              <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-600">
+                {personalInfo?.website && (
+                  <div className="flex items-center">
+                    <Globe className="w-3 h-3 mr-1" />
+                    {formatUrl(personalInfo.website)}
+                  </div>
+                )}
+                {personalInfo?.linkedin && (
+                  <div className="flex items-center">
+                    <Linkedin className="w-3 h-3 mr-1" />
+                    {formatUrl(personalInfo.linkedin)}
+                  </div>
+                )}
+                {personalInfo?.github && (
+                  <div className="flex items-center">
+                    <Github className="w-3 h-3 mr-1" />
+                    {formatUrl(personalInfo.github)}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Summary */}
+        {summary && (
+          <div className="mb-5">
             <h2 className="text-base font-semibold text-gray-900 mb-2 pb-1 border-b" 
-                style={{ fontFamily: customization.fontFamily, borderColor: customization.accentColor }}>
+                style={{ fontFamily: customization?.fontFamily, borderColor: customization?.accentColor }}>
               Professional Summary
             </h2>
-            <p className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: customization.fontFamily }}>
+            <p className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: customization?.fontFamily }}>
               {summary}
             </p>
           </div>
-        );
+        )}
 
-      case 'experience':
-        if (experience.length === 0) return null;
-        return (
-          <div key={section.id} className="mb-5">
+        {/* Experience */}
+        {experience && experience.length > 0 && (
+          <div className="mb-5">
             <h2 className="text-base font-semibold text-gray-900 mb-3 pb-1 border-b" 
-                style={{ fontFamily: customization.fontFamily, borderColor: customization.accentColor }}>
+                style={{ fontFamily: customization?.fontFamily, borderColor: customization?.accentColor }}>
               Work Experience
             </h2>
             <div className="space-y-4">
@@ -163,34 +116,33 @@ export function MinimalTemplate({ data }: TemplateProps) {
                 <div key={exp.id} className="break-inside-avoid">
                   <div className="flex justify-between items-start mb-1">
                     <div>
-                      <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                      <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                         {exp.jobTitle}
                       </h3>
-                      <p className="text-sm text-gray-700" style={{ fontFamily: customization.fontFamily }}>
+                      <p className="text-sm text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
                         {exp.company}{exp.location && `, ${exp.location}`}
                       </p>
                     </div>
-                    <div className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+                    <div className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
                       {formatDate(exp.startDate)} - {exp.isCurrentJob ? 'Present' : formatDate(exp.endDate)}
                     </div>
                   </div>
                   <ul className="list-disc list-inside space-y-1 text-xs text-gray-700 ml-3">
                     {exp.description.filter(desc => desc.trim()).map((desc, index) => (
-                      <li key={index} style={{ fontFamily: customization.fontFamily }}>{desc}</li>
+                      <li key={index} style={{ fontFamily: customization?.fontFamily }}>{desc}</li>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
           </div>
-        );
+        )}
 
-      case 'education':
-        if (education.length === 0) return null;
-        return (
-          <div key={section.id} className="mb-5">
+        {/* Education */}
+        {education && education.length > 0 && (
+          <div className="mb-5">
             <h2 className="text-base font-semibold text-gray-900 mb-3 pb-1 border-b" 
-                style={{ fontFamily: customization.fontFamily, borderColor: customization.accentColor }}>
+                style={{ fontFamily: customization?.fontFamily, borderColor: customization?.accentColor }}>
               Education
             </h2>
             <div className="space-y-3">
@@ -198,70 +150,67 @@ export function MinimalTemplate({ data }: TemplateProps) {
                 <div key={edu.id} className="break-inside-avoid">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                      <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                         {edu.degree}
                       </h3>
-                      <p className="text-sm text-gray-700" style={{ fontFamily: customization.fontFamily }}>
+                      <p className="text-sm text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
                         {edu.school}{edu.location && `, ${edu.location}`}
                       </p>
                       {edu.gpa && (
-                        <p className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+                        <p className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
                           GPA: {edu.gpa}
                         </p>
                       )}
                     </div>
-                    <div className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
-                      {formatDate(edu.graduationDate)}
+                    <div className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
+                      {edu.graduationDate ? formatDate(edu.graduationDate) : ''}
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        );
+        )}
 
-      case 'skills':
-        if (skills.length === 0) return null;
-        return (
-          <div key={section.id} className="mb-5">
+        {/* Skills */}
+        {skills && skills.length > 0 && (
+          <div className="mb-5">
             <h2 className="text-base font-semibold text-gray-900 mb-3 pb-1 border-b" 
-                style={{ fontFamily: customization.fontFamily, borderColor: customization.accentColor }}>
+                style={{ fontFamily: customization?.fontFamily, borderColor: customization?.accentColor }}>
               Skills
             </h2>
             <div className="grid grid-cols-2 gap-2">
               {skills.map((skill) => (
                 <div key={skill.id} className="flex justify-between text-sm">
-                  <span style={{ fontFamily: customization.fontFamily }}>{skill.name}</span>
-                  <span className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+                  <span style={{ fontFamily: customization?.fontFamily }}>{skill.name}</span>
+                  <span className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
                     {skill.level}
                   </span>
                 </div>
               ))}
             </div>
           </div>
-        );
+        )}
 
-      case 'certifications':
-        if (validCertifications.length === 0) return null;
-        
-        return (
-          <div key={section.id} className="p-6 border-b border-gray-200">
-            <h2 className="text-base font-semibold mb-4 flex items-center text-gray-800" style={{ fontFamily: customization.fontFamily }}>
-              <Award className="w-4 h-4 mr-2" style={{ color: customization.accentColor }} />
+        {/* Certifications */}
+        {certifications && certifications.length > 0 && (
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-base font-semibold mb-4 flex items-center text-gray-800" style={{ fontFamily: customization?.fontFamily }}>
+              <Award className="w-4 h-4 mr-2" style={{ color: customization?.accentColor }} />
               Certifications
             </h2>
             <div className="space-y-3">
-              {validCertifications.map((cert) => (
+              {certifications.map((cert) => (
                 <div key={cert.id} className="flex justify-between items-start break-inside-avoid">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                    <h3 className="text-sm font-medium text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                       {cert.name}
                     </h3>
-                    <p className="text-sm text-gray-700" style={{ fontFamily: customization.fontFamily }}>
+                    <p className="text-sm text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
                       {cert.issuer}
                     </p>
                   </div>
-                  <div className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+                  <div className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
                     {formatDate(cert.date)}
                     {cert.expirationDate && ` - ${formatDate(cert.expirationDate)}`}
                   </div>
@@ -269,41 +218,40 @@ export function MinimalTemplate({ data }: TemplateProps) {
               ))}
             </div>
           </div>
-        );
+        )}
 
-      case 'projects':
-        if (projects.length === 0) return null;
-        return (
-          <div key={section.id} className="mb-5">
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+          <div className="mb-5">
             <h2 className="text-base font-semibold text-gray-900 mb-3 pb-1 border-b" 
-                style={{ fontFamily: customization.fontFamily, borderColor: customization.accentColor }}>
+                style={{ fontFamily: customization?.fontFamily, borderColor: customization?.accentColor }}>
               Projects
             </h2>
             <div className="space-y-4">
-              {projects.map((project: ProjectType) => (
+              {projects.map((project) => (
                 <div key={project.id} className="break-inside-avoid">
                   <div className="flex justify-between items-start mb-1">
-                    <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                    <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                       {project.name}
                     </h3>
-                    <div className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+                    <div className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
                       {formatDate(project.startDate)}
                       {project.endDate && ` - ${formatDate(project.endDate)}`}
                     </div>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: customization.fontFamily }}>
+                  <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: customization?.fontFamily }}>
                     {project.description}
                   </p>
                   {project.technologies.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-1">
-                      {project.technologies.map((tech: string, index: number) => (
+                      {project.technologies.map((tech, index) => (
                         <span
                           key={index}
                           className="px-2 py-1 text-xs rounded"
                           style={{ 
-                            backgroundColor: customization.accentColor + '20', 
-                            color: customization.accentColor,
-                            fontFamily: customization.fontFamily 
+                            backgroundColor: customization?.accentColor + '20',
+                            color: customization?.accentColor,
+                            fontFamily: customization?.fontFamily
                           }}
                         >
                           {tech}
@@ -312,7 +260,7 @@ export function MinimalTemplate({ data }: TemplateProps) {
                     </div>
                   )}
                   {project.url && (
-                    <p className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+                    <p className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
                       {formatUrl(project.url)}
                     </p>
                   )}
@@ -320,32 +268,31 @@ export function MinimalTemplate({ data }: TemplateProps) {
               ))}
             </div>
           </div>
-        );
+        )}
 
-      case 'references':
-        if (references.length === 0) return null;
-        return (
-          <div key={section.id} className="mb-5">
+        {/* References */}
+        {references && references.length > 0 && (
+          <div className="mb-5">
             <h2 className="text-base font-semibold text-gray-900 mb-3 pb-1 border-b" 
-                style={{ fontFamily: customization.fontFamily, borderColor: customization.accentColor }}>
+                style={{ fontFamily: customization?.fontFamily, borderColor: customization?.accentColor }}>
               Professional References
             </h2>
             <div className="space-y-3">
-              {references.map((ref: any) => (
+              {references.map((ref) => (
                 <div key={ref.id} className="break-inside-avoid">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization.fontFamily }}>
+                      <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
                         {ref.name}
                       </h3>
-                      <p className="text-sm text-gray-700" style={{ fontFamily: customization.fontFamily }}>
+                      <p className="text-sm text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
                         {ref.title} at {ref.company}
                       </p>
-                      <p className="text-xs text-gray-600" style={{ fontFamily: customization.fontFamily }}>
+                      <p className="text-xs text-gray-600" style={{ fontFamily: customization?.fontFamily }}>
                         {ref.relationship}
                       </p>
                     </div>
-                    <div className="text-xs text-gray-600 text-right" style={{ fontFamily: customization.fontFamily }}>
+                    <div className="text-xs text-gray-600 text-right" style={{ fontFamily: customization?.fontFamily }}>
                       <div>{ref.email}</div>
                       <div>{ref.phone}</div>
                     </div>
@@ -354,33 +301,30 @@ export function MinimalTemplate({ data }: TemplateProps) {
               ))}
             </div>
           </div>
-        );
+        )}
 
-      default:
-        return null;
-    }
-  };
-
-  // Filter projects to only include those that match the ProjectType
-  const validProjects = projects.filter(isProject);
-  
-  // Filter certifications to only include those that match the CertificationType
-  const validCertifications = certifications.filter(isCertification);
-
-  return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow overflow-hidden">
-        {/* Render sections based on visibility and order */}
-        {visibleSections.map((section) => {
-          // Pass filtered data to renderSection
-          const sectionData = {
-            ...section,
-            projects: validProjects,
-            certifications: validCertifications,
-            customization
-          };
-          return renderSection(sectionData);
-        })}
+        {/* Publications */}
+        {publications && publications.length > 0 && (
+          <div className="mb-5">
+            <h2 className="text-base font-semibold text-gray-900 mb-3 pb-1 border-b"
+                style={{ fontFamily: customization?.fontFamily, borderColor: customization?.accentColor }}>
+              Publications
+            </h2>
+            <div className="space-y-4">
+              {publications.map((pub) => (
+                <div key={pub.id} className="break-inside-avoid">
+                  <h3 className="text-sm font-semibold text-gray-900" style={{ fontFamily: customization?.fontFamily }}>
+                    {pub.title}
+                  </h3>
+                  <p className="text-sm text-gray-700" style={{ fontFamily: customization?.fontFamily }}>
+                    {pub.journal}
+                    {pub.publicationDate && ` • ${formatDate(pub.publicationDate)}`}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
